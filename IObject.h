@@ -43,7 +43,7 @@ YYYY/MM/DD   X.Y      <作者或修改者名>    <修改内容>
          // define something for Windows (64-bit only)
          #define __windows__
      #else
-	 // define something for Windows (32-bit only)
+   // define something for Windows (32-bit only)
          #define __windows__
      #endif
 #elif __APPLE_
@@ -75,13 +75,13 @@ YYYY/MM/DD   X.Y      <作者或修改者名>    <修改内容>
 #include <string>
 
 #if defined(WIN32)
-	#pragma warning( disable: 4251 )
-	#pragma warning( disable: 4482 )
+  #pragma warning( disable: 4251 )
+  #pragma warning( disable: 4482 )
 #endif
 
 #ifdef ICK_TIME_DEBUG
 #   define TIME_DEBUG(message)       \
-	std::cout << TimeConverter::getCurrentTimeAsStr() << ": " << std::string(message) << std::endl;
+  std::cout << TimeConverter::getCurrentTimeAsStr() << ": " << std::string(message) << std::endl;
 #else 
 #   define TIME_DEBUG(message) 
 #endif
@@ -110,11 +110,11 @@ class ick_api IObject
 {
 public:
 
-	IObject(void);
+  IObject(void);
 
-	virtual ~IObject(void);
+  virtual ~IObject(void);
 
-	virtual std::string toString();
+  virtual std::string toString();
 };
 
 //ICK_NAMESPACE_END

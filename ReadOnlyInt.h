@@ -9,41 +9,41 @@ class ick_api ReadOnlyInt : public UntypedData
 
 public:
 
-	ReadOnlyInt(int value = 0);
+  ReadOnlyInt(int value = 0);
 
-	ReadOnlyInt(IntValueInfo& valueInfo);
+  ReadOnlyInt(IntValueInfo& valueInfo);
 
-	virtual ~ReadOnlyInt();
+  virtual ~ReadOnlyInt();
 
 private:
 
-	int m_value;
+  int m_value;
 
-	int m_oldValue;
+  int m_oldValue;
 
-	IntValueInfo m_valueInfo;
+  IntValueInfo m_valueInfo;
 
-	bool m_valid;
+  bool m_valid;
 
-	friend class IckStormPublisher;
-	friend class IckStormSubscriberManager;
-	friend class IckStormSubscriberSocket;
+  friend class IckStormPublisher;
+  friend class IckStormSubscriberManager;
+  friend class IckStormSubscriberSocket;
 
 public:
 
-	int getValue();
+  int getValue();
 
-	int getOldValue();
+  int getOldValue();
 
-	void setSimulatedValue(int value);
+  void setSimulatedValue(int value);
 
-	virtual bool isValidated();
+  virtual bool isValidated();
 
-	std::string getValueAsString() const;
+  std::string getValueAsString() const;
 
-	IntValueInfo getValueInfo() const;
+  IntValueInfo getValueInfo() const;
 
-	TypeInfo getTypeInfo() const;
+  TypeInfo getTypeInfo() const;
 
 };
 

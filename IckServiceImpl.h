@@ -8,12 +8,12 @@
 class ick_api IckServiceImpl/* : public IckCore::IckService*/
 {
 public:
-	IckServiceImpl();
-	~IckServiceImpl();
+  IckServiceImpl();
+  ~IckServiceImpl();
 
 public:
-	virtual void runService(const std::string& objectName, const std::string& serviceName, const std::string& param/*, const ::Ice::Current& = ::Ice::emptyCurrent*/);
-	
+  virtual void runService(const std::string& objectName, const std::string& serviceName, const std::string& param/*, const ::Ice::Current& = ::Ice::emptyCurrent*/);
+  
 };
 
 #endif

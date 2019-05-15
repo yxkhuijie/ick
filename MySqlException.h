@@ -4,7 +4,7 @@
 ** Description:  
 ** Release: 1.0
 ** Modification history:           
-** 					2016-07-11   yangxk create
+**           2016-07-11   yangxk create
 ** 
 *********************************************************************/
 #ifndef _MYSQL_CONNECTION_H_
@@ -20,10 +20,10 @@ class MySqlException : public AbstractException
 {
 public:
     MySqlException();
-	~MySqlException();
-	
+  ~MySqlException();
+  
 public:
-	virtual void post(int errCode);
+  virtual void post(int errCode);
 };
 
 #endif

@@ -12,20 +12,20 @@ class ick_api IMutex : public IObject
 {
 
 public:
-	
-	IMutex();
-	
-	virtual ~IMutex();
+  
+  IMutex();
+  
+  virtual ~IMutex();
 
 private:
 
-	/*IceUtil::Mutex m_mutex;*/
-	HANDLE m_mutex;
+  /*IceUtil::Mutex m_mutex;*/
+  HANDLE m_mutex;
 public:
 
-	void lock();
+  void lock();
 
-	void unlock();
+  void unlock();
 };
 
 #endif

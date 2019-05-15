@@ -12,34 +12,34 @@ XERCES_CPP_NAMESPACE_USE
 class ick_api XmlParseHandler : public DefaultHandler, public IObject
 {
 public:
-	XmlParseHandler();
-	~XmlParseHandler();
+  XmlParseHandler();
+  ~XmlParseHandler();
 
 public:
 
-	void startDocument();
+  void startDocument();
 
-	void startElement(
-		const   XMLCh* const    uri,
-		const   XMLCh* const    localname,
-		const   XMLCh* const    qname,
-		const   Attributes&     attrs
-	);
+  void startElement(
+    const   XMLCh* const    uri,
+    const   XMLCh* const    localname,
+    const   XMLCh* const    qname,
+    const   Attributes&     attrs
+  );
 
-	void characters(
-		const   XMLCh* const    chars
-		, const XMLSize_t       length
-	);
+  void characters(
+    const   XMLCh* const    chars
+    , const XMLSize_t       length
+  );
 
-	void endElement(
-		const XMLCh* const uri,
-		const XMLCh* const localname,
-		const XMLCh* const qname
-	);
+  void endElement(
+    const XMLCh* const uri,
+    const XMLCh* const localname,
+    const XMLCh* const qname
+  );
 
-	void endDocument();
+  void endDocument();
 
-	void fatalError(const SAXParseException&);
+  void fatalError(const SAXParseException&);
 };
 
 #endif

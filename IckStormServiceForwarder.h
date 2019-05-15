@@ -6,33 +6,33 @@
 
 class ick_api IckStormServiceForwarder : public ISocket, public ControlObject
 {
-	DECLARE_CLASS_DYNAMIC(IckStormServiceForwarder)
-	DECLARE_MESSAGE_LIST
-	DECLARE_SERVICEINFO_LIST
+  DECLARE_CLASS_DYNAMIC(IckStormServiceForwarder)
+  DECLARE_MESSAGE_LIST
+  DECLARE_SERVICEINFO_LIST
 
 public:
-	
-	IckStormServiceForwarder();
-	
-	~IckStormServiceForwarder();
+  
+  IckStormServiceForwarder();
+  
+  ~IckStormServiceForwarder();
 
 private:
 
-	SOCKET m_socketClient;
-	unsigned char m_buffRecvTmp[4096];
-	std::list<std::string> m_messages;
-	long long m_latestHeartBeatTime;
+  SOCKET m_socketClient;
+  unsigned char m_buffRecvTmp[4096];
+  std::list<std::string> m_messages;
+  long long m_latestHeartBeatTime;
 
 public:
 
-	virtual void make();
-	virtual void startup();
-	virtual bool socketConnectHandler(SocketParam* socketParam);
+  virtual void make();
+  virtual void startup();
+  virtual bool socketConnectHandler(SocketParam* socketParam);
 
-	void setHost(const std::string& host);
-	void setPort(int port);
-	void setServer(bool isServer);
-	void setInterval(int interval);
+  void setHost(const std::string& host);
+  void setPort(int port);
+  void setServer(bool isServer);
+  void setInterval(int interval);
 };
 
 #endif

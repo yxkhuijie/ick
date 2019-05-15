@@ -14,86 +14,86 @@
 class ick_api IApplication : /*virtual public Ice::Application, */public IThread
 {
 public:
-	IApplication(bool isServer = true, bool isLoadIniConfig = true, bool isLoadXmlConfig = true);
-	virtual ~IApplication();
+  IApplication(bool isServer = true, bool isLoadIniConfig = true, bool isLoadXmlConfig = true);
+  virtual ~IApplication();
 
-	int main(int argc, const char* argv[]);
-	int main(int argc, const wchar_t* argv[]);
+  int main(int argc, const char* argv[]);
+  int main(int argc, const wchar_t* argv[]);
 private:
 
-	bool m_isServer;
+  bool m_isServer;
 
-	bool m_isLoadIniConfig;
+  bool m_isLoadIniConfig;
 
-	bool m_isLoadXmlConfig;
+  bool m_isLoadXmlConfig;
 
-	/*Ice::CommunicatorPtr m_communicator;*/
+  /*Ice::CommunicatorPtr m_communicator;*/
 
-	void loadConfig(int argc, char* argv[]);
+  void loadConfig(int argc, char* argv[]);
 
-	std::string m_strConfigFilePath;
+  std::string m_strConfigFilePath;
 
-	std::string m_strIckServiceEndPoint;
+  std::string m_strIckServiceEndPoint;
 
-	IckStormSubscriberSocket m_subscriberSocket;
+  IckStormSubscriberSocket m_subscriberSocket;
 
-	IckStormServiceSocket m_serviceSocket;
+  IckStormServiceSocket m_serviceSocket;
 
-	IckStormDebuggerSocket m_debuggerSocket;
+  IckStormDebuggerSocket m_debuggerSocket;
 
-	bool m_isNetworkLan;
+  bool m_isNetworkLan;
 
-	std::string m_strTopicManagerEndPoint;
+  std::string m_strTopicManagerEndPoint;
 
-	std::string m_strSubscriberEndpoint;
+  std::string m_strSubscriberEndpoint;
 
-	std::string m_subscriberListenHost;
+  std::string m_subscriberListenHost;
 
-	int m_subscriberListenPort;
+  int m_subscriberListenPort;
 
-	std::string m_serviceListenHost;
+  std::string m_serviceListenHost;
 
-	int m_serviceListenPort;
+  int m_serviceListenPort;
 
-	std::string m_debuggerListenHost;
-	
-	int m_debuggerListenPort;
+  std::string m_debuggerListenHost;
+  
+  int m_debuggerListenPort;
 
-	std::string m_strConsoleChartset;
+  std::string m_strConsoleChartset;
 
-	bool m_isSubscriberEnable;
+  bool m_isSubscriberEnable;
 
-	bool m_isServiceEnable;
+  bool m_isServiceEnable;
 
-	bool m_isDebuggerEnable;
+  bool m_isDebuggerEnable;
 
 public:
 
-	virtual int run(int, const char*[]);
-	virtual void execute();
+  virtual int run(int, const char*[]);
+  virtual void execute();
 
-	void runService(std::string objectName, std::string serviceName, std::string params = "");
+  void runService(std::string objectName, std::string serviceName, std::string params = "");
 
-	// 是否是局域网
-	bool isNetworkLan();
+  // 是否是局域网
+  bool isNetworkLan();
 
-	void setNetworkType(bool isLAN = true);
+  void setNetworkType(bool isLAN = true);
 
-	void setSubscriberEnable(bool enable);
+  void setSubscriberEnable(bool enable);
 
-	void setServiceEnable(bool enable);
+  void setServiceEnable(bool enable);
 
-	void setDebuggerEnable(bool enable);
+  void setDebuggerEnable(bool enable);
 
-	void setSubscriberListener(std::string host, int port);
+  void setSubscriberListener(std::string host, int port);
 
-	void setServiceListener(std::string host, int port);
+  void setServiceListener(std::string host, int port);
 
-	void setServiceEndPoint(std::string endpoint);
+  void setServiceEndPoint(std::string endpoint);
 
-	void setTopicManagerEndPoint(std::string endpoint);
+  void setTopicManagerEndPoint(std::string endpoint);
 
-	void setSubscriberEndpoint(std::string endpoint);
+  void setSubscriberEndpoint(std::string endpoint);
 };
 
 #endif

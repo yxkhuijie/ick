@@ -9,9 +9,9 @@ class IckStormPublishSocket : public ISocket, public Subscriber
 
 public:
 
-	IckStormPublishSocket();
+  IckStormPublishSocket();
 
-	virtual ~IckStormPublishSocket();
+  virtual ~IckStormPublishSocket();
 
 
 

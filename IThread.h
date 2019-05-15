@@ -9,45 +9,45 @@
 
 typedef enum
 {
-	THREAD_NONE = 0,
-	THREAD_RUNNING,
-	THREAD_FINISHED
+  THREAD_NONE = 0,
+  THREAD_RUNNING,
+  THREAD_FINISHED
 }ThreadState;
 
 typedef enum
 {
-	PRIORITY_INHERIT,
-	PRIORITY_LOWEST,
-	PRIORITY_LOW,
-	PRIORITY_NORMAL,
-	PRIORITY_HIGH,
-	PRIORITY_HIGHEST
+  PRIORITY_INHERIT,
+  PRIORITY_LOWEST,
+  PRIORITY_LOW,
+  PRIORITY_NORMAL,
+  PRIORITY_HIGH,
+  PRIORITY_HIGHEST
 }ThreadPriority;
 
 class ick_api IThread : public IObject
 {
 
 private:
-	HANDLE m_thread;
+  HANDLE m_thread;
 
 private:
-	ThreadState m_state;
+  ThreadState m_state;
 
 public:
-	IThread();
-	virtual ~IThread();
+  IThread();
+  virtual ~IThread();
 
-	void start();
-	void stop();
-	void resume();
+  void start();
+  void stop();
+  void resume();
 
     #ifdef __windows__
-	static DWORD WINAPI ThreadHandler(LPVOID lpParamter);
+  static DWORD WINAPI ThreadHandler(LPVOID lpParamter);
     #else
-	
+  
     #endif
 
-	virtual void execute() = 0;
+  virtual void execute() = 0;
 };
 
 #endif

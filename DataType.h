@@ -6,25 +6,25 @@
 */
 enum DataType
 {
-	/*!
-	@brief unknown data type
-	*/
-	UNKNOWN,//unknown data type
+  /*!
+  @brief unknown data type
+  */
+  UNKNOWN,//unknown data type
 
-	/*!
-	 * @ brief int data type
-	 */
-	INTDATA,
+  /*!
+   * @ brief int data type
+   */
+  INTDATA,
 
-	/*!
-	 * @ brief string data type
-	 */
-	STRINGDATA,
+  /*!
+   * @ brief string data type
+   */
+  STRINGDATA,
 
-	/*!
-	 * @ brief double data type
-	 */
-	DOUBLEDATA
+  /*!
+   * @ brief double data type
+   */
+  DOUBLEDATA
 };
 
 #endif

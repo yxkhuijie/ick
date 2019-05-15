@@ -4,7 +4,7 @@
 ** Description:  
 ** Release: 1.0
 ** Modification history:           
-** 					2016-06-18   yangxk create
+**           2016-06-18   yangxk create
 ** 
 *********************************************************************/
 
@@ -21,23 +21,23 @@ using namespace std;
 class ick_api ConnectionPoolManager
 {
 public:
-	ConnectionPoolManager(void);
-	~ConnectionPoolManager(void);
-	// 连接池存放  
+  ConnectionPoolManager(void);
+  ~ConnectionPoolManager(void);
+  // 连接池存放  
 
 private:
     static ConnectionPoolManager* instance;  
-	
+  
 public:
-	map<string,ConnectionPool*> pools;
-	static ConnectionPoolManager* getInstance();
-	void startup();
-	Connection* getConnection(string poolName);
-	void close(string poolName,Connection* conn);
-	void destroy(string poolName);
-	ConnectionPool* getPool(string poolName);
-	void addPool(string poolName, ConnectionPool* pool);
-	
+  map<string,ConnectionPool*> pools;
+  static ConnectionPoolManager* getInstance();
+  void startup();
+  Connection* getConnection(string poolName);
+  void close(string poolName,Connection* conn);
+  void destroy(string poolName);
+  ConnectionPool* getPool(string poolName);
+  void addPool(string poolName, ConnectionPool* pool);
+  
 };
 
 #endif

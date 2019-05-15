@@ -4,7 +4,7 @@
 ** Description:  
 ** Release: 1.0
 ** Modification history:           
-** 					2016-06-16   yangxk create
+**           2016-06-16   yangxk create
 ** 
 *********************************************************************/
 
@@ -24,24 +24,24 @@ typedef list<map<string,string> > RecordSet;
 class ick_api Connection : public IObject
 {
 public:
-	Connection(void){};
-	virtual ~Connection(void){};
-	
+  Connection(void){};
+  virtual ~Connection(void){};
+  
 private: 
-    int res;
+  int res;
 
 public:
-    RecordSet rs;
+  RecordSet rs;
 
 public:
-    virtual void open() = 0;
-	virtual void close() = 0;
-	virtual bool isClosed() = 0;
-    virtual void getConnection() = 0;
-	virtual void releaseConnection(Connection* conn) = 0;
-	virtual int executeQuery(string& sql, bool print=false) = 0;
-	virtual RecordSet* getRecordSet() = 0;
-	virtual bool setCharset(std::string charset) { return true;  };
+  virtual void open() = 0;
+  virtual void close() = 0;
+  virtual bool isClosed() = 0;
+  virtual void getConnection() = 0;
+  virtual void releaseConnection(Connection* conn) = 0;
+  virtual int executeQuery(string& sql, bool print=false) = 0;
+  virtual RecordSet* getRecordSet() = 0;
+  virtual bool setCharset(std::string charset) { return true;  };
 };
 
 #endif

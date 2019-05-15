@@ -4,7 +4,7 @@
 ** Description:  
 ** Release: 1.0
 ** Modification history:           
-** 					2016-06-16   yangxk create
+**           2016-06-16   yangxk create
 ** 
 *********************************************************************/
 #ifndef _MYSQL_CONNECTION_H_
@@ -27,28 +27,28 @@ class ick_api MySqlConnection : public Connection
 {
 public:
     MySqlConnection(string host,string username,string pwd, string db, int port = 3306, string unix_socket = "", unsigned int client_flag = 0);
-	virtual ~MySqlConnection();
+  virtual ~MySqlConnection();
 
 private:
-	MYSQL mysql;
-	
-	string host;
-	string user;
-	string pwd;
-	string db;
-	int    port;
-	string unix_socket;
-	unsigned int client_flag;
+  MYSQL mysql;
+  
+  string host;
+  string user;
+  string pwd;
+  string db;
+  int    port;
+  string unix_socket;
+  unsigned int client_flag;
 
 public:
     virtual void open();
-	virtual void close();
-	virtual bool isClosed();
+  virtual void close();
+  virtual bool isClosed();
     virtual void getConnection();
-	virtual void releaseConnection(Connection* conn);
-	virtual int executeQuery(string& sql, bool print=false);              //  执行成功返回受影响的行数
-	virtual RecordSet* getRecordSet();
-	virtual bool setCharset(std::string chartset);
+  virtual void releaseConnection(Connection* conn);
+  virtual int executeQuery(string& sql, bool print=false);              //  执行成功返回受影响的行数
+  virtual RecordSet* getRecordSet();
+  virtual bool setCharset(std::string chartset);
 };
 
 #endif

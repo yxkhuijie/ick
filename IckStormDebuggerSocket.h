@@ -7,21 +7,21 @@ class IckStormDebuggerSocket : public ISocket
 {
 public:
 
-	IckStormDebuggerSocket();
+  IckStormDebuggerSocket();
 
-	~IckStormDebuggerSocket();
-
-public:
-
-	void setHost(const std::string& host);
-
-	void setPort(int port);
-
-	void setServer(bool isServer);
+  ~IckStormDebuggerSocket();
 
 public:
 
-	virtual bool socketConnectHandler(SocketParam* socketParam);
+  void setHost(const std::string& host);
+
+  void setPort(int port);
+
+  void setServer(bool isServer);
+
+public:
+
+  virtual bool socketConnectHandler(SocketParam* socketParam);
 
 };
 
