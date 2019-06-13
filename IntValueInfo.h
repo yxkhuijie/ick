@@ -15,70 +15,70 @@ class ick_api IntValueInfo : public ValueInfo
 {
 
 public:
-	
-	IntValueInfo();
+  
+  IntValueInfo();
 
-	IntValueInfo(int minValue, int maxValue);
-	
-	IntValueInfo(AccessMode accessMode, DataType dataType);
-	
-	IntValueInfo(IckCore::RemoteAccessMode accessMode, IckCore::RemoteDataType dataType);
+  IntValueInfo(int minValue, int maxValue);
+  
+  IntValueInfo(AccessMode accessMode, DataType dataType);
+  
+  IntValueInfo(IckCore::RemoteAccessMode accessMode, IckCore::RemoteDataType dataType);
 
-	virtual ~IntValueInfo();
+  virtual ~IntValueInfo();
 
 private:
-	
-	/*
-	 * @ brief value of this data
-	 */
-	int m_value;
+  
+  /*
+   * @ brief value of this data
+   */
+  int m_value;
 
-	/*
-	 * @ brief min value of this data
-	 * @ value: default is INT_MIN (-2147483648)
-	 */
-	int m_minValue;
+  /*
+   * @ brief min value of this data
+   * @ value: default is INT_MIN (-2147483648)
+   */
+  int m_minValue;
 
-	/*
-	* @ brief max value of this data
-	* @ value: default is INT_MAX 2147483647
-	*/
-	int m_maxValue;
+  /*
+  * @ brief max value of this data
+  * @ value: default is INT_MAX 2147483647
+  */
+  int m_maxValue;
 
-	/*
-	* @ brief unit of this data
-	* @ value: default is empty
-	*/
-	std::string m_unit;
+  /*
+  * @ brief unit of this data
+  * @ value: default is empty
+  */
+  std::string m_unit;
 
-	/*
-	* @ brief description of this data
-	* @ value: default is empty
-	*/
-	std::string m_description;
+  /*
+  * @ brief description of this data
+  * @ value: default is empty
+  */
+  std::string m_description;
 
-	/*
-	* @ brief name of this data
-	* @ value: default is empty
-	*     e.g. for a valve,
-	*     you can set the full name: /IO/DigitalOutput/DO01
-	*     and set the name is: PV01 for easy to remember.
-	*/
-	std::string m_name;
+  /*
+  * @ brief name of this data
+  * @ value: default is empty
+  *     e.g. for a valve,
+  *     you can set the full name: /IO/DigitalOutput/DO01
+  *     and set the name is: PV01 for easy to remember.
+  */
+  std::string m_name;
 
 public:
-	
-	int getValue();
+  
+  int getValue();
 
-	void setValue(int value);
+  void setValue(int value);
 
-	int getMinValue();
+  int getMinValue();
 
-	void setMinValue(int value);
+  void setMinValue(int value);
 
-	int getMaxValue();
+  int getMaxValue();
 
-	void setMaxValue(int value);
+  void setMaxValue(int value);
 
 };
 

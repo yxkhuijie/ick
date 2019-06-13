@@ -9,10 +9,10 @@ IOException::IOException()
 
 IOException::IOException(ReadOnlyInt* data)
 {
-	if (data == NULL)
-	{
+  if (data == NULL)
+  {
 
-	}
+  }
 }
 
 IOException::~IOException() throw()

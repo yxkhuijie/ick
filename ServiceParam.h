@@ -5,61 +5,61 @@
 
 enum ServiceParamType
 {
-	PARAM_TYPE_INT,
+  PARAM_TYPE_INT,
 
-	PARAM_TYPE_DOUBLE,
-	
-	PARAM_TYPE_STRING
+  PARAM_TYPE_DOUBLE,
+  
+  PARAM_TYPE_STRING
 };
 
 class ick_api ServiceParam : public IObject
 {
 public:
-	
-	ServiceParam();
-	
-	~ServiceParam();
+  
+  ServiceParam();
+  
+  ~ServiceParam();
 
 
 private:
 
-	int m_intValue;
+  int m_intValue;
 
-	double m_doubleValue;
+  double m_doubleValue;
 
-	std::string m_stringValue;
+  std::string m_stringValue;
 
-	ServiceParamType m_type;
+  ServiceParamType m_type;
 
-	int m_paramIndex;
+  int m_paramIndex;
 
-	std::string m_paramName;
+  std::string m_paramName;
 
 public:
-	
-	ServiceParamType getType();
+  
+  ServiceParamType getType();
 
-	void setType(std::string type);
+  void setType(std::string type);
 
-	int getIntValue();
+  int getIntValue();
 
-	double getDoubleValue();
+  double getDoubleValue();
 
-	std::string getStringValue();
+  std::string getStringValue();
 
-	void setValue(int value);
+  void setValue(int value);
 
-	void setValue(double value);
-	
-	void setValue(std::string value);
+  void setValue(double value);
+  
+  void setValue(std::string value);
 
-	void setParamIndex(int index);
+  void setParamIndex(int index);
 
-	int getParamIndex();
+  int getParamIndex();
 
-	void setParamName(std::string name);
+  void setParamName(std::string name);
 
-	std::string getParamName();
+  std::string getParamName();
 };
 
 #endif

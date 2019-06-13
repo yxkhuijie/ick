@@ -14,13 +14,13 @@ class IckStormSubscriberManager;
 
 struct IckStormValueInfo
 {
-	AccessMode accessMode;
-	DataType   dataType;
-	long long  timeStamp;
-	int        iValue;
-	double     dValue;
-	char       sValue[4096];
-	// std::string sValue;
+  AccessMode accessMode;
+  DataType   dataType;
+  long long  timeStamp;
+  int        iValue;
+  double     dValue;
+  char       sValue[4096];
+  // std::string sValue;
 };
 
 typedef void(*SubscirberCallBack)(const char* channelName, IckStormValueInfo* valueInfo);
@@ -32,32 +32,32 @@ class ick_api IckStormSubscriber /*: public IckCore::IckSubscriber*/
 
 public:
 
-	IckStormSubscriber();
+  IckStormSubscriber();
 
-	IckStormSubscriber(::std::string channelName, SubscirberCallBack callback = NULL);
+  IckStormSubscriber(::std::string channelName, SubscirberCallBack callback = NULL);
 
-	~IckStormSubscriber();
+  ~IckStormSubscriber();
 
 private:
 
-	std::string m_channelName;
+  std::string m_channelName;
 
-	std::string m_channelIdentity;
+  std::string m_channelIdentity;
 
-	SubscirberCallBack m_callback;
+  SubscirberCallBack m_callback;
 
-	std::list<Subscriber*> m_subscribers;
+  std::list<Subscriber*> m_subscribers;
 
 public:
 
-	/*
-	 * @ brief when server publish messages, this function will be called by client
-	 */
-	virtual void update(const std::string& channelName, const ::IckCore::RemoteValueInfo& remoteValueInfo/*, const ::Ice::Current&*/);
-	
-	std::string getChannelName();
-	
-	std::string getChannelNameAsIdentity();
+  /*
+   * @ brief when server publish messages, this function will be called by client
+   */
+  virtual void update(const std::string& channelName, const ::IckCore::RemoteValueInfo& remoteValueInfo/*, const ::Ice::Current&*/);
+  
+  std::string getChannelName();
+  
+  std::string getChannelNameAsIdentity();
 
 };
 

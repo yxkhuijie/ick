@@ -4,7 +4,7 @@
 ** Description:  
 ** Release: 1.0
 ** Modification history:           
-** 					2016-07-11   yangxk create
+**           2016-07-11   yangxk create
 ** 
 *********************************************************************/
 #ifndef _ABSTRACT_EXCEPTION_H_
@@ -18,26 +18,26 @@ class AbstractException
 {
 public:
     AbstractException();
-	virtual ~AbstractException();
+  virtual ~AbstractException();
 
 public:
-	class AlarmInfo
-	{
-		int m_almId;
-		string m_errMsg;
-	
-	public:
-		AlarmInfo(int almId, string errMsg){};
-		~AlarmInfo(){};
-	};
-	
+  class AlarmInfo
+  {
+    int m_almId;
+    string m_errMsg;
+  
+  public:
+    AlarmInfo(int almId, string errMsg){};
+    ~AlarmInfo(){};
+  };
+  
 public:
     int m_errCode;
-	map<int,AlarmInfo> m_alarmInfoList;
-	 
-	virtual void post(int errCode) = 0;
-	virtual void AddAlarm(string& almName, int errCode, string almMsg);
-	virtual void setAlarm(int errCode, int almId, string desp);
+  map<int,AlarmInfo> m_alarmInfoList;
+   
+  virtual void post(int errCode) = 0;
+  virtual void AddAlarm(string& almName, int errCode, string almMsg);
+  virtual void setAlarm(int errCode, int almId, string desp);
 };
 
 #endif

@@ -8,10 +8,10 @@ class ick_api ParamInvalidException
 {
 
 public:
-	
-	ParamInvalidException();
-	
-	~ParamInvalidException();
+  
+  ParamInvalidException();
+  
+  ~ParamInvalidException();
 
 };
 

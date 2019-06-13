@@ -9,25 +9,25 @@ class ick_api ServiceInfo : public IObject
 {
 public:
 
-	ServiceInfo();
-	
-	~ServiceInfo();
+  ServiceInfo();
+  
+  ~ServiceInfo();
 
 private:
 
-	std::map<std::string, ServiceParam> Params;
+  std::map<std::string, ServiceParam> Params;
 
-	std::string m_name;
+  std::string m_name;
 
 public:
 
-	void addServiceParam(std::string paramName, std::string paramType);
+  void addServiceParam(std::string paramName, std::string paramType);
 
-	void setName(std::string name);
+  void setName(std::string name);
 
-	std::string getName() const;
+  std::string getName() const;
 
-	std::map<std::string, ServiceParam>* getParams();
+  std::map<std::string, ServiceParam>* getParams();
 };
 
 #endif // !_SERVICE_INFO_H_

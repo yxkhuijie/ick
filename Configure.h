@@ -9,25 +9,25 @@ class ick_api Configure : public IObject
 
 public:
 
-	Configure();
+  Configure();
 
-	Configure(std::string filePath);
+  Configure(std::string filePath);
 
-	~Configure();
+  ~Configure();
 
 private:
 
-	std::string m_fileName;
+  std::string m_fileName;
 
-	std::map<std::string, std::map<std::string, std::string> > m_configures;
+  std::map<std::string, std::map<std::string, std::string> > m_configures;
 
 public:
 
-	// 
-	bool loadConfigFile(std::string fileName);
+  // 
+  bool loadConfigFile(std::string fileName);
 
-	// 
-	std::string getValueByKey(const std::string section, const std::string key);
+  // 
+  std::string getValueByKey(const std::string section, const std::string key);
 
 
 };

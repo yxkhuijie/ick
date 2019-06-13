@@ -4,117 +4,117 @@
 
 namespace IckCore
 {
-	enum RemoteDataType
-	{
-		UNKNOWN,
-		INTDATA,
-		STRINGDATA,
-		DOUBLEDATA
-	};
+  enum RemoteDataType
+  {
+    UNKNOWN,
+    INTDATA,
+    STRINGDATA,
+    DOUBLEDATA
+  };
 
-	enum RemoteAccessMode
-	{
-		DEFAULT,
-		READONLY,
-		READWRITE
-	};
+  enum RemoteAccessMode
+  {
+    DEFAULT,
+    READONLY,
+    READWRITE
+  };
 
-	struct RemoteIntTypeInfo
-	{
-		int min;
-		int max;
-		::std::string unit;
-	};
+  struct RemoteIntTypeInfo
+  {
+    int min;
+    int max;
+    ::std::string unit;
+  };
 
-	struct RemoteStringTypeInfo
-	{
-		long long int maxLength;
-	};
+  struct RemoteStringTypeInfo
+  {
+    long long int maxLength;
+  };
 
-	struct RemoteDoubleTypeInfo
-	{
-		double min;
-		double max;
-		::std::string unit;
-		double accuracy;
-	};
+  struct RemoteDoubleTypeInfo
+  {
+    double min;
+    double max;
+    ::std::string unit;
+    double accuracy;
+  };
 
-	struct RemoteValueInfo
-	{
-		::IckCore::RemoteDataType dataType;
-		::IckCore::RemoteAccessMode accessMode;
-		long long int timeStamp;
-		int iValue;
-		double dValue;
-		::std::string sValue;
-		::std::string descriptor;
-	};
+  struct RemoteValueInfo
+  {
+    ::IckCore::RemoteDataType dataType;
+    ::IckCore::RemoteAccessMode accessMode;
+    long long int timeStamp;
+    int iValue;
+    double dValue;
+    ::std::string sValue;
+    ::std::string descriptor;
+  };
 
-	struct RemoteIntValueInfo
-	{
-		int value;
-		::std::string descriptor;
-		::IckCore::RemoteDataType dataType;
-		::IckCore::RemoteAccessMode accessMode;
-		long long int timeStamp;
-	};
+  struct RemoteIntValueInfo
+  {
+    int value;
+    ::std::string descriptor;
+    ::IckCore::RemoteDataType dataType;
+    ::IckCore::RemoteAccessMode accessMode;
+    long long int timeStamp;
+  };
 
-	struct RemoteDoubleValueInfo
-	{
-		double value;
-		::IckCore::RemoteDataType dataType;
-		::IckCore::RemoteAccessMode accessMode;
-		long long int timeStamp;
-	};
+  struct RemoteDoubleValueInfo
+  {
+    double value;
+    ::IckCore::RemoteDataType dataType;
+    ::IckCore::RemoteAccessMode accessMode;
+    long long int timeStamp;
+  };
 
-	struct RemoteStringValueInfo
-	{
-		::std::string value;
-		::IckCore::RemoteDataType dataType;
-		::IckCore::RemoteAccessMode accessMode;
-		long long int timeStamp;
-	};
+  struct RemoteStringValueInfo
+  {
+    ::std::string value;
+    ::IckCore::RemoteDataType dataType;
+    ::IckCore::RemoteAccessMode accessMode;
+    long long int timeStamp;
+  };
 
-	struct RemoteDataInfo
-	{
-		int nodeNumber;
-		int channelNumber;
-		::IckCore::RemoteDataType dataType;
-		::IckCore::RemoteAccessMode accessMode;
-		bool isSimulated;
-	};
+  struct RemoteDataInfo
+  {
+    int nodeNumber;
+    int channelNumber;
+    ::IckCore::RemoteDataType dataType;
+    ::IckCore::RemoteAccessMode accessMode;
+    bool isSimulated;
+  };
 
-	struct RemoteIntDataInfo
-	{
-		::IckCore::RemoteIntTypeInfo typeInfo;
-	};
+  struct RemoteIntDataInfo
+  {
+    ::IckCore::RemoteIntTypeInfo typeInfo;
+  };
 
-	struct RemoteDoubleDataInfo
-	{
-		::IckCore::RemoteDoubleTypeInfo typeInfo;
-	};
+  struct RemoteDoubleDataInfo
+  {
+    ::IckCore::RemoteDoubleTypeInfo typeInfo;
+  };
 
-	struct RemoteStringDataInfo
-	{
-		::IckCore::RemoteStringTypeInfo typeInfo;
-	};
+  struct RemoteStringDataInfo
+  {
+    ::IckCore::RemoteStringTypeInfo typeInfo;
+  };
 
-	struct RemoteData
-	{
-		::std::string channelName;
-		::std::string value;
-	};
+  struct RemoteData
+  {
+    ::std::string channelName;
+    ::std::string value;
+  };
 
-	struct DataInfo
-	{
-		int nodeNumber;
-		int channelNumber;
-	};
+  struct DataInfo
+  {
+    int nodeNumber;
+    int channelNumber;
+  };
 
-	struct SubscriberInfo
-	{
-		std::string objectId;
-		std::string endPoint;
-	};
+  struct SubscriberInfo
+  {
+    std::string objectId;
+    std::string endPoint;
+  };
 };
 #endif

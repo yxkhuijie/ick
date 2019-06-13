@@ -10,25 +10,25 @@ class ick_api ValueInfo : public IObject
 {
 public:
 
-	ValueInfo();
+  ValueInfo();
 
-	ValueInfo(AccessMode accessMode, DataType dataType);
+  ValueInfo(AccessMode accessMode, DataType dataType);
 
-	ValueInfo(IckCore::RemoteAccessMode accessMode, IckCore::RemoteDataType dataType);
+  ValueInfo(IckCore::RemoteAccessMode accessMode, IckCore::RemoteDataType dataType);
 
-	virtual ~ValueInfo();
+  virtual ~ValueInfo();
 
 protected:
 
-	AccessMode m_accessMode;
+  AccessMode m_accessMode;
 
-	DataType m_dataType;
+  DataType m_dataType;
 
 public:
 
-	AccessMode getAccessMode();
-	
-	DataType getDataType();
+  AccessMode getAccessMode();
+  
+  DataType getDataType();
 };
 
 #endif

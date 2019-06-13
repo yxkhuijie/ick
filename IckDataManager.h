@@ -8,16 +8,16 @@
 class IckDataManager
 {
 private:
-	IckDataManager();
-	~IckDataManager();
+  IckDataManager();
+  ~IckDataManager();
 
 private:
 
-	static IckDataManager* m_instance;
+  static IckDataManager* m_instance;
 
 public:
 
-	static IckDataManager* getInstance();
+  static IckDataManager* getInstance();
 
 };
 #endif

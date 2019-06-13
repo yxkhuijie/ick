@@ -13,5 +13,5 @@ IObject::~IObject(void)
 
 std::string IObject::toString()
 {
-	return "";
+  return "";
 }

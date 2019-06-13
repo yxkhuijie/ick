@@ -11,42 +11,42 @@ class IckStormServiceSocket : public ISocket
 
 public:
 
-	IckStormServiceSocket();
+  IckStormServiceSocket();
 
-	virtual ~IckStormServiceSocket();
+  virtual ~IckStormServiceSocket();
 
 public:
-	struct ServiceParam
-	{
-	public:
-		std::string objectName;
-		std::string serviceName;
-		std::string param;
-		long long int  registTime;
-	};
+  struct ServiceParam
+  {
+  public:
+    std::string objectName;
+    std::string serviceName;
+    std::string param;
+    long long int  registTime;
+  };
 
 private:
-	std::vector<ServiceParam> m_serviceToRun;
+  std::vector<ServiceParam> m_serviceToRun;
 
 public:
 
-	void setHost(const std::string& host);
+  void setHost(const std::string& host);
 
-	void setPort(int port);
+  void setPort(int port);
 
-	void setServer(bool isServer);
-
-public:
-
-	virtual bool socketConnectHandler(SocketParam* socketParam);
+  void setServer(bool isServer);
 
 public:
 
-	void addService(const std::string& objectName, const std::string& serviceName, const std::string& param);
+  virtual bool socketConnectHandler(SocketParam* socketParam);
 
-	std::string encodeData(std::string data);
+public:
 
-	std::string decodeData(std::string data);
+  void addService(const std::string& objectName, const std::string& serviceName, const std::string& param);
+
+  std::string encodeData(std::string data);
+
+  std::string decodeData(std::string data);
 };
 
 #endif

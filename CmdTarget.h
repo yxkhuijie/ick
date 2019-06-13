@@ -144,14 +144,14 @@ enum METHOD_TYPE
 
 typedef union ChannelRegistFunction
 {
-	bool (CmdTarget::*pfn)();
+  bool (CmdTarget::*pfn)();
 
-	bool (CmdTarget::*pfn_ri)(int channelNumber, int* value);                  // read only int, for read
-	bool (CmdTarget::*pfn_rd)(int channelNumber, double* value);               // read only double, for read
-	bool (CmdTarget::*pfn_rs)(int channelNumber, std::string& value);          // read only string, for read
-	bool (CmdTarget::*pfn_wi)(int channelNumber, int value);
-	bool (CmdTarget::*pfn_wd)(int channelNumber, double value);
-	bool (CmdTarget::*pfn_ws)(int channelNumber, const std::string& value);
+  bool (CmdTarget::*pfn_ri)(int channelNumber, int* value);                  // read only int, for read
+  bool (CmdTarget::*pfn_rd)(int channelNumber, double* value);               // read only double, for read
+  bool (CmdTarget::*pfn_rs)(int channelNumber, std::string& value);          // read only string, for read
+  bool (CmdTarget::*pfn_wi)(int channelNumber, int value);
+  bool (CmdTarget::*pfn_wd)(int channelNumber, double value);
+  bool (CmdTarget::*pfn_ws)(int channelNumber, const std::string& value);
 
 }FUNC_REG;
 
@@ -162,55 +162,55 @@ struct MSG_ENTITY
     
     int m_msgType;
     
-	MethodsMap methodMap;
-	
-	MSG_ENTITY()                                                                                                         { m_msg = ""; m_msgType = METHOD_END;  methodMap.pfn = NULL; }
+  MethodsMap methodMap;
+  
+  MSG_ENTITY()                                                                                                         { m_msg = ""; m_msgType = METHOD_END;  methodMap.pfn = NULL; }
 
-	MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)())                                               { m_msg = msg; m_msgType = method_type;  methodMap.pfn = pfn; }
+  MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)())                                               { m_msg = msg; m_msgType = method_type;  methodMap.pfn = pfn; }
 
-	MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(bool))                                           { m_msg = msg; m_msgType = method_type;  methodMap.pfn_b = pfn; }
-	MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(int))                                            { m_msg = msg; m_msgType = method_type;  methodMap.pfn_i = pfn; }
-	MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(double))                                         { m_msg = msg; m_msgType = method_type;  methodMap.pfn_d = pfn; }
-	MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(const std::string&))                             { m_msg = msg; m_msgType = method_type;  methodMap.pfn_s = pfn; }
-	
-	MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(int,int))                                        { m_msg = msg; m_msgType = method_type;  methodMap.pfn_ii = pfn; }
-	MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(double,double))                                  { m_msg = msg; m_msgType = method_type;  methodMap.pfn_dd = pfn; }
-	MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(const std::string&, const std::string&))         { m_msg = msg; m_msgType = method_type;  methodMap.pfn_ss = pfn; }
-	MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(int,double))                                     { m_msg = msg; m_msgType = method_type;  methodMap.pfn_id = pfn; }
-	MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(double, int))                                    { m_msg = msg; m_msgType = method_type;  methodMap.pfn_di = pfn; }
-	MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(int, const std::string&))                        { m_msg = msg; m_msgType = method_type;  methodMap.pfn_is = pfn; }
-	MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(const std::string&, int))                        { m_msg = msg; m_msgType = method_type;  methodMap.pfn_si = pfn; }
-	MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(double, const std::string&))                     { m_msg = msg; m_msgType = method_type;  methodMap.pfn_ds = pfn; }
-	MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(const std::string&, double))                     { m_msg = msg; m_msgType = method_type;  methodMap.pfn_sd = pfn; }
+  MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(bool))                                           { m_msg = msg; m_msgType = method_type;  methodMap.pfn_b = pfn; }
+  MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(int))                                            { m_msg = msg; m_msgType = method_type;  methodMap.pfn_i = pfn; }
+  MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(double))                                         { m_msg = msg; m_msgType = method_type;  methodMap.pfn_d = pfn; }
+  MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(const std::string&))                             { m_msg = msg; m_msgType = method_type;  methodMap.pfn_s = pfn; }
+  
+  MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(int,int))                                        { m_msg = msg; m_msgType = method_type;  methodMap.pfn_ii = pfn; }
+  MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(double,double))                                  { m_msg = msg; m_msgType = method_type;  methodMap.pfn_dd = pfn; }
+  MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(const std::string&, const std::string&))         { m_msg = msg; m_msgType = method_type;  methodMap.pfn_ss = pfn; }
+  MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(int,double))                                     { m_msg = msg; m_msgType = method_type;  methodMap.pfn_id = pfn; }
+  MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(double, int))                                    { m_msg = msg; m_msgType = method_type;  methodMap.pfn_di = pfn; }
+  MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(int, const std::string&))                        { m_msg = msg; m_msgType = method_type;  methodMap.pfn_is = pfn; }
+  MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(const std::string&, int))                        { m_msg = msg; m_msgType = method_type;  methodMap.pfn_si = pfn; }
+  MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(double, const std::string&))                     { m_msg = msg; m_msgType = method_type;  methodMap.pfn_ds = pfn; }
+  MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(const std::string&, double))                     { m_msg = msg; m_msgType = method_type;  methodMap.pfn_sd = pfn; }
 
-	MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(int,int,int))                                    { m_msg = msg; m_msgType = method_type;  methodMap.pfn_iii = pfn; }
-	MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(double,double,double))                           { m_msg = msg; m_msgType = method_type;  methodMap.pfn_ddd = pfn; }
-	MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(const std::string&, const std::string&, const std::string&)) 
-	                                                                                                                     { m_msg = msg; m_msgType = method_type;  methodMap.pfn_sss = pfn; }
-	MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(int,int,double))                                 { m_msg = msg; m_msgType = method_type;  methodMap.pfn_iid = pfn; }
-	MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(int,int,const std::string&))                     { m_msg = msg; m_msgType = method_type;  methodMap.pfn_iis = pfn; }
-	MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(double, double, const std::string&))             { m_msg = msg; m_msgType = method_type;  methodMap.pfn_dds = pfn; }  
-	MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(const std::string&, const std::string&, int))    { m_msg = msg; m_msgType = method_type;  methodMap.pfn_ssi = pfn; }
-	MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(const std::string&, const std::string&, double)) { m_msg = msg; m_msgType = method_type;  methodMap.pfn_ssd = pfn; }
-	MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(int, double, int))                               { m_msg = msg; m_msgType = method_type;  methodMap.pfn_idi = pfn; }
-	MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(int, double, double))                            { m_msg = msg; m_msgType = method_type;  methodMap.pfn_idd = pfn; }
-	MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(int, double, const std::string&))                { m_msg = msg; m_msgType = method_type;  methodMap.pfn_ids = pfn; }
-	MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(int, const std::string&, int))                   { m_msg = msg; m_msgType = method_type;  methodMap.pfn_isi = pfn; }
-	MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(int, const std::string&,double))                 { m_msg = msg; m_msgType = method_type;  methodMap.pfn_isd = pfn; }
-	MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(int, const std::string&, const std::string&))    { m_msg = msg; m_msgType = method_type;  methodMap.pfn_iss = pfn; }
-	MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(double, int, int))                               { m_msg = msg; m_msgType = method_type;  methodMap.pfn_dii = pfn; }
-	MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(double, int, double))                            { m_msg = msg; m_msgType = method_type;  methodMap.pfn_did = pfn; }
-	MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(double, int, const std::string&))                { m_msg = msg; m_msgType = method_type;  methodMap.pfn_dis = pfn; }
-	MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(double, const std::string&, int))                { m_msg = msg; m_msgType = method_type;  methodMap.pfn_dsi = pfn; }
-	MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(double, const std::string&, double))             { m_msg = msg; m_msgType = method_type;  methodMap.pfn_dsd = pfn; }
-	MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(double, const std::string&, const std::string&)) { m_msg = msg; m_msgType = method_type;  methodMap.pfn_dss = pfn; }
-	MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(const std::string&, int, int))                   { m_msg = msg; m_msgType = method_type;  methodMap.pfn_sii = pfn; }
-	MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(const std::string&, int, double))                { m_msg = msg; m_msgType = method_type;  methodMap.pfn_sid = pfn; }
-	MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(const std::string&, int, const std::string&))    { m_msg = msg; m_msgType = method_type;  methodMap.pfn_sis = pfn; }
-	MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(const std::string&, double, int))                { m_msg = msg; m_msgType = method_type;  methodMap.pfn_sdi = pfn; }
-	MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(const std::string&, double, double))             { m_msg = msg; m_msgType = method_type;  methodMap.pfn_sdd = pfn; }
-	MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(const std::string&, double, const std::string&)) { m_msg = msg; m_msgType = method_type;  methodMap.pfn_sds = pfn; }
-	
+  MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(int,int,int))                                    { m_msg = msg; m_msgType = method_type;  methodMap.pfn_iii = pfn; }
+  MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(double,double,double))                           { m_msg = msg; m_msgType = method_type;  methodMap.pfn_ddd = pfn; }
+  MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(const std::string&, const std::string&, const std::string&)) 
+                                                                                                                       { m_msg = msg; m_msgType = method_type;  methodMap.pfn_sss = pfn; }
+  MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(int,int,double))                                 { m_msg = msg; m_msgType = method_type;  methodMap.pfn_iid = pfn; }
+  MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(int,int,const std::string&))                     { m_msg = msg; m_msgType = method_type;  methodMap.pfn_iis = pfn; }
+  MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(double, double, const std::string&))             { m_msg = msg; m_msgType = method_type;  methodMap.pfn_dds = pfn; }  
+  MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(const std::string&, const std::string&, int))    { m_msg = msg; m_msgType = method_type;  methodMap.pfn_ssi = pfn; }
+  MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(const std::string&, const std::string&, double)) { m_msg = msg; m_msgType = method_type;  methodMap.pfn_ssd = pfn; }
+  MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(int, double, int))                               { m_msg = msg; m_msgType = method_type;  methodMap.pfn_idi = pfn; }
+  MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(int, double, double))                            { m_msg = msg; m_msgType = method_type;  methodMap.pfn_idd = pfn; }
+  MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(int, double, const std::string&))                { m_msg = msg; m_msgType = method_type;  methodMap.pfn_ids = pfn; }
+  MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(int, const std::string&, int))                   { m_msg = msg; m_msgType = method_type;  methodMap.pfn_isi = pfn; }
+  MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(int, const std::string&,double))                 { m_msg = msg; m_msgType = method_type;  methodMap.pfn_isd = pfn; }
+  MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(int, const std::string&, const std::string&))    { m_msg = msg; m_msgType = method_type;  methodMap.pfn_iss = pfn; }
+  MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(double, int, int))                               { m_msg = msg; m_msgType = method_type;  methodMap.pfn_dii = pfn; }
+  MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(double, int, double))                            { m_msg = msg; m_msgType = method_type;  methodMap.pfn_did = pfn; }
+  MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(double, int, const std::string&))                { m_msg = msg; m_msgType = method_type;  methodMap.pfn_dis = pfn; }
+  MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(double, const std::string&, int))                { m_msg = msg; m_msgType = method_type;  methodMap.pfn_dsi = pfn; }
+  MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(double, const std::string&, double))             { m_msg = msg; m_msgType = method_type;  methodMap.pfn_dsd = pfn; }
+  MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(double, const std::string&, const std::string&)) { m_msg = msg; m_msgType = method_type;  methodMap.pfn_dss = pfn; }
+  MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(const std::string&, int, int))                   { m_msg = msg; m_msgType = method_type;  methodMap.pfn_sii = pfn; }
+  MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(const std::string&, int, double))                { m_msg = msg; m_msgType = method_type;  methodMap.pfn_sid = pfn; }
+  MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(const std::string&, int, const std::string&))    { m_msg = msg; m_msgType = method_type;  methodMap.pfn_sis = pfn; }
+  MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(const std::string&, double, int))                { m_msg = msg; m_msgType = method_type;  methodMap.pfn_sdi = pfn; }
+  MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(const std::string&, double, double))             { m_msg = msg; m_msgType = method_type;  methodMap.pfn_sdd = pfn; }
+  MSG_ENTITY(std::string msg, int method_type, void (CmdTarget::*pfn)(const std::string&, double, const std::string&)) { m_msg = msg; m_msgType = method_type;  methodMap.pfn_sds = pfn; }
+  
 };
 
 struct MSG_MAP
@@ -230,39 +230,39 @@ public:                                                           \
 #define IMPLEMENT_MESSAGE_LIST(class_name, base_class_name)        \
     const MSG_MAP class_name::m_msgMap =                          \
     {                                                             \
-	    &base_class_name::m_msgMap,                               \
-	    class_name::m_msgEntry                                    \
+      &base_class_name::m_msgMap,                               \
+      class_name::m_msgEntry                                    \
     };                                                            \
                                                                   \
     const MSG_MAP* class_name::getMsgMap()                        \
     {                                                             \
-	    return &class_name::m_msgMap;                             \
+      return &class_name::m_msgMap;                             \
     }
 
 #define SET_DEFINE(method_name)                                   \
     void method_name(const std::string& fullPath);
 
 #define SET(class_name, method_name, variable_name, variable_type)                                            \
-	void class_name::method_name(const std::string& fullPath)                                                 \
-	{                                                                                                         \
-		try                                                                                                   \
-		{                                                                                                     \
-			variable_name = dynamic_cast<variable_type>(ObjectManager::getInstance()->getObject(fullPath));   \
-			if (variable_name == NULL)                                                                        \
-			{                                                                                                 \
-				std::string msg = std::string("Exception occured in ") + std::string(getFullName()) +         \
-					std::string(": set ") + std::string(#method_name) + " failed!";                           \
-				Logger::getInstance()->Error(msg);                                                            \
-				throw msg;                                                                                    \
-			}                                                                                                 \
-		}                                                                                                     \
-		catch(...)                                                                                            \
-		{                                                                                                     \
-		    std::string msg = std::string("Exception occured in ") + std::string(getFullName()) +             \
-				std::string(": set ") + std::string(#method_name) + " failed!";                               \
-			Logger::getInstance()->Error(msg);                                                                \
-			throw msg;                                                                                        \
-		}                                                                                                     \
+  void class_name::method_name(const std::string& fullPath)                                                 \
+  {                                                                                                         \
+    try                                                                                                   \
+    {                                                                                                     \
+      variable_name = dynamic_cast<variable_type>(ObjectManager::getInstance()->getObject(fullPath));   \
+      if (variable_name == NULL)                                                                        \
+      {                                                                                                 \
+        std::string msg = std::string("Exception occured in ") + std::string(getFullName()) +         \
+          std::string(": set ") + std::string(#method_name) + " failed!";                           \
+        Logger::getInstance()->Error(msg);                                                            \
+        throw msg;                                                                                    \
+      }                                                                                                 \
+    }                                                                                                     \
+    catch(...)                                                                                            \
+    {                                                                                                     \
+        std::string msg = std::string("Exception occured in ") + std::string(getFullName()) +             \
+        std::string(": set ") + std::string(#method_name) + " failed!";                               \
+      Logger::getInstance()->Error(msg);                                                                \
+      throw msg;                                                                                        \
+    }                                                                                                     \
     }
 
 #define BEGIN_MESSAGE_LIST(class_name) const MSG_ENTITY class_name::m_msgEntry[] = {
@@ -314,18 +314,18 @@ public:                                                           \
 
 class ick_api CmdTarget : public ManagedObject
 {
-	DECLARE_CLASS_DYNAMIC(CmdTarget)
-	DECLARE_MESSAGE_LIST
+  DECLARE_CLASS_DYNAMIC(CmdTarget)
+  DECLARE_MESSAGE_LIST
 public:
-	CmdTarget(void);
-	virtual ~CmdTarget(void);
+  CmdTarget(void);
+  virtual ~CmdTarget(void);
 
 
-	void dispatchMsg(const std::string& msgName, const std::string& params);
-	
-	std::vector<std::string> split(std::string str, std::string pattern);
-	std::string trim(std::string s);
-	
+  void dispatchMsg(const std::string& msgName, const std::string& params);
+  
+  std::vector<std::string> split(std::string str, std::string pattern);
+  std::string trim(std::string s);
+  
 };
 
 #endif

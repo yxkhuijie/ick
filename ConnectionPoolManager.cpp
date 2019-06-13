@@ -4,7 +4,7 @@ ConnectionPoolManager* ConnectionPoolManager::instance = new ConnectionPoolManag
 
 ConnectionPoolManager::ConnectionPoolManager(void)
 {
-	startup();
+  startup();
 }
 
 
@@ -22,17 +22,17 @@ ConnectionPoolManager* ConnectionPoolManager::getInstance()
 // 初始化所有的连接池  
 void ConnectionPoolManager::startup()
 {  
-	
+  
 }  
 
 Connection* ConnectionPoolManager::getConnection(string poolName)
 {
     Connection* conn = NULL;  
-	if(pools.size()>0 && (pools.find(poolName) != pools.end()))
+  if(pools.size()>0 && (pools.find(poolName) != pools.end()))
     {  
         conn = this->getPool(poolName)->getConnection();  
     }
-	else
+  else
     {  
         // System.out.println("Error:Can't find this connecion pool ->"+poolName);  
     }  
@@ -72,11 +72,11 @@ ConnectionPool* ConnectionPoolManager::getPool(string poolName)
     ConnectionPool* pool = NULL;  
     if(pools.size() > 0)
     {  
-	    map<string,ConnectionPool*>::iterator it = pools.find(poolName);
-		if(it != pools.end())
-		{
-		    pool = it->second;
-		}
+      map<string,ConnectionPool*>::iterator it = pools.find(poolName);
+    if(it != pools.end())
+    {
+        pool = it->second;
+    }
     }  
     return pool;  
 }
@@ -84,14 +84,14 @@ ConnectionPool* ConnectionPoolManager::getPool(string poolName)
 void ConnectionPoolManager::addPool(string poolName, ConnectionPool* pool)
 {
     if(pools.find(poolName) == pools.end()) 
-	{
-	    pools[poolName] = pool;
-		//throw "Connection pool named '" + poolName  + "' added success, occured in ConnectionPoolManager::addPool";
-	}
-	else
-	{
-	    throw "\nConnection pool named '" + poolName  + "' has been existed, error in ConnectionPoolManager::addPool().";
-	}
+  {
+      pools[poolName] = pool;
+    //throw "Connection pool named '" + poolName  + "' added success, occured in ConnectionPoolManager::addPool";
+  }
+  else
+  {
+      throw "\nConnection pool named '" + poolName  + "' has been existed, error in ConnectionPoolManager::addPool().";
+  }
 }
 
 

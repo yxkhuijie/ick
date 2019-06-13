@@ -6,82 +6,82 @@
 
 IFrameData::IFrameData()
 {
-	m_pRecvFrame = NULL;
-	m_pSendFrame = NULL;
-	m_recvFramelength = 0;
-	m_sendFrameLength = 0;
-	m_frameDescription = "";
+  m_pRecvFrame = NULL;
+  m_pSendFrame = NULL;
+  m_recvFramelength = 0;
+  m_sendFrameLength = 0;
+  m_frameDescription = "";
 }
 
 
 IFrameData::~IFrameData()
 {
-	if (m_pRecvFrame != NULL)
-	{
-		delete[] m_pRecvFrame;
-	}
+  if (m_pRecvFrame != NULL)
+  {
+    delete[] m_pRecvFrame;
+  }
 
-	if (m_pSendFrame != NULL)
-	{
-		delete[] m_pSendFrame;
-	}
+  if (m_pSendFrame != NULL)
+  {
+    delete[] m_pSendFrame;
+  }
 }
 
 void IFrameData::setRecvFrame(const unsigned char* frame, int length)
 {
-	if (frame == NULL) throw "frame null error!";
+  if (frame == NULL) throw "frame null error!";
 
-	if (m_pRecvFrame != NULL)
-	{
-		delete[] m_pRecvFrame;
-	}
+  if (m_pRecvFrame != NULL)
+  {
+    delete[] m_pRecvFrame;
+  }
 
-	m_pRecvFrame = new unsigned char[length];
-	memcpy(m_pRecvFrame, frame, length);
-	this->m_recvFramelength = length;
+  m_pRecvFrame = new unsigned char[length];
+  memcpy(m_pRecvFrame, frame, length);
+  this->m_recvFramelength = length;
 }
 
 void IFrameData::setSendFrame(const unsigned char* frame, int length)
 {
-	if (frame == NULL || length == 0)
-	{
-		if (m_pSendFrame != NULL)
-		{
-			delete[] m_pSendFrame;
-		}
+  if (frame == NULL || length == 0)
+  {
+    if (m_pSendFrame != NULL)
+    {
+      delete[] m_pSendFrame;
+    }
 
-		m_pSendFrame = NULL;
-		return;
-	}
+    m_pSendFrame = NULL;
+    return;
+  }
 
-	if (m_pSendFrame != NULL)
-	{
-		delete[] m_pSendFrame;
-	}
+  if (m_pSendFrame != NULL)
+  {
+    delete[] m_pSendFrame;
+  }
 
-	m_pSendFrame = new unsigned char[length];
-	memcpy(m_pSendFrame, frame, length);
-	this->m_sendFrameLength = length;
+  m_pSendFrame = new unsigned char[length];
+  memcpy(m_pSendFrame, frame, length);
+  this->m_sendFrameLength = length;
 }
 
 unsigned char* IFrameData::getRecvFrame()
 {
-	return this->m_pRecvFrame;
+  return this->m_pRecvFrame;
 }
 
 unsigned char* IFrameData::getSendFrame()
 {
-	return this->m_pSendFrame;
+  return this->m_pSendFrame;
 }
 
 int IFrameData::getRecvFrameLength()
 {
-	return this->m_recvFramelength;
+  return this->m_recvFramelength;
 }
 
 int IFrameData::getSendFrameLength()
 {
-	return this->m_sendFrameLength;
+  return this->m_sendFrameLength;
 }
 
 void IFrameData::onFrameReceived()
@@ -91,17 +91,17 @@ void IFrameData::onFrameReceived()
 
 bool IFrameData::verifyFrameFormat(const unsigned char* frame, int length)
 {
-	return true;
+  return true;
 }
 
 bool IFrameData::analysisFrame(const unsigned char* frame, int length)
 {
-	return true;
+  return true;
 }
 
 bool IFrameData::verifyFrameNext(const unsigned char* frame, int length)
 {
-	return false;
+  return false;
 }
 
 void IFrameData::print(bool hex)
@@ -115,7 +115,7 @@ std::string IFrameData::getErrorMsg()
 
 std::string IFrameData::getDescription()
 {
-	return this->m_frameDescription;
+  return this->m_frameDescription;
 }
 
 

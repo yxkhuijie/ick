@@ -8,12 +8,12 @@ class IOException : public std::exception
 {
 
 public:
-	
-	IOException();
-	
-	IOException(ReadOnlyInt* data);
+  
+  IOException();
+  
+  IOException(ReadOnlyInt* data);
 
-	~IOException() throw();
+  ~IOException() throw();
 
 
 

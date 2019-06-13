@@ -9,24 +9,24 @@ class ick_api TypeInfo : public IObject
 {
 
 public:
-	
-	TypeInfo();
+  
+  TypeInfo();
 
-	TypeInfo(DataType dataType, AccessMode accessMode);
-	
-	virtual ~TypeInfo();
+  TypeInfo(DataType dataType, AccessMode accessMode);
+  
+  virtual ~TypeInfo();
 
 private:
 
-	DataType m_dataType;
+  DataType m_dataType;
 
-	AccessMode m_accessMode;
+  AccessMode m_accessMode;
 
 public:
 
-	DataType getDataType();
+  DataType getDataType();
 
-	AccessMode getAccessMode();
+  AccessMode getAccessMode();
 
 };
 

@@ -4,18 +4,18 @@
 
 enum AccessMode
 {
-	/*!
-	@brief default
-	*/
-	DEFAULT,
-	/*!
-	@brief read only
-	*/
-	READONLY,
-	/*!
-	@brief read write
-	*/
-	READWRITE
+  /*!
+  @brief default
+  */
+  DEFAULT,
+  /*!
+  @brief read only
+  */
+  READONLY,
+  /*!
+  @brief read write
+  */
+  READWRITE
 };
 
 #endif
