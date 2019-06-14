@@ -1,11 +1,8 @@
 #include "IObject.h"
 
-
-
 IObject::IObject(void)
 {
 }
-
 
 IObject::~IObject(void)
 {
