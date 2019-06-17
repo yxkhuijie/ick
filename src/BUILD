@@ -6,7 +6,17 @@ cc_library(
     "IObject.h",
   ],
   hdrs = [
-    "IObject.cc",
+    "IObject.cpp",
+  ]
+)
+
+cc_test(
+  name = "object_test",
+  srcs = [
+    "ObjectTest.cpp",
+  ],
+  deps = [
+    "@googletest//:gtest_main",
   ]
 )
 
