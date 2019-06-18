@@ -10,10 +10,6 @@
 #   include <sys/time.h>
 #endif
 
-#ifdef __linux__
-typedef long long int64_t;
-#endif
-
 class ick_api TimeConverter
 {
 public:

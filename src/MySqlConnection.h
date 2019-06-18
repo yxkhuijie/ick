@@ -26,7 +26,7 @@ using namespace std;
 class ick_api MySqlConnection : public Connection
 {
 public:
-    MySqlConnection(string host,string username,string pwd, string db, int port = 3306, string unix_socket = "", unsigned int client_flag = 0);
+  MySqlConnection(string host,string username,string pwd, string db, int port = 3306, string unix_socket = "", unsigned int client_flag = 0);
   virtual ~MySqlConnection();
 
 private:
@@ -36,15 +36,15 @@ private:
   string user;
   string pwd;
   string db;
-  int    port;
+  int port;
   string unix_socket;
   unsigned int client_flag;
 
 public:
-    virtual void open();
+  virtual void open();
   virtual void close();
   virtual bool isClosed();
-    virtual void getConnection();
+  virtual void getConnection();
   virtual void releaseConnection(Connection* conn);
   virtual int executeQuery(string& sql, bool print=false);              //  执行成功返回受影响的行数
   virtual RecordSet* getRecordSet();

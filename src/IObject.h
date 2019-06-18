@@ -22,6 +22,7 @@ YYYY/MM/DD   X.Y      <作者或修改者名>    <修改内容>
 #ifndef _IOBJECT_H_
 #define _IOBJECT_H_
 
+#ifdef _WIN32
 #ifdef ICK_EXPORTS
 #    if defined(ICK_STATIC_LIBRARY)
 #        define ick_api  
@@ -34,6 +35,9 @@ YYYY/MM/DD   X.Y      <作者或修改者名>    <修改内容>
 #    else
 #        define ick_api __declspec(dllimport)
 #    endif  
+#endif
+#elif __linux__
+#define ick_api
 #endif
 
 
@@ -73,6 +77,7 @@ YYYY/MM/DD   X.Y      <作者或修改者名>    <修改内容>
 #include <stdio.h>
 #include <iostream>
 #include <string>
+#include <memory>
 
 #if defined(WIN32)
   #pragma warning( disable: 4251 )

@@ -36,15 +36,16 @@ public:
 
 private:
   void make();
-    void initialize();
+  void initialize();
   void verifyInit();
   void startup();
   
 public:
-    //ServicePtr<ExecuteCommand> m_ExecuteCommand;
+  // ServicePtr<ExecuteCommand> m_ExecuteCommand;
 
   string sql;
   RecordSet rs;
+  sql::ResultSet result_set_;
   int ErrCode;
   
   ConnectionPool* m_ConnectionPool;

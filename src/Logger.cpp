@@ -2,6 +2,8 @@
 #include <fstream>
 #ifdef __windows__
 #include <io.h>
+#elif __linux__
+#include <unistd.h>
 #endif
 #include "Converter.h"
 
