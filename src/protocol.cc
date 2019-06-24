@@ -1,5 +1,4 @@
-#include "stdafx.h"
-#include "IProtocol.h"
+#include "src/protocol.h"
 #ifdef __linux__
 #include <string.h>
 #include <stdlib.h>

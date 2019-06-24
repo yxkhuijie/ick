@@ -1,10 +1,10 @@
 #ifndef _ISOCKET_H_
 #define _ISOCKET_H_
 
-#include "IThread.h"
+#include "src/thread.h"
 #include <list>
-#include "IMutex.h"
-#include "UntypedData.h"
+#include "src/mutex.h"
+#include "src/untyped_data.h"
 #include <map>
 
 #if defined(__windows__)

@@ -1,6 +1,6 @@
-#include "ConnectionPool.h"
-#include "ConnectionPoolManager.h"
-#include "Converter.h"
+#include "src/connection_pool.h"
+#include "src/connection_pool_manager.h"
+#include "src/converter.h"
 
 ConnectionPool::ConnectionPool(void)
 {
@@ -16,7 +16,7 @@ ConnectionPool::~ConnectionPool(void)
       if(*it != NULL)
     {
         (*it) -> close();
-      cout<<"DataBase connection close success, conn: " << (unsigned int)(*it) <<endl;
+      cout<<"DataBase connection close success, conn: " <<endl;
       delete (*it);
         it = freeConnections.erase(it);
     }
@@ -39,16 +39,13 @@ void ConnectionPool::make()
     }
     else
     {
-      std::string msg = std::string("DataBase connection initialize success, conn: ") + Converter::convertToString((int)conn);
-      Logger::getInstance()->Info(msg);
-
       conn->open();
       conn->setCharset(this->charset);
       if(!this->isValid(conn)) 
       {
-        msg = std::string("DataBase connection is not valid, conn: ") + Converter::convertToString((int)conn);
+        std::string msg = std::string("DataBase connection is not valid, conn: ");
         Logger::getInstance()->Error(msg);
-          throw std::string("DataBase connection is not valid, conn: ") + Converter::convertToString((int)conn);
+        throw std::string("DataBase connection is not valid, conn: ");
       }
       freeConnections.push_back(conn);
     }

@@ -2,12 +2,12 @@
 #define _ICK_STORM_SUBSCRIBER_H_
 
 //#include "IckSubscriber.h"
-#include "IObject.h"
-#include "ValueInfo.h"
-#include "IntValueInfo.h"
-#include "Subscriber.h"
-#include "ReadWriteInt.h"
-#include "ReadOnlyInt.h"
+#include "src/object.h"
+#include "src/value_info.h"
+#include "src/int_value_info.h"
+#include "src/subscriber.h"
+#include "src/read_write_int.h"
+#include "src/read_only_int.h"
 #include <list>
 
 class IckStormSubscriberManager;

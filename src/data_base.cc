@@ -1,5 +1,5 @@
-﻿#include "IDataBase.h"
-#include "ObjectManager.h"
+﻿#include "src/data_base.h"
+#include "src/object_manager.h"
 
 IDataBase::IDataBase(void)
 {
@@ -53,9 +53,9 @@ int IDataBase::executeQuery(std::string sql, bool print)
 
   int ret = conn->executeQuery(sql);
   RecordSet* res = conn->getRecordSet();
-  sql::ResultSet* result_set = conn->getResultSet();
+  // sql::ResultSet* result_set = conn->getResultSet();
   this->rs = *res;
-  result_set_ = *result_set;
+  // result_set_ = *result_set;
   // cout<<"RecordSet* res: "<<(unsigned int)res<<endl;
   //if(res!=NULL)
   //{

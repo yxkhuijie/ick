@@ -1,13 +1,14 @@
-#include "IckStormServiceSocket.h"
-#include "Converter.h"
-#include "ReadOnlyDouble.h"
-#include "ReadOnlyInt.h"
-#include "ControlObject.h"
-#include "ObjectManager.h"
+#include "src/ick_storm_service_socket.h"
+#include "src/converter.h"
+#include "src/read_only_double.h"
+#include "src/read_only_int.h"
+#include "src/control_object.h"
+#include "src/object_manager.h"
 
 #ifdef __linux__
 #include <string.h>
 #include <arpa/inet.h>
+#include <unistd.h>
 #endif
 
 IckStormServiceSocket::IckStormServiceSocket()

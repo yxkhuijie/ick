@@ -1,9 +1,9 @@
 #ifndef _SERVICE_H_
 #define _SERVICE_H_
 
-#include "ManagedObject.h"
-#include "ServiceParam.h"
-#include "ServiceInfo.h"
+#include "src/managed_object.h"
+#include "src/service_param.h"
+#include "src/service_info.h"
 #include <map>
 #include <vector>
 

@@ -1,7 +1,7 @@
 #ifndef _SUBSCRIBER_H_
 #define _SUBSCRIBER_H_
 
-#include "IObject.h"
+#include "src/object.h"
 
 class UntypedData;
 

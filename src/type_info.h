@@ -1,9 +1,9 @@
 #ifndef _TYPE_INFO_H_
 #define _TYPE_INFO_H_
 
-#include "IObject.h"
-#include "DataType.h"
-#include "AccessMode.h"
+#include "src/object.h"
+#include "src/data_type.h"
+#include "src/access_mode.h"
 
 class ick_api TypeInfo : public IObject
 {

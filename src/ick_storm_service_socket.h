@@ -1,9 +1,9 @@
 #ifndef _ICK_STORM_SERVICE_SOCKET_H_
 #define _ICK_STORM_SERVICE_SOCKET_H_
 
-#include "ISocket.h"
+#include "src/socket.h"
 #include <vector>
-#include "IMutex.h"
+#include "src/mutex.h"
 
 
 class IckStormServiceSocket : public ISocket

@@ -1,7 +1,7 @@
 #ifndef _INT_VALUE_INFO_H_
 #define _INT_VALUE_INFO_H_
 
-#include "ValueInfo.h"
+#include "src/value_info.h"
 
 #ifndef INT_MAX
 #define INT_MAX  2147483647

@@ -13,8 +13,8 @@
 #define _CONNECTION_POOL_MANAGER_H_
 
 #include <map>
-#include "ConnectionPool.h"
-#include "Connection.h"
+#include "src/connection_pool.h"
+#include "src/connection.h"
 
 using namespace std;
 

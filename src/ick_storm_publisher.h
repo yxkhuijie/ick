@@ -2,9 +2,8 @@
 #define _ICK_STORM_PUBLISHER_H_
 
 //#include "IckPublisher.h"
-#include "IckStormSubscriber.h"
-#include "IckStormTopic.h"
-#include "Subscriber.h"
+#include "src/ick_storm_subscriber.h"
+#include "src/subscriber.h"
 #include <map>
 
 class ick_api IckStormPublisher : /*public IckCore::IckPublisher, */public Subscriber

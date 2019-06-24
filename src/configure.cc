@@ -1,7 +1,7 @@
-#include "Configure.h"
+#include "src/configure.h"
 #include <fstream>
 #include <iostream>
-#include "Logger.h"
+#include "src/logger.h"
 #ifdef __linux__
 #include <string.h>
 #endif

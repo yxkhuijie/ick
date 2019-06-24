@@ -1,10 +1,10 @@
 #ifndef _VALUE_INFO_H_
 #define _VALUE_INFO_H_
 
-#include "IObject.h"
-#include "AccessMode.h"
-#include "DataType.h"
-#include "IckStormData.h"
+#include "src/object.h"
+#include "src/access_mode.h"
+#include "src/data_type.h"
+#include "src/ick_storm_data.h"
 
 class ick_api ValueInfo : public IObject
 {

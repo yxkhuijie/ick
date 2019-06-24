@@ -1,6 +1,6 @@
-#include "ReadOnlyDouble.h"
+#include "src/read_only_double.h"
 #include <sstream>
-#include "IMutex.h"
+#include "src/mutex.h"
 #include <math.h>
 
 ReadOnlyDouble::ReadOnlyDouble()

@@ -1,14 +1,14 @@
-#include "XmlParser.h"
+#include "src/xml_parser.h"
 #include "xercesc/parsers/SAXParser.hpp"
 
-#include "ReadWriteInt.h"
-#include "ReadWriteDouble.h"
-#include "ReadWriteString.h"
-#include "ReadOnlyInt.h"
-#include "ReadOnlyDouble.h"
-#include "ReadOnlyString.h"
-#include "ObjectManager.h"
-#include "ControlObject.h"
+#include "src/read_write_int.h"
+#include "src/read_write_double.h"
+#include "src/read_write_string.h"
+#include "src/read_only_int.h"
+#include "src/read_only_double.h"
+#include "src/read_only_string.h"
+#include "src/object_manager.h"
+#include "src/control_object.h"
 
 
 

@@ -1,9 +1,6 @@
 #ifndef _XML_PARSER_H_
 #define _XML_PARSER_H_
 
-
-#include "IObject.h"
-
 #include <xercesc/util/PlatformUtils.hpp>
 #include <xercesc/util/XMLString.hpp>
 #include <xercesc/dom/DOM.hpp>
@@ -26,10 +23,10 @@
 #include <xercesc/dom/DOMText.hpp>  
 #include <xercesc/dom/DOMAttr.hpp>  
 #include <xercesc/parsers/XercesDOMParser.hpp> 
-
 #include <xercesc/util/OutOfMemoryException.hpp>
 
-#include "XmlParseHandler.h"
+#include "src/object.h"
+#include "src/xml_parse_handler.h"
 //
 //#ifdef _DEBUG
 //#pragma comment( lib, "xerces-c_3D.lib" )

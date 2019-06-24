@@ -1,7 +1,7 @@
 #ifndef _CONFIGURE_H_
 #define _CONFIGURE_H_
 
-#include "IObject.h"
+#include "src/object.h"
 #include <map>
 
 class ick_api Configure : public IObject

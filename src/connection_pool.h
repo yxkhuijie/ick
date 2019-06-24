@@ -12,13 +12,13 @@
 #ifndef _CONNECTION_POOL_H_
 #define _CONNECTION_POOL_H_
 
-#include "ControlObject.h"
+#include "src/control_object.h"
 #include <list>
 #include <map>
 #include <iostream>
-#include "Connection.h"
-#include "MySqlConnection.h"
-#include "IMutex.h"
+#include "src/connection.h"
+#include "src/mysql_connection.h"
+#include "src/mutex.h"
 
 using namespace std;
 

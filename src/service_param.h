@@ -1,7 +1,7 @@
 #ifndef _SERVICE_PARAM_H_
 #define _SERVICE_PARAM_H_
 
-#include "IObject.h"
+#include "src/object.h"
 
 enum ServiceParamType
 {

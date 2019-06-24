@@ -1,11 +1,7 @@
-//#include <Ice/Ice.h>
-//#include <Ice/Application.h>
-//#include <IckService.h>
-#include "IckStormTopicManager.h"
-#include "IThread.h"
-#include "IckStormSubscriberSocket.h"
-#include "IckStormServiceSocket.h"
-#include "IckStormDebuggerSocket.h"
+#include "src/thread.h"
+#include "src/ick_storm_subscriber_socket.h"
+#include "src/ick_storm_service_socket.h"
+#include "src/ick_storm_debugger_socket.h"
 
 #ifndef _IAPPLICATION_H_
 #define _IAPPLICATION_H_
@@ -17,8 +13,8 @@ public:
   IApplication(bool isServer = true, bool isLoadIniConfig = true, bool isLoadXmlConfig = true);
   virtual ~IApplication();
 
-  int main(int argc, const char* argv[]);
-  int main(int argc, const wchar_t* argv[]);
+  int main(int argc, char* argv[]);
+  int main(int argc, wchar_t* argv[]);
 private:
 
   bool m_isServer;
@@ -69,7 +65,7 @@ private:
 
 public:
 
-  virtual int run(int, const char*[]);
+  virtual int run(int, char*[]);
   virtual void execute();
 
   void runService(std::string objectName, std::string serviceName, std::string params = "");

@@ -1,9 +1,9 @@
 #ifndef _IDRIVER_H_
 #define _IDRIVER_H_
 
-#include "ControlObject.h"
-#include "IProtocol.h"
-#include "ObjectManager.h"
+#include "src/control_object.h"
+#include "src/protocol.h"
+#include "src/object_manager.h"
 
 class ick_api IDriver : public ControlObject
 {

@@ -1,13 +1,13 @@
 #ifndef _ICK_STORM_MANAGER_
 #define _ICK_STORM_MANAGER_
 
-#include "IObject.h"
-#include "IThread.h"
+#include "src/object.h"
+#include "src/thread.h"
 #include <map>
 #include <list>
-#include "Subscriber.h"
-#include "IckStormSubscriber.h"
-#include "ObjectManager.h"
+#include "src/subscriber.h"
+#include "src/ick_storm_subscriber.h"
+#include "src/object_manager.h"
 
 class IckStormSubscriberSocket;
 class IckStormServiceSocket;

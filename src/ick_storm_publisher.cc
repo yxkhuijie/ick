@@ -1,6 +1,6 @@
-#include "IckStormPublisher.h"
-#include "ObjectManager.h"
-#include "ReadOnlyDouble.h"
+#include "src/ick_storm_publisher.h"
+#include "src/object_manager.h"
+#include "src/read_only_double.h"
 
 
 IckStormPublisher::IckStormPublisher()

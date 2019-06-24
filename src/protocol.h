@@ -1,7 +1,7 @@
 #ifndef _IPROTOCOL_H_
 #define _IPROTOCOL_H_
 
-#include "ControlObject.h"
+#include "src/control_object.h"
 #include <map>
 #include <list>
 #include <vector>

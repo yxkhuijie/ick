@@ -1,15 +1,15 @@
-#include "IApplication.h"
-#include "IckServiceImpl.h"
+#include "src/application.h"
+#include "src/ick_service_impl.h"
 //#include <IceStorm/IceStorm.h>
-#include "IckStormPublisher.h"
-#include "IckStormSubscriberManager.h"
-#include "Configure.h"
-#include "XmlParser.h"
-#include "Logger.h"
-#include "ConnectionPoolManager.h"
-#include "IDataBase.h"
-#include "IckStormManager.h"
-#include "Converter.h"
+#include "src/ick_storm_publisher.h"
+#include "src/ick_storm_subscriber_manager.h"
+#include "src/configure.h"
+#include "src/xml_parser.h"
+#include "src/logger.h"
+#include "src/connection_pool_manager.h"
+#include "src/data_base.h"
+#include "src/ick_storm_manager.h"
+#include "src/converter.h"
 
 IApplication::IApplication(bool isServer, bool isLoadIniConfig, bool isLoadXmlConfig)
 {
@@ -43,12 +43,12 @@ IApplication::~IApplication()
   }*/
 }
 
-int IApplication::main(int argc, const char* argv[])
+int IApplication::main(int argc, char* argv[])
 {
   return this->run(argc, argv);
 }
 
-int IApplication::main(int argc, const wchar_t* argv[])
+int IApplication::main(int argc, wchar_t* argv[])
 {
 #ifdef __windows__
   wchar_t szFilePath[MAX_PATH] = { 0 };
@@ -59,7 +59,7 @@ int IApplication::main(int argc, const wchar_t* argv[])
   return this->run(argc, NULL);
 }
 
-int IApplication::run(int argc, const char* argv[])
+int IApplication::run(int argc, char* argv[])
 {
   int status = 0;
   /*Ice::CommunicatorPtr ic = NULL;*/

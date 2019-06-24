@@ -1,12 +1,12 @@
 #ifndef _UNTYPED_DATA_H_
 #define _UNTYPED_DATA_H_
 
-#include "CmdTarget.h"
-#include "ValueInfo.h"
-#include "TypeInfo.h"
+#include "src/cmd_target.h"
+#include "src/value_info.h"
+#include "src/type_info.h"
 #include <list>
-#include "Subscriber.h"
-#include "IMutex.h"
+#include "src/subscriber.h"
+#include "src/mutex.h"
 
 #ifndef CHANNEL_MAX_LENGTH
 #define CHANNEL_MAX_LENGTH 255

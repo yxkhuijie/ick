@@ -1,9 +1,9 @@
 #ifndef _CONTROL_OBJECT_H_
 #define _CONTROL_OBJECT_H_
 
-#include "CmdTarget.h"
-#include "TimeConverter.h"
-#include "Service.h"
+#include "src/cmd_target.h"
+#include "src/time_converter.h"
+#include "src/service.h"
 #include <map>
 
 

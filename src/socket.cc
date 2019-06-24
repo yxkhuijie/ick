@@ -1,11 +1,12 @@
-#include "ISocket.h"
-#include "TimeConverter.h"
-#include "Converter.h"
-#include "ObjectManager.h"
+#include "src/socket.h"
+#include "src/time_converter.h"
+#include "src/converter.h"
+#include "src/object_manager.h"
 #ifdef __linux__
 #include <string.h>
 #include <arpa/inet.h>
 #include <netdb.h>
+#include <unistd.h>
 #endif
 
 ISocket::ISocket(SocketType type)

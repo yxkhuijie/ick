@@ -1,7 +1,7 @@
 #ifndef _READ_ONLY_DOUBLE_H_
 #define _READ_ONLY_DOUBLE_H_
 
-#include "UntypedData.h"
+#include "src/untyped_data.h"
 
 class ick_api ReadOnlyDouble : public UntypedData
 {

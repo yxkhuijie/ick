@@ -1,5 +1,5 @@
-#include "ReadOnlyInt.h"
-#include "IMutex.h"
+#include "src/read_only_int.h"
+#include "src/mutex.h"
 #include <sstream>
 
 ReadOnlyInt::ReadOnlyInt(int value)

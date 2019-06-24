@@ -4,9 +4,9 @@
 #include <map>
 #include <string>
 
-#include "UntypedData.h"
-#include "ControlObject.h"
-#include "IThread.h"
+#include "src/untyped_data.h"
+#include "src/control_object.h"
+#include "src/thread.h"
 
 struct IckStormNodeInfo
 {

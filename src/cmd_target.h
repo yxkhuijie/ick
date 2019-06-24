@@ -1,7 +1,7 @@
 #ifndef _CMD_TARGET_H_
 #define _CMD_TARGET_H_
 
-#include "ManagedObject.h"
+#include "src/managed_object.h"
 #include <vector>
 #include <functional>
 

@@ -15,10 +15,10 @@
 #include <list>
 #include <map>
 #include <iostream>
-#include "ControlObject.h"
-#include "UntypedData.h"
-#include "Service.h"
-#include "ConnectionPool.h"
+#include "src/control_object.h"
+#include "src/untyped_data.h"
+#include "src/service.h"
+#include "src/connection_pool.h"
 
 using namespace std;
 
@@ -45,7 +45,7 @@ public:
 
   string sql;
   RecordSet rs;
-  sql::ResultSet result_set_;
+  // sql::ResultSet result_set_;
   int ErrCode;
   
   ConnectionPool* m_ConnectionPool;

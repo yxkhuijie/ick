@@ -1,9 +1,10 @@
-#include "ControlObject.h"
-#include "IMutex.h"
-#include "Logger.h"
-#include "Converter.h"
+#include "src/control_object.h"
+#include "src/mutex.h"
+#include "src/logger.h"
+#include "src/converter.h"
 #ifdef __linux__
 #include <stdlib.h>
+#include <unistd.h>
 #endif
 // std::map<const std::string, std::vector<ServiceInfo> > ControlObject::m_serviceMap;
 

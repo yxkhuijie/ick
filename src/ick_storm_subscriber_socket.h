@@ -1,10 +1,10 @@
 #ifndef _ICK_STORM_SUBSCRIBER_SOCKET_H_
 #define _ICK_STORM_SUBSCRIBER_SOCKET_H_
 
-#include "ISocket.h"
+#include "src/socket.h"
 #include <vector>
-#include "IckStormSubscriberManager.h"
-#include "IMutex.h"
+#include "src/ick_storm_subscriber_manager.h"
+#include "src/mutex.h"
 
 class IckStormSubscriberSocket : public ISocket, public Subscriber
 {

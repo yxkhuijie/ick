@@ -1,5 +1,5 @@
-#include "CmdTarget.h"
-#include "Converter.h"
+#include "src/cmd_target.h"
+#include "src/converter.h"
 #ifdef __linux__
 #include <stdlib.h>
 #endif

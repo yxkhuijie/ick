@@ -1,6 +1,6 @@
-#include "IckServiceImpl.h"
-#include "ControlObject.h"
-#include "ObjectManager.h"
+#include "src/ick_service_impl.h"
+#include "src/control_object.h"
+#include "src/object_manager.h"
 
 IckServiceImpl::IckServiceImpl()
 {

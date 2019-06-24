@@ -1,4 +1,4 @@
-#include "TypeInfo.h"
+#include "src/type_info.h"
 
 
 TypeInfo::TypeInfo()

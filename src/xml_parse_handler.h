@@ -2,7 +2,7 @@
 #define _XML_PARSE_HANDLER_H_
 
 
-#include "IObject.h"
+#include "src/object.h"
 
 #include <xercesc/sax2/DefaultHandler.hpp>
 #include <xercesc/sax2/Attributes.hpp>

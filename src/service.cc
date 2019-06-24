@@ -1,5 +1,5 @@
-#include "Service.h"
-#include "ControlObject.h"
+#include "src/service.h"
+#include "src/control_object.h"
 
 
 Service::Service()

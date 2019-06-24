@@ -1,8 +1,8 @@
 #ifndef _READ_ONLY_INT_H_
 #define _READ_ONLY_INT_H_
 
-#include "UntypedData.h"
-#include "IntValueInfo.h"
+#include "src/untyped_data.h"
+#include "src/int_value_info.h"
 
 class ick_api ReadOnlyInt : public UntypedData
 {

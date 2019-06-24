@@ -1,8 +1,8 @@
-#include "IckStormSubscriber.h"
-#include "TimeConverter.h"
-#include "Converter.h"
-#include "IckStormSubscriberManager.h"
-#include "ReadOnlyDouble.h"
+#include "src/ick_storm_subscriber.h"
+#include "src/time_converter.h"
+#include "src/converter.h"
+#include "src/ick_storm_subscriber_manager.h"
+#include "src/read_only_double.h"
 
 IckStormSubscriber::IckStormSubscriber()
 {

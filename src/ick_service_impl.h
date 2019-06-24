@@ -2,7 +2,7 @@
 #define _ICK_SERVICE_IMPL_H_
 
 
-#include "IObject.h"
+#include "src/object.h"
 //#include "IckService.h"
 
 class ick_api IckServiceImpl/* : public IckCore::IckService*/

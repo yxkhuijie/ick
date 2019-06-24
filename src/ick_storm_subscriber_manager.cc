@@ -1,6 +1,6 @@
 
-#include "IckStormSubscriberManager.h"
-#include "IckStormSubscriberSocket.h"
+#include "src/ick_storm_subscriber_manager.h"
+#include "src/ick_storm_subscriber_socket.h"
 
 IckStormSubscriberManager* IckStormSubscriberManager::m_instance = NULL;
 

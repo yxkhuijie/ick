@@ -1,8 +1,8 @@
 #ifndef _SERVICE_INFO_H_
 #define _SERVICE_INFO_H_
 
-#include "IObject.h"
-#include "ServiceParam.h"
+#include "src/object.h"
+#include "src/service_param.h"
 #include <map>
 
 class ick_api ServiceInfo : public IObject

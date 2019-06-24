@@ -1,7 +1,7 @@
 #ifndef _ICK_STORM_DEBUGGER_SOCKET_H_
 #define _ICK_STORM_DEBUGGER_SOCKET_H_
 
-#include "ISocket.h"
+#include "src/socket.h"
 
 class IckStormDebuggerSocket : public ISocket
 {

@@ -1,9 +1,9 @@
 #ifndef _MANAGED_OBJECT_H_
 #define _MANAGED_OBJECT_H_
 
-#include "IObject.h"
+#include "src/object.h"
 #include <string>
-#include "Logger.h"
+#include "src/logger.h"
 
 #define CLASS_JOINT(class_name) (&class_name::m_list##class_name)
 

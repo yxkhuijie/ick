@@ -1,15 +1,16 @@
-#include "IckStormSubscriberSocket.h"
-#include "Converter.h"
-#include "ReadOnlyDouble.h"
-#include "ReadOnlyInt.h"
-#include "ReadWriteDouble.h"
-#include "ReadWriteInt.h"
-#include "ReadOnlyString.h"
-#include "ReadWriteString.h"
+#include "src/ick_storm_subscriber_socket.h"
+#include "src/converter.h"
+#include "src/read_only_double.h"
+#include "src/read_only_int.h"
+#include "src/read_write_double.h"
+#include "src/read_write_int.h"
+#include "src/read_only_string.h"
+#include "src/read_write_string.h"
 #ifdef __linux__
 #include <stdlib.h>
 #include <string.h>
 #include <arpa/inet.h>
+#include <unistd.h>
 #endif
 
 IckStormSubscriberSocket::IckStormSubscriberSocket()

@@ -1,5 +1,5 @@
-#include "IckStormDebuggerSocket.h"
-#include "Converter.h"
+#include "src/ick_storm_debugger_socket.h"
+#include "src/converter.h"
 #ifdef __linux__
 #include <string.h>
 #include <arpa/inet.h>
