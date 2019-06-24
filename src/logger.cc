@@ -1,11 +1,11 @@
-#include "Logger.h"
+#include "src/logger.h"
 #include <fstream>
 #ifdef __windows__
 #include <io.h>
 #elif __linux__
 #include <unistd.h>
 #endif
-#include "Converter.h"
+#include "src/converter.h"
 
 
 Logger* Logger::m_instance = new Logger();

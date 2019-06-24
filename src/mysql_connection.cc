@@ -1,6 +1,6 @@
 #include "src/mysql_connection.h"
-#include "Logger.h"
-#include "Converter.h"
+#include "src/logger.h"
+#include "src/converter.h"
 
 MySqlConnection::MySqlConnection(
     std::string host,  // default: tcp://127.0.0.1:3306

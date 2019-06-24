@@ -8,7 +8,7 @@
 #endif
 
 
-#include "Connection.h"
+#include "src/connection.h"
 #include <string>
 #include <iostream>
 

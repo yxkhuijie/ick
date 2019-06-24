@@ -1,7 +1,7 @@
 #ifndef _TIME_CONVERTER_H_
 #define _TIME_CONVERTER_H_
 
-#include "IObject.h"
+#include "src/object.h"
 
 #ifdef __windows__ 
 #   include <time.h>

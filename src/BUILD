@@ -3,20 +3,20 @@ package(default_visibility = ['//visibility:public'])
 cc_library(
   name = "object",
   srcs = [
-    "IObject.cpp",
+    "object.cc",
   ],
   hdrs = [
-    "IObject.h",
+    "object.h",
   ]
 )
 
 cc_library(
   name = "logger",
   srcs = [
-    "Logger.cpp",
+    "logger.cc",
   ],
   hdrs = [
-    "Logger.h",
+    "logger.h",
   ],
   deps = [
     ":converter",
@@ -30,10 +30,10 @@ cc_library(
 cc_library(
   name = "mutex",
   srcs = [
-    "IMutex.cpp",
+    "mutex.cc",
   ],
   hdrs = [
-    "IMutex.h",
+    "mutex.h",
   ],
   deps = [
     ":object",
@@ -43,10 +43,10 @@ cc_library(
 cc_library(
   name = "time_converter",
   srcs = [
-    "TimeConverter.cpp",
+    "time_converter.cc",
   ],
   hdrs = [
-    "TimeConverter.h",
+    "time_converter.h",
   ],
   deps = [
     ":object",
@@ -56,10 +56,10 @@ cc_library(
 cc_library(
   name = "converter",
   srcs = [
-    "Converter.cpp",
+    "converter.cc",
   ],
   hdrs = [
-    "Converter.h",
+    "converter.h",
   ],
   deps = [
     ":object",
@@ -69,10 +69,10 @@ cc_library(
 cc_library(
   name = "thread",
   srcs = [
-    "IThread.cpp",
+    "thread.cc",
   ],
   hdrs = [
-    "IThread.h",
+    "thread.h",
   ],
   deps = [
     ":object",
@@ -82,7 +82,7 @@ cc_library(
 cc_test(
   name = "object_test",
   srcs = [
-    "ObjectTest.cpp",
+    "object_test.cc",
   ],
   deps = [
     "@googletest//:gtest_main",
@@ -113,10 +113,10 @@ cc_library(
 cc_library(
   name = "connection",
   srcs = [
-    "Connection.cpp",
+    "connection.cc",
   ],
   hdrs = [
-    "Connection.h",
+    "connection.h",
   ],
   deps = [
     ":object",

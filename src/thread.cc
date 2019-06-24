@@ -1,4 +1,4 @@
-#include "IThread.h"
+#include "src/thread.h"
 #include <functional>
 
 IThread::IThread()

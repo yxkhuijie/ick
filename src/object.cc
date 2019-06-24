@@ -1,4 +1,4 @@
-#include "src/IObject.h"
+#include "src/object.h"
 
 IObject::IObject(void)
 {

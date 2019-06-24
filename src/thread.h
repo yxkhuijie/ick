@@ -1,7 +1,7 @@
 #ifndef _ITHREAD_H_
 #define _ITHREAD_H_
 
-#include "IObject.h"
+#include "src/object.h"
 
 #ifdef _WINDOWS
 #include <Windows.h>

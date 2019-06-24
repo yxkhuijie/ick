@@ -1,10 +1,10 @@
 #ifndef _LOGGER_H_
 #define _LOGGER_H_
 
-#include "IThread.h"
-#include "IMutex.h"
+#include "src/thread.h"
+#include "src/mutex.h"
 #include <list>
-#include "TimeConverter.h"
+#include "src/time_converter.h"
 
 #if (defined(__linux__)&&!defined(MAX_PATH))
 #define MAX_PATH 260

@@ -1,7 +1,7 @@
 #ifndef _IMUTEX_H_
 #define _IMUTEX_H_
 
-#include "IObject.h"
+#include "src/object.h"
 //#include <Ice/Ice.h>
 
 #ifdef WIN32

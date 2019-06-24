@@ -12,7 +12,7 @@
 #ifndef _CONNECTION_H_
 #define _CONNECTION_H_
 
-#include "IObject.h"
+#include "src/object.h"
 
 #include <string>
 #include <list>
