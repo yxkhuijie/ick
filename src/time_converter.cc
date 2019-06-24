@@ -17,7 +17,15 @@ std::string TimeConverter::getCurrentTimeAsStr()
   sprintf(tmp, "%4d/%02d/%02d %02d:%02d:%02d.%03d", sys.wYear, sys.wMonth, sys.wDay, sys.wHour, sys.wMinute, sys.wSecond, sys.wMilliseconds);
   return std::string(tmp);
 #elif __linux__
-  return std::string("");
+  struct timeval tv;
+  gettimeofday(&tv, NULL);
+  time_t tick = (time_t)(tv.tv_sec);
+  struct tm* p = gmtime(&tick);
+  char tmp[64] = { '\0' };
+  sprintf(tmp, "%4d/%02d/%02d %02d:%02d:%02d.%03d",
+      p->tm_year + 1900, p->tm_mon, p->tm_mday,
+      p->tm_hour, p->tm_min, p->tm_sec, tv.tv_usec / 1000);
+  return std::string(tmp);
 #endif
 }
 
@@ -60,7 +68,7 @@ std::string TimeConverter::getCurrentTimeAsStr(const std::string& format, int da
 long TimeConverter::getCurrentTimeAsSeconds()
 {
 #ifdef __windows__
-  time_t tt = time(NULL);//这句返回的只是一个时间cuo
+  time_t tt = time(NULL);//脮芒戮盲路碌禄脴碌脛脰禄脢脟脪禄赂枚脢卤录盲cuo
   
   /*
   tm* t = localtime(&tt);
@@ -185,7 +193,7 @@ long long TimeConverter::getCurrentTimeAsMilliseconds()
 long long TimeConverter::getCurrentTimeAsMicroseconds()
 {
 #ifdef __windows__
-  // 从1601年1月1日0:0:0:000到1970年1月1日0:0:0:000的时间(单位100ns)
+  // 麓脫1601脛锚1脭脗1脠脮0:0:0:000碌陆1970脛锚1脭脗1脠脮0:0:0:000碌脛脢卤录盲(碌楼脦禄100ns)
 #define EPOCHFILETIME   (116444736000000000UL)
   FILETIME ft;
   LARGE_INTEGER li;
@@ -193,7 +201,7 @@ long long TimeConverter::getCurrentTimeAsMicroseconds()
   GetSystemTimeAsFileTime(&ft);
   li.LowPart = ft.dwLowDateTime;
   li.HighPart = ft.dwHighDateTime;
-  // 从1970年1月1日0:0:0:000到现在的微秒数(UTC时间)
+  // 麓脫1970脛锚1脭脗1脠脮0:0:0:000碌陆脧脰脭脷碌脛脦垄脙毛脢媒(UTC脢卤录盲)
   tt = (li.QuadPart - EPOCHFILETIME) / 10;
   return tt;
 #elif __linux__

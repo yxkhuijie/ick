@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<IO>
+  <DigitInput>
+  	<Switch1 dataType="I" accessMode="R" Bd="1" Ch="1" />
+  </DigitInput>
+</IO>

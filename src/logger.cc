@@ -7,7 +7,6 @@
 #endif
 #include "src/converter.h"
 
-
 Logger* Logger::m_instance = new Logger();
 
 Logger::Logger()
@@ -67,10 +66,18 @@ void Logger::startup()
 
 void Logger::setFilePath(std::string path)
 {
+#ifdef __windows__
   if (path.at(path.size() - 1) != '\\')
   {
     path += std::string("\\");
   }
+#elif __linux__
+  if (path.at(path.size() - 1) != '/')
+  {
+    path += std::string("/");
+  }
+#endif
+
 #ifdef __windows__
   if (::_access(path.c_str(), 0) == -1)
 #elif __linux__
@@ -245,6 +252,7 @@ void Logger::execute()
 
     std::string fileName = this->m_filePath + "log" + TimeConverter::getCurrentTimeAsStr(std::string("yyyyMMdd"))+
       (m_fileIndex == 0 ? "" : ("-" + Converter::convertToString(this->m_fileIndex))) + ".txt";
+    printf("%s", fileName);
     myfile.open(fileName.c_str(), std::ios::app);
     std::list<LoggerMessage>::iterator it;
     

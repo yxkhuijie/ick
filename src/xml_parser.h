@@ -60,7 +60,6 @@ private:
 public:
   int loadConfigFile();
   void setConfigPath(const std::string& configPath);
-  
 };
 
 

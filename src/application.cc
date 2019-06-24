@@ -13,13 +13,19 @@
 
 #include "gflags/gflags.h"
 
+DEFINE_string(config_path, "", "config file path: io_config.xml and control_object.xml");
+DEFINE_bool(enable_grpc, true, "enable grpc or not");
+DEFINE_bool(enable_http, true, "enable http or not");
+DEFINE_bool(enable_socket, true, "enable socket or not");
+DEFINE_bool(server_flag, true, "this program is server or client");
+
 IApplication::IApplication(bool isServer, bool isLoadIniConfig, bool isLoadXmlConfig)
 {
   IDataBase database;
   this->m_isServer = isServer;
   /*this->m_communicator = NULL;
   this->m_communicator = Ice::initialize();*/
-  this->m_isNetworkLan = true; //  ÊÇ¾ÖÓòÍø
+  this->m_isNetworkLan = true; //  ÃŠÃ‡Â¾Ã–Ã“Ã²ÃÃ¸
   this->m_isLoadIniConfig = isLoadIniConfig;
   this->m_isLoadXmlConfig = isLoadXmlConfig;
   this->m_strConsoleChartset = "65001";
@@ -65,20 +71,16 @@ int IApplication::run(int argc, char* argv[])
 {
   int status = 0;
   /*Ice::CommunicatorPtr ic = NULL;*/
+  google::ParseCommandLineFlags(&argc, &argv, false);
 
   try 
   {
-    // Æô¶¯ÈÕÖ¾
     Logger::getInstance()->startup();
-    // Æô¶¯Êı¾İ¿âÁ¬½Ó³Ø¹ÜÀíÆ÷
     ConnectionPoolManager::getInstance()->startup();
 
     wchar_t szFilePath[MAX_PATH] = { 0 };
     char filePath[MAX_PATH] = { 0 };
     std::string strFilePath = "";
-    // Èç¹ûÊÇ·şÎñÆ÷£¬Ôò¼ÓÔØÅäÖÃÎÄ¼ş£¬²¢Æô¶¯Ãû³Æ¿Õ¼ä
-    if (argc <= 1)
-    {
 #ifdef __windows__
 #ifdef _UNICODE
       GetModuleFileName(NULL, szFilePath, sizeof(szFilePath));
@@ -94,9 +96,35 @@ int IApplication::run(int argc, char* argv[])
       MultiByteToWideChar(CP_ACP, 0, strFilePath.c_str(), -1, szFilePath, len);
 #endif
 #elif __linux__
-      strFilePath = "/tmp/";
+      if (FLAGS_config_path.empty() || FLAGS_config_path[0] != '/') {
+        char current_absolute_path[MAX_PATH];
+        //è·å–å½“å‰ç¨‹åºç»å¯¹è·¯å¾„
+        int cnt = readlink("/proc/self/exe", current_absolute_path, MAX_PATH);
+        if (cnt < 0 || cnt >= MAX_PATH)
+        {
+          printf("***Error***\n");
+          exit(-1);
+        }
+        //è·å–å½“å‰ç›®å½•ç»å¯¹è·¯å¾„ï¼Œå³å»æ‰ç¨‹åºå
+        for (int i = cnt; i >=0; --i)
+        {
+          if (current_absolute_path[i] == '/')
+          {
+            current_absolute_path[i+1] = '\0';
+            break;
+          }
+        }
+        Logger::getInstance()->Info("current absolute path: " + std::string(current_absolute_path));
+        strFilePath = current_absolute_path;
+      } else {
+        if (FLAGS_config_path[0] == '/') {
+          strFilePath = FLAGS_config_path;
+          if (FLAGS_config_path.back() != '/') {
+            strFilePath += "/";
+          }
+        }
+      }
 #endif
-    }
 
     Configure conf;
     if (m_isLoadIniConfig)
@@ -104,8 +132,7 @@ int IApplication::run(int argc, char* argv[])
       this->m_strConfigFilePath = strFilePath;
       conf.loadConfigFile(this->m_strConfigFilePath + "icklib.conf");
     }
-
-
+#ifdef __windows__
     std::string strConsoleChartset = conf.getValueByKey("ICK_SERVER", "IckConsoleCharset");
     if (strConsoleChartset.compare("") != 0)
     {
@@ -119,21 +146,14 @@ int IApplication::run(int argc, char* argv[])
       std::string charset = std::string("chcp 65001");
       system(charset.c_str());
     }
+#endif
 #ifdef __windows__
     HANDLE handle_out = GetStdHandle(STD_OUTPUT_HANDLE);;
     COORD size = {120, 9999};
     SetConsoleScreenBufferSize(handle_out, size);
-    SMALL_RECT rc = {0, 0, 120-1, 30};     // ÖØÖÃ´°¿ÚÎ»ÖÃºÍ´óĞ¡  
-    SetConsoleWindowInfo(handle_out, 1, &rc);  
-    //CloseHandle(handle_out);    //¹Ø±Õ±ê×¼Êä³öÉè±¸¾ä±ú  
+    SMALL_RECT rc = {0, 0, 120-1, 30};
+    SetConsoleWindowInfo(handle_out, 1, &rc);
 #endif
-    
-
-
-    //³õÊ¹»¯Á¬½Ó£¬args¿ÉÒÔ´«Ò»Ğ©³õÊ¹»¯²ÎÊı£¬ÈçÁ¬½Ó³¬Ê±Ê±¼ä£¬³õÊ¹»¯¿Í»§Á¬½Ó³ØµÄÊıÁ¿µÈ  
-    
-    /*ic = this->m_communicator;*/
-
     if (this->m_isServer)
     {
       std::string strTopicManagerEndpoint = conf.getValueByKey("ICK_SERVER", "IckTopicManagerEndPoint");
@@ -184,22 +204,22 @@ int IApplication::run(int argc, char* argv[])
         }
       }
 
-      // »°Ìâ¹ÜÀíÊÊÅäÆ÷
-      // ´´½¨ÃûÎªSimplePrinterAdapterµÄÊÊÅäÆ÷£¬²¢ÒªÇóÊÊÅäÆ÷Ê¹ÓÃÈ±Ê¡µÄĞ­Òé(TCP/IPÕìÌı¶Ë¿ÚÎª10000µÄÇëÇó) 
+      // Â»Â°ÃŒÃ¢Â¹ÃœÃ€Ã­ÃŠÃŠÃ…Ã¤Ã†Ã·
+      // Â´Â´Â½Â¨ÃƒÃ»ÃÂªSimplePrinterAdapterÂµÃ„ÃŠÃŠÃ…Ã¤Ã†Ã·Â£Â¬Â²Â¢Ã’ÂªÃ‡Ã³ÃŠÃŠÃ…Ã¤Ã†Ã·ÃŠÂ¹Ã“ÃƒÃˆÂ±ÃŠÂ¡ÂµÃ„ÃÂ­Ã’Ã©(TCP/IPÃ•Ã¬ÃŒÃ½Â¶Ã‹Â¿ÃšÃÂª10000ÂµÃ„Ã‡Ã«Ã‡Ã³) 
       // Ice::ObjectAdapterPtr topicManagerAdapter = 
         // ic->createObjectAdapterWithEndpoints("IceStorm/TopicManager", "default -p 20002");
       //Ice::ObjectAdapterPtr topicManagerAdapter = 
       //  ic->createObjectAdapterWithEndpoints("IceStorm/TopicManager", strTopicManagerEndpoint);
-      //// ÊµÀı»¯Ò»¸öPrinterI¶ÔÏó£¬ÎªPrinter½Ó¿Ú´´½¨Ò»¸ö·şÎñ¶ÔÏó  
+      //// ÃŠÂµÃ€Ã½Â»Â¯Ã’Â»Â¸Ã¶PrinterIÂ¶Ã”ÃÃ³Â£Â¬ÃÂªPrinterÂ½Ã“Â¿ÃšÂ´Â´Â½Â¨Ã’Â»Â¸Ã¶Â·Ã¾ÃÃ±Â¶Ã”ÃÃ³  
       //// IceStorm::TopicPrx* topic = IceStorm::Topic();
 
-      //// ½«·şÎñµ¥ÔªÔö¼Óµ½ÊÊÅäÆ÷ÖĞ£¬²¢¸ø·şÎñ¶ÔÏóÖ¸¶¨Ãû³ÆÎªSimplePrinter£¬¸ÃÃû³ÆÓÃÓÚÎ¨Ò»È·¶¨Ò»¸ö·şÎñµ¥Ôª  
+      //// Â½Â«Â·Ã¾ÃÃ±ÂµÂ¥Ã”ÂªÃ”Ã¶Â¼Ã“ÂµÂ½ÃŠÃŠÃ…Ã¤Ã†Ã·Ã–ÃÂ£Â¬Â²Â¢Â¸Ã¸Â·Ã¾ÃÃ±Â¶Ã”ÃÃ³Ã–Â¸Â¶Â¨ÃƒÃ»Â³Ã†ÃÂªSimplePrinterÂ£Â¬Â¸ÃƒÃƒÃ»Â³Ã†Ã“ÃƒÃ“ÃšÃÂ¨Ã’Â»ÃˆÂ·Â¶Â¨Ã’Â»Â¸Ã¶Â·Ã¾ÃÃ±ÂµÂ¥Ã”Âª  
       ////adapter1->add(object1, ic->stringToIdentity("IceStorm"));
       //IckStormTopicManager* topicManager = new IckStormTopicManager(topicManagerAdapter, strPublisherEndpoint);
       //IceStorm::TopicPrx topicPrx = topicManager->create("IO");
       //topicManagerAdapter->add(topicManager,Ice::stringToIdentity("TopicManager"));
 
-      //// ÏûÏ¢·¢²¼ÊÊÅäÆ÷
+      //// ÃÃ»ÃÂ¢Â·Â¢Â²Â¼ÃŠÃŠÃ…Ã¤Ã†Ã·
       //// Ice::ObjectAdapterPtr publishAdapter = ic->createObjectAdapterWithEndpoints("IceStorm/Publisher", "default -p 20003");
       //Ice::ObjectAdapterPtr publishAdapter = ic->createObjectAdapterWithEndpoints("IceStorm/Publisher", strPublisherEndpoint);
       //IckCore::IckPublisherPtr publisherPtr = new IckStormPublisher(topicPrx);
@@ -208,19 +228,19 @@ int IApplication::run(int argc, char* argv[])
       //Ice::ObjectPrx publishPrx = publishAdapter->add(publisherPtr, Ice::stringToIdentity("Publisher"));
       //IckCore::IckPublisherPrx prx = IckCore::IckPublisherPrx::checkedCast(publishPrx);
       //publishAdapter->activate();
-      //// ¼¤»îÊÊÅäÆ÷£¬ÕâÑù×öµÄºÃ´¦ÊÇ¿ÉÒÔµÈµ½ËùÓĞ×ÊÔ´¾ÍÎ»ºóÔÙ´¥·¢  
+      //// Â¼Â¤Â»Ã®ÃŠÃŠÃ…Ã¤Ã†Ã·Â£Â¬Ã•Ã¢Ã‘Ã¹Ã—Ã¶ÂµÃ„ÂºÃƒÂ´Â¦ÃŠÃ‡Â¿Ã‰Ã’Ã”ÂµÃˆÂµÂ½Ã‹Ã¹Ã“ÃÃ—ÃŠÃ”Â´Â¾ÃÃÂ»ÂºÃ³Ã”Ã™Â´Â¥Â·Â¢  
       //topicManagerAdapter->activate();
 
 
       ///**************************************************************************************************************/
-      //// ¿Í»§¶ËÖ»ĞèÒª´Ë²¿·Ö
-      //// ³õÊ¼»¯¶©ÔÄÕßÊÊÅäÆ÷
+      //// Â¿ÃÂ»Â§Â¶Ã‹Ã–Â»ÃÃ¨Ã’ÂªÂ´Ã‹Â²Â¿Â·Ã–
+      //// Â³ÃµÃŠÂ¼Â»Â¯Â¶Â©Ã”Ã„Ã•ÃŸÃŠÃŠÃ…Ã¤Ã†Ã·
       //// Ice::ObjectAdapterPtr subscriberAdapter = ic->createObjectAdapterWithEndpoints("SubscriberAdapter", "tcp");
       //Ice::ObjectAdapterPtr subscriberAdapter = ic->createObjectAdapterWithEndpoints("SubscriberAdapter", strSubscriberEndpoint);
       //IckStormSubscriberManager::getInstance()->setSubscriberAdapter(subscriberAdapter);
       //
       //subscriberAdapter->activate();
-      //// ³õÊ¼»¯TopicManager´úÀí
+      //// Â³ÃµÃŠÂ¼Â»Â¯TopicManagerÂ´ÃºÃ€Ã­
       //// Ice::ObjectPrx obj = ic->stringToProxy("TopicManager:tcp -h localhost -p 20002");
       //Ice::ObjectPrx obj = ic->stringToProxy(std::string("TopicManager:") + strTopicManagerEndpoint);
       //IceStorm::TopicManagerPrx topicManagerPrx = IceStorm::TopicManagerPrx::checkedCast(obj);
@@ -277,7 +297,7 @@ int IApplication::run(int argc, char* argv[])
     if (this->m_isLoadXmlConfig)
     {
       XmlParser xmlParser;
-      xmlParser.setConfigPath(strFilePath + "config\\");
+      xmlParser.setConfigPath(strFilePath);
       xmlParser.loadConfigFile();
 
       ObjectManager::getInstance()->startNamespace();
@@ -285,7 +305,7 @@ int IApplication::run(int argc, char* argv[])
 
     // this->start();
   }
-  //µÚÒ»¸öCATCH²¶×½ËùÓĞICEÔËĞĞÊ±Å×³öµÄÒì³£¡£ËüµÄÒâÍ¼ÊÇ£¬ÔËĞĞÊ±·¢ÉúÒì³£Ê±£¬Õ»²»»á±ÀÀ£·µ»Øµ½mainÖĞ´òÓ¡´íÎóĞÅÏ¢¡£
+  //ÂµÃšÃ’Â»Â¸Ã¶CATCHÂ²Â¶Ã—Â½Ã‹Ã¹Ã“ÃICEÃ”Ã‹ÃÃÃŠÂ±Ã…Ã—Â³Ã¶ÂµÃ„Ã’Ã¬Â³Â£Â¡Â£Ã‹Ã¼ÂµÃ„Ã’Ã¢ÃÂ¼ÃŠÃ‡Â£Â¬Ã”Ã‹ÃÃÃŠÂ±Â·Â¢Ã‰ÃºÃ’Ã¬Â³Â£ÃŠÂ±Â£Â¬Ã•Â»Â²Â»Â»Ã¡Â±Ã€Ã€Â£Â·ÂµÂ»Ã˜ÂµÂ½mainÃ–ÃÂ´Ã²Ã“Â¡Â´Ã­ÃÃ³ÃÃ…ÃÂ¢Â¡Â£
   /*catch (const Ice::Exception& e) {
     std::cout << "Exception occured in IApplication::run(): Exception info: ";
     std::cerr << e << std::endl;
@@ -296,7 +316,7 @@ int IApplication::run(int argc, char* argv[])
     std::cout << "Exception occured in IApplication::run(): Error msg: " + msg;
     status = 1;
   }
-  //µÚ2¸öcatch ²¶×½×Ö·û´®³£Á¿¡£ËüµÄÒâÍ¼ÊÇ£¬Èç¹ûÎÒÃÇµÄ´úÂë³öÏÖÖÂÃü´íÎó£¬ÎÒÃÇ¿ÉÒÔÅ×³öÒ»¸ö´ø´íÎóĞÅÏ¢µÄ×Ö·û´®£¬·µ»Øµ½mainÖĞ´òÓ¡ĞÅÏ¢¡£
+  //ÂµÃš2Â¸Ã¶catch Â²Â¶Ã—Â½Ã—Ã–Â·Ã»Â´Â®Â³Â£ÃÂ¿Â¡Â£Ã‹Ã¼ÂµÃ„Ã’Ã¢ÃÂ¼ÃŠÃ‡Â£Â¬ÃˆÃ§Â¹Ã»ÃÃ’ÃƒÃ‡ÂµÃ„Â´ÃºÃ‚Ã«Â³Ã¶ÃÃ–Ã–Ã‚ÃƒÃ¼Â´Ã­ÃÃ³Â£Â¬ÃÃ’ÃƒÃ‡Â¿Ã‰Ã’Ã”Ã…Ã—Â³Ã¶Ã’Â»Â¸Ã¶Â´Ã¸Â´Ã­ÃÃ³ÃÃ…ÃÂ¢ÂµÃ„Ã—Ã–Â·Ã»Â´Â®Â£Â¬Â·ÂµÂ»Ã˜ÂµÂ½mainÃ–ÃÂ´Ã²Ã“Â¡ÃÃ…ÃÂ¢Â¡Â£
   catch (const char* msg) {
     std::cout << "Exception occured in IApplication::run(): Error msg: ";
     status = 1;
@@ -317,8 +337,8 @@ void IApplication::execute()
 */
 
     /*
-    * @ brief Èç¹ûÊÇ·şÎñÆ÷£¬Ôò´´½¨[·şÎñÊÊÅäÆ÷]£¬²¢½øÈë·şÎñ¼àÌı×´Ì¬
-    * @       Èç¹ûÊÇ¿Í»§¶Ë£¬Ôò¿ÉÒÔµ÷ÓÃ·şÎñÆ÷¶ËÌá¹©µÄ·şÎñ
+    * @ brief ÃˆÃ§Â¹Ã»ÃŠÃ‡Â·Ã¾ÃÃ±Ã†Ã·Â£Â¬Ã”Ã²Â´Â´Â½Â¨[Â·Ã¾ÃÃ±ÃŠÃŠÃ…Ã¤Ã†Ã·]Â£Â¬Â²Â¢Â½Ã¸ÃˆÃ«Â·Ã¾ÃÃ±Â¼Ã ÃŒÃ½Ã—Â´ÃŒÂ¬
+    * @       ÃˆÃ§Â¹Ã»ÃŠÃ‡Â¿ÃÂ»Â§Â¶Ã‹Â£Â¬Ã”Ã²Â¿Ã‰Ã’Ã”ÂµÃ·Ã“ÃƒÂ·Ã¾ÃÃ±Ã†Ã·Â¶Ã‹ÃŒÃ¡Â¹Â©ÂµÃ„Â·Ã¾ÃÃ±
     */
     if (this->m_isServer)
     {
@@ -328,15 +348,15 @@ void IApplication::execute()
       std::string strNetworkType = conf.getValueByKey("ICK_SERVER", "IckNetworkType");
       std::string strSubscriberListenPort = conf.getValueByKey("ICK_SERVER", "IckSubscriberListenPort");
 
-      // ·şÎñÊÊÅäÆ÷
-      // ´´½¨ÃûÎªSimplePrinterAdapterµÄÊÊÅäÆ÷£¬²¢ÒªÇóÊÊÅäÆ÷Ê¹ÓÃÈ±Ê¡µÄĞ­Òé(TCP/IPÕìÌı¶Ë¿ÚÎª10000µÄÇëÇó)  
+      // Â·Ã¾ÃÃ±ÃŠÃŠÃ…Ã¤Ã†Ã·
+      // Â´Â´Â½Â¨ÃƒÃ»ÃÂªSimplePrinterAdapterÂµÃ„ÃŠÃŠÃ…Ã¤Ã†Ã·Â£Â¬Â²Â¢Ã’ÂªÃ‡Ã³ÃŠÃŠÃ…Ã¤Ã†Ã·ÃŠÂ¹Ã“ÃƒÃˆÂ±ÃŠÂ¡ÂµÃ„ÃÂ­Ã’Ã©(TCP/IPÃ•Ã¬ÃŒÃ½Â¶Ã‹Â¿ÃšÃÂª10000ÂµÃ„Ã‡Ã«Ã‡Ã³)  
       // Ice::ObjectAdapterPtr adapter = ic->createObjectAdapterWithEndpoints("ServiceAdapter", "default -p 20000");
       //Ice::ObjectAdapterPtr adapter = ic->createObjectAdapterWithEndpoints("ServiceAdapter", strServiceEndPoint);
-      //// ÊµÀı»¯Ò»¸öPrinterI¶ÔÏó£¬ÎªPrinter½Ó¿Ú´´½¨Ò»¸ö·şÎñ¶ÔÏó  
+      //// ÃŠÂµÃ€Ã½Â»Â¯Ã’Â»Â¸Ã¶PrinterIÂ¶Ã”ÃÃ³Â£Â¬ÃÂªPrinterÂ½Ã“Â¿ÃšÂ´Â´Â½Â¨Ã’Â»Â¸Ã¶Â·Ã¾ÃÃ±Â¶Ã”ÃÃ³  
       //Ice::ObjectPtr object = new IckServiceImpl;
-      //// ½«·şÎñµ¥ÔªÔö¼Óµ½ÊÊÅäÆ÷ÖĞ£¬²¢¸ø·şÎñ¶ÔÏóÖ¸¶¨Ãû³ÆÎªSimplePrinter£¬¸ÃÃû³ÆÓÃÓÚÎ¨Ò»È·¶¨Ò»¸ö·şÎñµ¥Ôª  
+      //// Â½Â«Â·Ã¾ÃÃ±ÂµÂ¥Ã”ÂªÃ”Ã¶Â¼Ã“ÂµÂ½ÃŠÃŠÃ…Ã¤Ã†Ã·Ã–ÃÂ£Â¬Â²Â¢Â¸Ã¸Â·Ã¾ÃÃ±Â¶Ã”ÃÃ³Ã–Â¸Â¶Â¨ÃƒÃ»Â³Ã†ÃÂªSimplePrinterÂ£Â¬Â¸ÃƒÃƒÃ»Â³Ã†Ã“ÃƒÃ“ÃšÃÂ¨Ã’Â»ÃˆÂ·Â¶Â¨Ã’Â»Â¸Ã¶Â·Ã¾ÃÃ±ÂµÂ¥Ã”Âª  
       //adapter->add(object, Ice::stringToIdentity("Service"));
-      //// ¼¤»îÊÊÅäÆ÷£¬ÕâÑù×öµÄºÃ´¦ÊÇ¿ÉÒÔµÈµ½ËùÓĞ×ÊÔ´¾ÍÎ»ºóÔÙ´¥·¢  
+      //// Â¼Â¤Â»Ã®ÃŠÃŠÃ…Ã¤Ã†Ã·Â£Â¬Ã•Ã¢Ã‘Ã¹Ã—Ã¶ÂµÃ„ÂºÃƒÂ´Â¦ÃŠÃ‡Â¿Ã‰Ã’Ã”ÂµÃˆÂµÂ½Ã‹Ã¹Ã“ÃÃ—ÃŠÃ”Â´Â¾ÃÃÂ»ÂºÃ³Ã”Ã™Â´Â¥Â·Â¢  
       //adapter->activate();
 
       //ic->waitForShutdown();
@@ -354,14 +374,14 @@ void IApplication::execute()
       std::string strSubscriberEndpoint = m_isLoadIniConfig ? conf.getValueByKey("ICK_CLIENT", "IckSubscriberEndPoint") : m_strSubscriberEndpoint;
 
 
-      // ³õÊ¼»¯¶©ÔÄÕßÊÊÅäÆ÷
+      // Â³ÃµÃŠÂ¼Â»Â¯Â¶Â©Ã”Ã„Ã•ÃŸÃŠÃŠÃ…Ã¤Ã†Ã·
       
       // Ice::ObjectAdapterPtr subscriberAdapter = ic->createObjectAdapterWithEndpoints("SubscriberAdapter", "tcp");
       //Ice::ObjectAdapterPtr subscriberAdapter = ic->createObjectAdapterWithEndpoints("SubscriberAdapter", strSubscriberEndpoint);
       //IckStormSubscriberManager::getInstance()->setSubscriberAdapter(subscriberAdapter);
       //subscriberAdapter->activate();
       //
-      //// ³õÊ¼»¯TopicManager´úÀí
+      //// Â³ÃµÃŠÂ¼Â»Â¯TopicManagerÂ´ÃºÃ€Ã­
       //// Ice::ObjectPrx obj = ic->stringToProxy("TopicManager:tcp -h localhost -p 20002");
       //Ice::ObjectPrx obj = ic->stringToProxy(std::string("TopicManager:") + strTopicManagerEndPoint);
       //IceStorm::TopicManagerPrx topicManagerPrx = IceStorm::TopicManagerPrx::checkedCast(obj);
@@ -395,7 +415,7 @@ void IApplication::loadConfig(int argc, char* argv[])
     char filePath[MAX_PATH] = { 0 };
     int len = WideCharToMultiByte(CP_ACP, 0, szFilePath, -1, filePath, 0, NULL, NULL);
     WideCharToMultiByte(CP_ACP, 0, szFilePath, -1, filePath, len, NULL, NULL);
-    // ¾ø¶ÔÂ·¾¶
+    // Â¾Ã¸Â¶Ã”Ã‚Â·Â¾Â¶
     if (configPath.at(1) == ':' || configPath.at(0) == '/')
     {
       configPath = filePath;

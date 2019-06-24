@@ -65,7 +65,8 @@ DOMElement* XmlParser::loadXmlFile(std::string fileName)
   std::string filePath = "";
   try
   {
-    if (this->m_strConfigPath.at(m_strConfigPath.length() - 1) == '\\')
+    if (this->m_strConfigPath.at(m_strConfigPath.length() - 1) == '\\'
+      || this->m_strConfigPath.at(m_strConfigPath.length() - 1) == '/')
     {
       filePath = this->m_strConfigPath + fileName;
       m_parser->parse((this->m_strConfigPath + fileName).c_str());
@@ -127,10 +128,13 @@ DOMElement* XmlParser::loadXmlFile(std::string fileName)
 
 int XmlParser::loadConfigFile()
 {
-  DOMElement* root = this->loadXmlFile("IO_config.xml");
+  DOMElement* root = this->loadXmlFile("io_config.xml");
+  if (root == nullptr) {
+    Logger::getInstance()->Error("load io_config.xml error");
+  }
   this->LoadIO(root);
 
-  root = this->loadXmlFile("Control_config.xml");
+  root = this->loadXmlFile("control_config.xml");
   this->LoadControlObject(root);
 
   return 0;
@@ -139,12 +143,12 @@ int XmlParser::loadConfigFile()
 DOMElement* XmlParser::LoadIO(DOMElement* ele)
 {
   if (ele == NULL) return NULL;
-
   char* tagName = XMLString::transcode(ele->getTagName());
   char* namespaceURI = XMLString::transcode(ele->getNamespaceURI());
   char* nodeName = XMLString::transcode(ele->getNodeName());
 
   // 判断当前节点是否有type属性、Bd和Ch子节点，如果有，则初始化IO通道
+  std::string dataType = StrX(ele->getAttribute(StrX("dataType").xerceForm())).localForm();
   if(*ele->getAttribute(StrX("dataType").xerceForm()) != *StrX("").xerceForm() && 
       *ele->getAttribute(StrX("accessMode").xerceForm()) != *StrX("").xerceForm())
   {
@@ -189,7 +193,6 @@ DOMElement* XmlParser::LoadIO(DOMElement* ele)
     {
 
     }
-
 
     // 
     if(*ele->getAttribute(StrX("Bd").xerceForm()) != *StrX("").xerceForm())
