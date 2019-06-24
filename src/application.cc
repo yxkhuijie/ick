@@ -11,6 +11,8 @@
 #include "src/ick_storm_manager.h"
 #include "src/converter.h"
 
+#include "gflags/gflags.h"
+
 IApplication::IApplication(bool isServer, bool isLoadIniConfig, bool isLoadXmlConfig)
 {
   IDataBase database;

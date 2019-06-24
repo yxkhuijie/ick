@@ -2,7 +2,7 @@
 
 int main(int argc, char* argv[]) {
 
-IApplication app(true, true, true);
-app.main(argc, argv);
+  IApplication app(true, false, false);
+  app.main(argc, argv);
 
 }

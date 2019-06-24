@@ -24,3 +24,9 @@ new_http_archive(
     "https://zlib.net/zlib-1.2.11.tar.gz",
   ],
 )
+
+git_repository(
+    name = "com_github_gflags_gflags",
+    remote = "https://github.com/gflags/gflags.git",
+    tag = "v2.2.2"
+)

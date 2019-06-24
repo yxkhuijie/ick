@@ -58,6 +58,7 @@ cc_library(
     ":object_manager",
     ":xml_parser",
     ":mysql_connection",
+    "@com_github_gflags_gflags//:gflags",
   ],
 )
 
