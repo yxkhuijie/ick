@@ -16,5 +16,6 @@ cc_library(
         "-ldl",
         "-lrt",
         "-lm",
+        "-pthread",
     ],
 )

@@ -363,7 +363,7 @@ cc_library(
     ":read_only_double",
     ":read_only_string",
     ":object_manager",
-    "//third_party/xerces:libxerces",
+    "//third_party/xercesc:libxerces",
   ]
 )
 

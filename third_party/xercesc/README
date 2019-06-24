@@ -1,0 +1,7 @@
+1. tar xzvf xerces-c-3.2.2.tar.gz
+2. cd xerces-c-3.2.2
+3. mkdir build
+4. cd build
+5. cmake -DBUILD_SHARED_LIBS=OFF -Dnetwork-accessor=socket -Dtranscoder=gnuiconv -Dmessage-loader=inmemory ..
+  https://xerces.apache.org/xerces-c/build-3.html
+6. make 
