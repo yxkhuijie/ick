@@ -153,6 +153,31 @@ cc_test(
 )
 
 cc_library(
+  name = "http_client",
+  srcs = [
+    "http_client.cc",
+  ],
+  hdrs = [
+    "http_client.h",
+  ],
+  deps = [
+    ":logger",
+    "//third_party/curl:libcurl",
+  ]
+)
+
+cc_test(
+  name = "http_client_test",
+  srcs = [
+    "http_client_test.cc",
+  ],
+  deps = [
+    ":http_client",
+    "@googletest//:gtest_main",
+  ]
+)
+
+cc_library(
   name = "mysql_connection",
   srcs = [
     "mysql_connection.cc",

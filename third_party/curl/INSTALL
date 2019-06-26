@@ -1,0 +1,9 @@
+1. wget http://curl.haxx.se/download/curl-7.37.1.tar.gz
+2. tar xzf curl-7.37.1.tar.gz
+3. export ROOTDIR="${PWD}"
+4. cd curl-7.37.1/
+5. export CPPFLAGS="-I${ROOTDIR}/../../openssl/include -I${ROOTDIR}/../../zlib"
+6. export LDFLAGS="-L${ROOTDIR}/../../openssl/lib64 -L${ROOTDIR}/../../zlib"
+7. export LIBS="-lssl -lcrypto"
+8. ./configure --prefix=${ROOTDIR}/build --with-ssl --with-zlib
+9. make

@@ -10,17 +10,13 @@
 #define MAX_PATH 260
 #endif
 
-
-enum LoggerType
-{
+enum LoggerType {
   RecordAndPrint = 0,
   Record = 1,
   Print = 2
 };
 
-
-enum LoggerLevel
-{
+enum LoggerLevel {
   LOG_LEVEL_ALL = 0,
   LOG_LEVEL_DEBUG = 1,
   LOG_LEVEL_INFO = 2,
@@ -30,8 +26,7 @@ enum LoggerLevel
   LOG_LEVEL_OFF = 6
 };
 
-class LoggerMessage
-{
+class LoggerMessage {
 public:
   std::string logTime;
   std::string logMessage;

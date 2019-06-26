@@ -4,21 +4,23 @@ package(default_visibility = ["//visibility:public"])
 
 cc_library(
     name = "ssl",
-    srcs = ["lib64_release/libssl.a"],
+    srcs = [
+      "lib64/libssl.a",
+    ],
     hdrs = glob([
-        "*.h",
-        "**/*.h",
+        "include/**/*.h",
     ]),
-    includes = ["."],
+    includes = ["include/"],
 )
 
 cc_library(
     name = "crypto",
-    srcs = ["lib64_release/libcrypto.a"],
+    srcs = [
+      "lib64/libcrypto.a"
+    ],
     hdrs = glob([
-        "*.h",
-        "**/*.h",
+        "include/**/*.h",
     ]),
-    includes = ["."],
-    linkopts = ["-ldl"],
+    includes = ["include/"],
 )
+
