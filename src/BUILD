@@ -11,7 +11,16 @@ cc_binary(
 )
 
 cc_library(
-  name = "libick",
+  name = "libick.a",
+  linkstatic = 1,
+  deps = [
+    ":ick",
+  ],
+  alwayslink = 1,
+)
+
+cc_library(
+  name = "ick",
   srcs = [
     "application.cc",
     "cmd_target.cc",
