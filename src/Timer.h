@@ -1,13 +1,13 @@
 #ifndef _ICK_TIMER_H_
 #define _ICK_TIMER_H_
 
-#include "IObject.h"
+#include "src/object.h"
 #ifdef __windows__
 #include <Windows.h>
 #elif __linux__
 
 #endif
-#include "IMutex.h"
+#include "src/mutex.h"
 
 
 class ick_api Timer : public IObject

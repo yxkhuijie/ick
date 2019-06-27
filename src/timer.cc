@@ -1,4 +1,8 @@
-#include "Timer.h"
+#include "src/timer.h"
+
+#ifdef __linux__
+#include <unistd.h>
+#endif
 
 int Timer::timerId = 1;
 
