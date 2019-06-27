@@ -17,13 +17,13 @@ enum LoggerType {
 };
 
 enum LoggerLevel {
-  LOG_LEVEL_ALL = 0,
-  LOG_LEVEL_DEBUG = 1,
-  LOG_LEVEL_INFO = 2,
-  LOG_LEVEL_WARN = 3,
-  LOG_LEVEL_ERROR = 4,
-  LOG_LEVEL_FATAL = 5,
-  LOG_LEVEL_OFF = 6
+  ALL = 0,
+  DEBUG = 1,
+  INFO = 2,
+  WARN = 3,
+  ERROR = 4,
+  FATAL = 5,
+  OFF = 6
 };
 
 class LoggerMessage {
@@ -33,62 +33,50 @@ public:
   LoggerLevel logLevel;
   LoggerType logType;
   std::string strLevel;
+  std::string logPos;
 
 public:
-  LoggerMessage(std::string msg, LoggerLevel level = LOG_LEVEL_ALL, LoggerType print = RecordAndPrint)
-  {
-    this->logTime    = TimeConverter::getCurrentTimeAsStr();
+  LoggerMessage(const std::string& msg, const std::string& pos = "",
+      LoggerLevel level = ALL, LoggerType print = RecordAndPrint) {
+    this->logTime = TimeConverter::getCurrentTimeAsStr();
     this->logMessage = msg;
-    this->logLevel   = level;
-    this->logType    = print;
-    if (level == LOG_LEVEL_ALL) strLevel = "ALL";
-    else if (level == LOG_LEVEL_DEBUG) strLevel = "DEBUG";
-    else if (level == LOG_LEVEL_INFO) strLevel = "INFO";
-    else if (level == LOG_LEVEL_WARN) strLevel = "WARN";
-    else if (level == LOG_LEVEL_ERROR) strLevel = "ERROR";
-    else if (level == LOG_LEVEL_FATAL) strLevel = "FATAL";
-    else if (level == LOG_LEVEL_OFF) strLevel = "OFF";
+    this->logLevel = level;
+    this->logType = print;
+    this->logPos = pos;
+    if (level == ALL) strLevel = "ALL";
+    else if (level == DEBUG) strLevel = "DEBUG";
+    else if (level == INFO) strLevel = "INFO";
+    else if (level == WARN) strLevel = "WARN";
+    else if (level == ERROR) strLevel = "ERROR";
+    else if (level == FATAL) strLevel = "FATAL";
+    else if (level == OFF) strLevel = "OFF";
   };
   ~LoggerMessage() {};
 
-  std::string toString() 
-  {
-    if (logLevel == LOG_LEVEL_WARN || logLevel == LOG_LEVEL_ERROR || logLevel == LOG_LEVEL_FATAL)
-    {
+  std::string toString() {
+    if (logLevel == WARN || logLevel == ERROR || logLevel == FATAL) {
       return "!! " + logTime + " " + strLevel + "    " + logMessage + "\n";
-    }
-    else
-    {
+    } else {
       return logTime + "    " + strLevel + "    " + logMessage + "\n";
     }
   }
 
-  std::string toPrintString()
-  {
+  std::string toPrintString() {
     return logTime + ": " + logMessage + "\n";
   }
 
-  void print()
-  {
-    if (logLevel == LOG_LEVEL_WARN || logLevel == LOG_LEVEL_ERROR || logLevel == LOG_LEVEL_FATAL)
-    {
+  void print() {
+    if (logLevel == WARN || logLevel == ERROR || logLevel == FATAL) {
       std::cout << "!! " + logTime + ": " + logMessage << std::endl;
-    }
-    else
-    {
+    } else {
       std::cout << logTime + ": " + logMessage << std::endl;
     }
-    
   }
 };
 
-class ick_api Logger : public IThread
-{
-
+class ick_api Logger : public IThread {
 public:
-
   Logger();
-
   ~Logger();
 
 private:
@@ -117,17 +105,51 @@ public:
 
   void startup();
 
-  void Log(const std::string& message, LoggerLevel level= LOG_LEVEL_ALL, LoggerType print = RecordAndPrint);
-
-  void Debug(const std::string& message, LoggerType print = RecordAndPrint);
-  void Info(const std::string& message, LoggerType print = RecordAndPrint);
-  void Warn(const std::string& message, LoggerType print = RecordAndPrint);
-  void Error(const std::string& message, LoggerType print = RecordAndPrint);
-  void Fatal(const std::string& message, LoggerType print = RecordAndPrint);
+  void Log(const std::string& message,
+      const std::string& log_pos = "",
+      LoggerLevel level= ALL,
+      LoggerType print = RecordAndPrint);
+  void Debug(const std::string& message,
+      const std::string& log_pos = "",
+      LoggerType print = RecordAndPrint);
+  void Info(const std::string& message,
+      const std::string& log_pos = "",
+      LoggerType print = RecordAndPrint);
+  void Warn(const std::string& message,
+      const std::string& log_pos = "",
+      LoggerType print = RecordAndPrint);
+  void Error(const std::string& message,
+      const std::string& log_pos = "",
+      LoggerType print = RecordAndPrint);
+  void Fatal(const std::string& message,
+      const std::string& log_pos = "",
+      LoggerType print = RecordAndPrint);
 
   static Logger* getInstance();
 
   void setFilePath(std::string path);
 };
+
+#define LOG(type) \
+  switch (type) {\
+    case ALL: \
+      Logger::getInstance()->Log(); \
+      break; \
+    case DEBUG: \
+      Logger::getInstance()->Debug(); \
+      break; \
+    case INFO: \
+      Logger::getInstance()->Info(); \
+      break; \
+    case WARN: \
+      Logger::getInstance()->Warn(); \
+      break; \
+    case ERROR: \
+      Logger::getInstance()->Error(); \
+      break; \
+    case FATAL: \
+      Logger::getInstance()->Fatal(); \
+      break; \
+  }
 
 #endif

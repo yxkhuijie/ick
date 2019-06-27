@@ -13,7 +13,7 @@ Logger::Logger()
 {
   m_fileSize = 0;
   m_filePath = "";
-  m_logLevel = LOG_LEVEL_ALL;
+  m_logLevel = ALL;
   m_logFileName = "log";
   wchar_t szFilePath[MAX_PATH] = { 0 };
   char filePath[MAX_PATH] = { 0 };
@@ -133,29 +133,27 @@ void Logger::setFilePath(std::string path)
   }
 }
 
-void Logger::Log(const std::string& message, LoggerLevel level, LoggerType type)
+void Logger::Log(const std::string& message, const std::string& log_pos, LoggerLevel level, LoggerType type)
 {
   if (message.compare("") == 0) return;
-  LoggerMessage loggerMessage(message, level, type);
-  if (type != Record)
-  {
+  LoggerMessage loggerMessage(message, "",level, type);
+  if (type != Record) {
     m_mutex.lock();
     loggerMessage.print();
     m_mutex.unlock();
   }
 
-  if (type != Print && level >= this->m_logLevel)
-  {
+  if (type != Print && level >= this->m_logLevel) {
     m_mutex.lock();
     this->m_messages.push_back(loggerMessage);
     m_mutex.unlock();
   }
 }
 
-void Logger::Debug(const std::string& message, LoggerType type)
+void Logger::Debug(const std::string& message, const std::string& log_pos, LoggerType type)
 {
   if (message.compare("") == 0) return;
-  LoggerMessage loggerMessage(message, LOG_LEVEL_DEBUG, type);
+  LoggerMessage loggerMessage(message, "",DEBUG, type);
   if (type != Record)
   {
     m_mutex.lock();
@@ -163,17 +161,17 @@ void Logger::Debug(const std::string& message, LoggerType type)
     m_mutex.unlock();
   }
 
-  if (type != Print && LOG_LEVEL_DEBUG >= this->m_logLevel)
+  if (type != Print && DEBUG >= this->m_logLevel)
   {
     m_mutex.lock();
     this->m_messages.push_back(loggerMessage);
     m_mutex.unlock();
   }
 }
-void Logger::Info(const std::string& message, LoggerType type)
+void Logger::Info(const std::string& message, const std::string& log_pos, LoggerType type)
 {
   if (message.compare("") == 0) return;
-  LoggerMessage loggerMessage(message, LOG_LEVEL_INFO, type);
+  LoggerMessage loggerMessage(message, "",INFO, type);
   if (type != Record)
   {
     m_mutex.lock();
@@ -181,17 +179,17 @@ void Logger::Info(const std::string& message, LoggerType type)
     m_mutex.unlock();
   }
 
-  if (type != Print && LOG_LEVEL_INFO >= this->m_logLevel)
+  if (type != Print && INFO >= this->m_logLevel)
   {
     m_mutex.lock();
     this->m_messages.push_back(loggerMessage);
     m_mutex.unlock();
   }
 }
-void Logger::Warn(const std::string& message, LoggerType type)
+void Logger::Warn(const std::string& message, const std::string& log_pos, LoggerType type)
 {
   if (message.compare("") == 0) return;
-  LoggerMessage loggerMessage(message, LOG_LEVEL_WARN, type);
+  LoggerMessage loggerMessage(message, "",WARN, type);
   if (type != Record)
   {
     m_mutex.lock();
@@ -199,17 +197,17 @@ void Logger::Warn(const std::string& message, LoggerType type)
     m_mutex.unlock();
   }
 
-  if (type != Print && LOG_LEVEL_WARN >= this->m_logLevel)
+  if (type != Print && WARN >= this->m_logLevel)
   {
     m_mutex.lock();
     this->m_messages.push_back(loggerMessage);
     m_mutex.unlock();
   }
 }
-void Logger::Error(const std::string& message, LoggerType type)
+void Logger::Error(const std::string& message, const std::string& log_pos, LoggerType type)
 {
   if (message.compare("") == 0) return;
-  LoggerMessage loggerMessage(message, LOG_LEVEL_ERROR, type);
+  LoggerMessage loggerMessage(message, "",ERROR, type);
   if (type != Record)
   {
     m_mutex.lock();
@@ -217,17 +215,17 @@ void Logger::Error(const std::string& message, LoggerType type)
     m_mutex.unlock();
   }
 
-  if (type != Print && LOG_LEVEL_ERROR >= this->m_logLevel)
+  if (type != Print && ERROR >= this->m_logLevel)
   {
     m_mutex.lock();
     this->m_messages.push_back(loggerMessage);
     m_mutex.unlock();
   }
 }
-void Logger::Fatal(const std::string& message, LoggerType type)
+void Logger::Fatal(const std::string& message, const std::string& log_pos, LoggerType type)
 {
   if (message.compare("") == 0) return;
-  LoggerMessage loggerMessage(message, LOG_LEVEL_FATAL, type);
+  LoggerMessage loggerMessage(message, "", FATAL, type);
   if (type != Record)
   {
     m_mutex.lock();
@@ -235,7 +233,7 @@ void Logger::Fatal(const std::string& message, LoggerType type)
     m_mutex.unlock();
   }
 
-  if (type != Print && LOG_LEVEL_FATAL >= this->m_logLevel)
+  if (type != Print && FATAL >= this->m_logLevel)
   {
     m_mutex.lock();
     this->m_messages.push_back(loggerMessage);
