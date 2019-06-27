@@ -1,7 +1,7 @@
 #ifndef _ISERIAL_PORT_H_
 #define _ISERIAL_PORT_H_
 
-#include "IObject.h"
+#include "src/object.h"
 
 
 class ick_api ISerialPort : public IObject

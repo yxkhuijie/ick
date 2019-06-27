@@ -1,7 +1,7 @@
 #ifndef _MESSAGE_ENTITY_H_
 #define _MESSAGE_ENTITY_H_
 
-#include "IObject.h"
+#include "src/object.h"
 
 class CmdTarget;
 
