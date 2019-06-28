@@ -10,6 +10,16 @@ cc_binary(
   ]
 )
 
+cc_binary(
+  name = "http_server_test",
+  srcs = [
+    "http_server_test.cc",
+  ],
+  deps = [
+    ":ick",
+  ]
+)
+
 cc_library(
   name = "libick.a",
   linkstatic = 1,
@@ -34,7 +44,11 @@ cc_library(
     "data_base.cc",
     "driver.cc",
     "file.cc",
+    "http_callback.cc",
     "http_client.cc",
+    "http_request.cc",
+    "http_server.cc",
+    "http_server_thread.cc",
     "ick_storm_data.cc",
     "ick_storm_service_socket.cc",
     "ick_storm_subscriber.cc",
@@ -88,7 +102,11 @@ cc_library(
     "data_base.h",
     "driver.h",
     "file.h",
+    "http_callback.h",
     "http_client.h",
+    "http_request.h",
+    "http_server.h",
+    "http_server_thread.h",
     "ick_storm_data.h",
     "ick_storm_service_socket.h",
     "ick_storm_subscriber.h",
@@ -132,6 +150,7 @@ cc_library(
     "//third_party/curl:libcurl",
     "//third_party/mysql_client_cpp:mysqlcppconn",
     "//third_party/xercesc:libxerces",
+    "//third_party/libevent:libevent",
     "@com_github_gflags_gflags//:gflags",
   ],
 )
