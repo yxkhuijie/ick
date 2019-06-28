@@ -84,7 +84,7 @@ void HttpServer::callbackHandler(struct evhttp_request *req, void *arg) {
 }
 
 void HttpServer::SetCallback(std::string path, std::function<void(HttpRequest*, void*) > cb, void* arg) {
-    if (this->callbacks.find(path.c_str()) == this->callbacks.end()) { //if not exist
+    if (this->callbacks.find(path) == this->callbacks.end()) { //if not exist
         HttpCallback *callback = new HttpCallback(path, cb, arg);
         this->callbacks.insert(std::make_pair(path, callback));
 

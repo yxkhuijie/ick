@@ -2,6 +2,7 @@
 #include "src/mutex.h"
 #include "src/logger.h"
 #include "src/converter.h"
+#include "src/object_manager.h"
 #ifdef __linux__
 #include <stdlib.h>
 #include <unistd.h>
@@ -74,9 +75,12 @@ void ControlObject::msleep(int millisecond)
 #endif
 }
 
-void ControlObject::setNotSimulated(bool simulated)
-{
+void ControlObject::setNotSimulated(bool simulated) {
   this->setSimulated(!simulated);
+}
+
+ManagedObject* ControlObject::getObject(const std::string& object_path) {
+  return ObjectManager::getInstance()->getObject(object_path);
 }
 
 void ControlObject::call(std::string serviceName, std::string params)

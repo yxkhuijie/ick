@@ -84,6 +84,8 @@ public:
 
   void setNotSimulated(bool simulated);
 
+  ManagedObject* getObject(const std::string& object_path);
+
   virtual void initService();
 
   virtual void make();
