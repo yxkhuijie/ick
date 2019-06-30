@@ -21,7 +21,7 @@ cc_library(
         "-lrt",
         "-lm",
         "-lpthread",
-        "-lssl",
-        "-lcrypto",
+        #"-lssl",
+        #"-lcrypto",
     ],
 )
