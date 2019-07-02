@@ -152,6 +152,8 @@ cc_library(
     "//third_party/xercesc:libxerces",
     "//third_party/libevent:libevent",
     "@com_github_gflags_gflags//:gflags",
+    "@com_google_absl//absl/time:time",
+    "@com_google_absl//absl/strings:strings",
   ],
 )
 
