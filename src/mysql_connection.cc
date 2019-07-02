@@ -24,8 +24,9 @@ MySqlConnection::~MySqlConnection() {}
 void MySqlConnection::open() {
   sql::mysql::MySQL_Driver *driver;
   driver = sql::mysql::get_mysql_driver_instance();
+  std::string server = "tcp://" + host + ":" + std::to_string(port);
   connection_.reset(driver->connect(
-      "tcp://127.0.0.1:3306", this->user, this->pwd));
+      server, this->user, this->pwd));
   connection_->setSchema(this->db);
   if (connection_ == nullptr) {
     Logger::getInstance()->Error("connection is null!!!");
