@@ -224,3 +224,32 @@ std::string Converter::trim(std::string s)
 
   return str;
 }
+
+std::string Converter::encodeUrl(const std::string& str) {
+  std::string res = "";
+  for (int i = 0; i < str.length(); ++i) {
+    if (str[i] = ' ') {
+      res += '+';
+      continue;
+    }
+    unsigned int data = (unsigned int)str[i];
+    if (data > 127) {
+      std::string buf[4] = { '\0' };
+      buf[0] = '%';
+      buf[1] = data / 16;
+      if (buf[1] > 9) buf[1] = buf[1] - 10 + 'A';
+      else buf[1] = buf[1] + '0';
+      buf[2] = data % 16;
+      if (buf[2] > 9) buf[2] = buf[2] - 10 + 'A';
+      else buf[2] = buf[2] + '0';
+      res += buf;
+    } else {
+      res += str[i];
+    }
+  }
+  return res;
+}
+
+std::string Converter::decodeUrl(const std::string& str) {
+
+}
