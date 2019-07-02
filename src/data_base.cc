@@ -37,7 +37,9 @@ void IDataBase::startup()
   //executeQuery();
   if(this->m_ConnectionPool == NULL)
   {
-      throw "\nConnectionPool has not been set, please check file database.xml at the node /Control/Counter/" + getSelfName();
+      Logger::getInstance()->Error("connection pool not set!!");
+      std::string msg = "connection pool not set!!";
+      throw msg;
   }
 }
 
@@ -45,9 +47,8 @@ int IDataBase::executeQuery(std::string sql, bool print)
 {
   if(sql == "") sql = this->sql;
   Connection* conn = this->m_ConnectionPool->getConnection();
-  if(conn == NULL)
-  {
-      cout<<"IDataBase::executeQuery, Get connection from pool failure. ConnectionPoolName: "<< this->m_ConnectionPool->getPoolName() << endl;
+  if(conn == NULL) {
+    cout<<"IDataBase::executeQuery, Get connection from pool failure. ConnectionPoolName: "<< this->m_ConnectionPool->getPoolName() << endl;
     return -1;
   }
 
@@ -86,7 +87,7 @@ int IDataBase::executeCommand(std::string sql)
     return -1;
   }
 
-  int flag = conn->executeQuery(sql);
+  int flag = conn->executeCommand(sql);
   this->m_ConnectionPool->releaseConnection(conn);
   return flag;
 }

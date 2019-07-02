@@ -44,9 +44,11 @@ public:
   virtual void open() = 0;
   virtual void close() = 0;
   virtual bool isClosed() = 0;
+  virtual bool isValid() { return true; }
   virtual void getConnection() = 0;
   virtual void releaseConnection(Connection* conn) = 0;
   virtual int executeQuery(string& sql, bool print=false) = 0;
+  virtual bool executeCommand(string& sql, bool print=false) = 0;
   virtual RecordSet* getRecordSet() = 0;
   virtual bool setCharset(std::string charset) { return true;  };
 };

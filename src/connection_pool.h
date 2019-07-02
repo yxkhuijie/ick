@@ -41,22 +41,22 @@ public:
   ~ConnectionPool(void);
   
   void make();
-    void initialize();
-    void verifyInit();
-    void startup();
-    void defaultAbort();
+  void initialize();
+  void verifyInit();
+  void startup();
+  void defaultAbort();
 
 private:
   // ¡¨Ω”≥ÿ Ù–‘  
-    string driverName;  
-    string url; 
+  string driverName;  
+  string url; 
   
   string rootPassword;
   string dbName; 
   string host;
   int port;
-    string userName;  
-    string password;
+  string userName;  
+  string password;
   string charset;
   string unixSocket;
 

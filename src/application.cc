@@ -317,10 +317,10 @@ int IApplication::run(int argc, char* argv[])
     status = 1;
   }
   //µÚ2¸öcatch ²¶×½×Ö·û´®³£Á¿¡£ËüµÄÒâÍ¼ÊÇ£¬Èç¹ûÎÒÃÇµÄ´úÂë³öÏÖÖÂÃü´íÎó£¬ÎÒÃÇ¿ÉÒÔÅ×³öÒ»¸ö´ø´íÎóÐÅÏ¢µÄ×Ö·û´®£¬·µ»Øµ½mainÖÐ´òÓ¡ÐÅÏ¢¡£
-  catch (const char* msg) {
-    std::cout << "Exception occured in IApplication::run(): Error msg: ";
-    status = 1;
-  }
+  // catch (const char* msg) {
+  //   std::cout << "Exception occured in IApplication::run(): Error msg: ";
+  //   status = 1;
+  // }
 
   return status;
 }

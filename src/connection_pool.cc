@@ -9,18 +9,15 @@ ConnectionPool::ConnectionPool(void)
   charset = "utf8";
 }
 
-ConnectionPool::~ConnectionPool(void)
-{
-    for(list<Connection*>::iterator it = this->freeConnections.begin();it != this->freeConnections.end();)
-  {
-      if(*it != NULL)
-    {
-        (*it) -> close();
-      cout<<"DataBase connection close success, conn: " <<endl;
-      delete (*it);
-        it = freeConnections.erase(it);
+ConnectionPool::~ConnectionPool(void) {
+    for(list<Connection*>::iterator it = this->freeConnections.begin();it != this->freeConnections.end();) {
+        if(*it != NULL) {
+            (*it) -> close();
+            delete (*it);
+            it = freeConnections.erase(it);
+            Logger::getInstance()->Info("DataBase connection close success");
+        }
     }
-  }
 }
 
 void ConnectionPool::make()
@@ -41,8 +38,7 @@ void ConnectionPool::make()
     {
       conn->open();
       conn->setCharset(this->charset);
-      if(!this->isValid(conn)) 
-      {
+      if(!this->isValid(conn)) {
         std::string msg = std::string("DataBase connection is not valid, conn: ");
         Logger::getInstance()->Error(msg);
         throw std::string("DataBase connection is not valid, conn: ");
