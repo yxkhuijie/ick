@@ -1,6 +1,8 @@
 #include "src/http_request.h"
-#include "src/logger.h"
 
+#include <sstream>
+
+#include "src/logger.h"
 #include "http-internal.h"
 
 HttpRequest::HttpRequest() {}
@@ -15,12 +17,23 @@ void HttpRequest::AddBufferOut(const char* data, size_t len) {
     evbuffer_add(evhttp_request_get_output_buffer(this->req_), data, len);
 }
 
-void HttpRequest::SendReply(int code) {
+void HttpRequest::SendReply(int code /* = HTTP_OK */) {
     evhttp_send_reply(this->req_, code, NULL, NULL);
 }
 
 void HttpRequest::AddHeader(const char* key, const char* value) {
     evhttp_add_header(evhttp_request_get_output_headers(this->req_), key, value);
+}
+
+std::string HttpRequest::CreateResponse(
+    const std::string& content,
+    int errorCode /* = 0 */,
+    const std::string& errorMessage /* = "OK" */) {
+  std::stringstream ss;
+  ss << "{'code':" << errorCode
+     << ",'status':'" << errorMessage << "'"
+     << ",'result':'" << content << "'}";
+  return ss.str();
 }
 
 std::string HttpRequest::getBody() {

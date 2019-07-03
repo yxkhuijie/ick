@@ -13,7 +13,7 @@ class HttpRequest {
   virtual ~HttpRequest();
 
   void AddBufferOut(const char* data, size_t len);
-  void SendReply(int code);
+  void SendReply(int code = HTTP_OK);
   void AddHeader(const char* key, const char* value);
   
   std::string getHeader(const char* key);
@@ -28,8 +28,12 @@ class HttpRequest {
   std::string getRequestHost();
   // get request port
   int32_t getRequestPort();
+  // create default response
+  std::string CreateResponse(
+      const std::string& content,
+      int errorCode = 0,
+      const std::string& errorMessage = "OK");
 
- public:
  private:
   struct evhttp_request* req_;
 };

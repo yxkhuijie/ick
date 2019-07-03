@@ -24,6 +24,8 @@ public:
   static std::string convertToUtf8(std::string& str);
   static std::string convertToUtf8(const char* gb2312, std::string code=std::string("gb2312"));
   static std::string utf8ToString(std::string& str);
+  static std::string encodeUrl(const std::string& str);
+  static std::string decodeUrl(const std::string& str);
 };
 
 #endif
