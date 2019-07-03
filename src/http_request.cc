@@ -21,6 +21,13 @@ void HttpRequest::SendReply(int code /* = HTTP_OK */) {
     evhttp_send_reply(this->req_, code, NULL, NULL);
 }
 
+void HttpRequest::SendReply(const std::string& data, int code /* = HTTP_OK */) {
+  evhttp_add_header(evhttp_request_get_output_headers(this->req_),
+      "Content-Type", "application/json;charset=utf-8");
+  evbuffer_add(evhttp_request_get_output_buffer(this->req_), data.c_str(), data.length());
+  evhttp_send_reply(this->req_, code, NULL, NULL);
+}
+
 void HttpRequest::AddHeader(const char* key, const char* value) {
     evhttp_add_header(evhttp_request_get_output_headers(this->req_), key, value);
 }

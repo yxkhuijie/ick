@@ -14,6 +14,8 @@ class HttpRequest {
 
   void AddBufferOut(const char* data, size_t len);
   void SendReply(int code = HTTP_OK);
+  // return directly as application/json,charset=utf-8
+  void SendReply(const std::string& data, int code = HTTP_OK);
   void AddHeader(const char* key, const char* value);
   
   std::string getHeader(const char* key);
