@@ -48,11 +48,11 @@ int IDataBase::executeQuery(std::string sql, bool print)
   if(sql == "") sql = this->sql;
   Connection* conn = this->m_ConnectionPool->getConnection();
   if(conn == NULL) {
-    cout<<"IDataBase::executeQuery, Get connection from pool failure. ConnectionPoolName: "<< this->m_ConnectionPool->getPoolName() << endl;
+    Logger::getInstance()->Error("get connection from pool failure: pool name: " + m_ConnectionPool->getPoolName());
     return -1;
   }
 
-  int ret = conn->executeQuery(sql);
+  int ret = conn->executeQuery(sql, print);
   RecordSet* res = conn->getRecordSet();
   // sql::ResultSet* result_set = conn->getResultSet();
   this->rs = *res;

@@ -10,7 +10,7 @@ class HttpClient {
   HttpClient();
   ~HttpClient();
 
-  bool FetchUrl(const std::string& url, const std::string& data = std::string(""));
+  bool FetchUrl(const std::string& url, const std::string& data = std::string("{}"));
   const std::string& GetResponseBody();
 
   void SetHeader(const std::string& key, const std::string& value);

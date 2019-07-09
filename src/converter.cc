@@ -228,24 +228,22 @@ std::string Converter::trim(std::string s)
 std::string Converter::encodeUrl(const std::string& str) {
   std::string res = "";
   for (int i = 0; i < str.length(); ++i) {
-    if (str[i] == ' ') {
+    char data = str[i];
+    if (data == ' ') {
       res += '+';
       continue;
     }
-    unsigned int data = (unsigned int)str[i];
-    if (data > 127) {
-      char buf[4] = { '\0' };
-      buf[0] = '%';
-      buf[1] = data / 16;
-      if (buf[1] > 9) buf[1] = buf[1] - 10 + 'A';
-      else buf[1] = buf[1] + '0';
-      buf[2] = data % 16;
-      if (buf[2] > 9) buf[2] = buf[2] - 10 + 'A';
-      else buf[2] = buf[2] + '0';
-      res += buf;
-    } else {
-      res += str[i];
+    if (data >= 0) {
+      res += data;
+      continue;
     }
+    unsigned char tmp = (unsigned char)data;
+    int data1 = tmp / 16;
+    int data2 = tmp % 16;
+    data1 = data1 > 9 ? (data1 - 10 + 'A') : (data1 + '0');
+    data2 = data2 > 9 ? (data2 - 10 + 'A') : (data2 + '0');
+    char buf[4] = { '%', (char)data1, (char)data2, '\0' };
+    res += std::string(buf);
   }
   return res;
 }

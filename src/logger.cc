@@ -226,15 +226,13 @@ void Logger::Fatal(const std::string& message, const std::string& log_pos, Logge
 {
   if (message.compare("") == 0) return;
   LoggerMessage loggerMessage(message, "", FATAL, type);
-  if (type != Record)
-  {
+  if (type != Record) {
     m_mutex.lock();
     loggerMessage.print();
     m_mutex.unlock();
   }
 
-  if (type != Print && FATAL >= this->m_logLevel)
-  {
+  if (type != Print && FATAL >= this->m_logLevel) {
     m_mutex.lock();
     this->m_messages.push_back(loggerMessage);
     m_mutex.unlock();
@@ -244,8 +242,7 @@ void Logger::Fatal(const std::string& message, const std::string& log_pos, Logge
 void Logger::execute()
 {
   std::ofstream myfile;
-  while (true)
-  {
+  while (true) {
     m_mutex.lock();
 
     std::string fileName = this->m_filePath + "log" + TimeConverter::getCurrentTimeAsStr(std::string("yyyyMMdd"))+

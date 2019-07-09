@@ -37,6 +37,7 @@ class ick_api MySqlConnection : public Connection {
   string unix_socket;
   unsigned int client_flag;
   std::unique_ptr<sql::Connection> connection_;
+  std::string chartset;
 
  public:
   virtual void open();

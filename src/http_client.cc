@@ -73,7 +73,6 @@ bool HttpClient::FetchUrl(const std::string& url, const std::string& data) {
 
   res = curl_easy_perform(curl);
   Logger::getInstance()->Info("response body: " + response_body_);
-  curl_easy_cleanup(curl);
 
   if (res != CURLE_OK) {
     switch (res) {
@@ -95,10 +94,13 @@ bool HttpClient::FetchUrl(const std::string& url, const std::string& data) {
     }
     response_code_ = res;
   } else {
-    response_code_ = 200;
+    long response_code = 200;
+    curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &response_code);
+    response_code_ = response_code;
   }
+  curl_easy_cleanup(curl);
   curl_code_ = res;
-  return res == CURLE_OK;
+  return res == CURLE_OK && response_code_ == 200;
 }
 
 void HttpClient::SetHeader(

@@ -17,6 +17,7 @@ MySqlConnection::MySqlConnection(
   this->port = port;
   this->unix_socket = unix_socket;
   this->client_flag = client_flag;
+  this->chartset = "utf8";
 }
 
 MySqlConnection::~MySqlConnection() {}
@@ -25,8 +26,15 @@ void MySqlConnection::open() {
   sql::mysql::MySQL_Driver *driver;
   driver = sql::mysql::get_mysql_driver_instance();
   std::string server = "tcp://" + host + ":" + std::to_string(port);
-  connection_.reset(driver->connect(
-      server, this->user, this->pwd));
+  sql::ConnectOptionsMap option_map;
+  option_map.insert(std::pair<sql::SQLString, sql::ConnectPropertyVal>("hostName", sql::Variant(sql::SQLString(server.c_str()))));
+  option_map.insert(std::pair<sql::SQLString, sql::ConnectPropertyVal>("userName", sql::Variant(sql::SQLString(this->user.c_str()))));
+  option_map.insert(std::pair<sql::SQLString, sql::ConnectPropertyVal>("password", sql::Variant(sql::SQLString(this->pwd.c_str()))));
+  option_map.insert(std::pair<sql::SQLString, sql::ConnectPropertyVal>("OPT_RECONNECT", sql::Variant(true)));
+  option_map.insert(std::pair<sql::SQLString, sql::ConnectPropertyVal>("OPT_CHARSET_NAME", sql::Variant(sql::SQLString(this->chartset.c_str()))));
+  // connection_.reset(driver->connect(
+  //     server, this->user, this->pwd));
+  connection_.reset(driver->connect(option_map));
   connection_->setSchema(this->db);
   if (connection_ == nullptr) {
     Logger::getInstance()->Error("connection is null!!!");
@@ -36,6 +44,7 @@ void MySqlConnection::open() {
 void MySqlConnection::close() {}
 
 bool MySqlConnection::setCharset(std::string chartset) {
+  this->chartset = chartset;
   return true;
 }
 
@@ -66,6 +75,20 @@ int MySqlConnection::executeQuery(string& sql, bool print) {
       Logger::getInstance()->Error("stmt is null!!!");
     } else {
       result_set_.reset(stmt->executeQuery(sql));
+      if (result_set_ != nullptr && result_set_->first()) {
+        do {
+          sql::ResultSetMetaData* meta_data = result_set_->getMetaData();
+          unsigned int column_count = meta_data->getColumnCount();
+          std::map<std::string, std::string> row_data;
+          for (int i = 0; i < column_count; ++i) {
+            std::string column_name = meta_data->getColumnName(i + 1);
+            std::string column_value = result_set_->getString(i + 1);
+            row_data.insert(std::pair<std::string, std::string>(column_name, column_value));
+          }
+          this->rs.push_back(row_data);
+        } while (result_set_->next());
+      }
+      return result_set_->rowsCount();
     }
   } catch (const sql::SQLException& exception) {
     std::string msg = "executeQuery error: code: "
