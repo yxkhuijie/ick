@@ -1,0 +1,138 @@
+syntax = "proto3";
+
+package com.ick;
+
+option cc_enable_arenas = true;
+option java_outer_classname = "ReomteServiceProto";
+option java_package = "com.ick";
+
+// 远程服务
+service RemoteService {
+    // 列举所有的服务
+    rpc RequestService (ServiceRequest) returns (ServiceResponse);
+    rpc ExecuteService (ServiceRequest) returns (ServiceResponse);
+    rpc RequestControlObject(ControlObjectRequest) returns (ControlObjectResponse);
+    rpc RequestDataObject(DataObjectRequest) returns (DataObjectResponse);
+    rpc RegisterDataObject(DataObjectRequest) returns (DataObjectResponse);
+    rpc RequestLogger (LoggerRequest) returns (stream LoggerResponse);
+}
+
+message ServiceRequest {
+    repeated ServiceInfo service_info = 1;
+}
+
+message ServiceResponse {
+    repeated ServiceInfo service_info = 1;
+}
+
+message ServiceInfo {
+    // 对象名称
+    string object_name = 1;
+    // 服务名称
+    string service_name = 2;
+    // 服务参数
+    repeated ServiceParam service_param = 3;
+    // 错误信息 (ExecuteService中会用到，表示服务执行状态)
+    Error error = 10;
+}
+
+message ServiceParam {
+    enum ParamType {
+        PARAM_TYPE_VOID = 0;
+        PARAM_TYPE_INT = 1;
+        PARAM_TYPE_DOUBLE = 2;
+        PARAM_TYPE_STRING = 3;
+    }
+	// 参数名称
+	string param_name = 1;
+	// 参数类型
+	ParamType param_type = 2;
+	// 默认值
+	string default_value = 3;
+	// 最大值
+	string max_value = 4;
+	// 最小值
+	string min_value = 5;
+	// 描述
+	string description = 6;
+}
+
+message ControlObjectRequest {
+    repeated ControlObjectInfo object_info = 1;
+}
+
+message ControlObjectResponse {
+    repeated ControlObjectInfo object_info = 1;
+}
+
+message ControlObjectInfo {
+    string object_name = 1;
+}
+
+message DataObjectRequest {
+    repeated DataObjectInfo object_info = 1;
+}
+
+message DataObjectResponse {
+    repeated DataObjectInfo object_info = 1;
+}
+
+message DataObjectInfo {
+	enum DataType {
+	    DATA_TYPE_UNKNOWN = 0;
+	    DATA_TYPE_INT = 1;
+	    DATA_TYPE_DOUBLE = 2;
+	    DATA_TYPE_STRING = 3;
+	}
+	enum AccessMode {
+	    ACCESS_MODE_UNKNOWN = 0;
+	    ACCESS_MODE_READONLY = 1;
+	    ACCESS_MODE_READWRITE = 2;
+	}
+	// 对象名称
+	string object_name = 1;
+    // 数据类型
+    DataType data_type = 2;
+    // 访问模式
+    AccessMode access_mode = 3;
+    // 默认值
+	string default_value = 4;
+	// 最大值
+	string max_value = 5;
+	// 最小值
+	string min_value = 6;
+	// 描述
+	string description = 7;
+	// 错误信息
+	Error error = 10;
+}
+
+message LoggerRequest {
+    int32 count = 1; 
+}
+
+message LoggerResponse {
+    enum LoggerLevel {
+        LOGGER_LEVEL_ALL = 0;
+        LOGGER_LEVEL_DEBUG = 1;
+        LOGGER_LEVEL_INFO = 2;
+        LOGGER_LEVEL_WARN = 3;
+        LOGGER_LEVEL_ERROR = 4;
+        LOGGER_LEVEL_FATAL = 5;
+    }
+    LoggerLevel level = 1;
+    string time = 2;
+    string message = 3;
+    Error error = 10;
+}
+
+message Error {
+    enum ErrorCode {
+        OK = 0;
+        CANCELLED = 1;
+        UNKNOWN = 2;
+        INVALID_ARGUMENT = 3;
+    }
+    ErrorCode code = 1;
+    string message = 2;
+}

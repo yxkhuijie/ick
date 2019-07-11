@@ -26,8 +26,15 @@ enum LoggerLevel {
   OFF = 6
 };
 
+struct HistoryLoggerInfo {
+ public:
+  std::string file_name_;
+  int line_count_;
+  int file_size_;
+};
+
 class LoggerMessage {
-public:
+ public:
   std::string logTime;
   std::string logMessage;
   LoggerLevel logLevel;
@@ -35,7 +42,8 @@ public:
   std::string strLevel;
   std::string logPos;
 
-public:
+ public:
+  LoggerMessage() {}
   LoggerMessage(const std::string& msg, const std::string& pos = "",
       LoggerLevel level = ALL, LoggerType print = RecordAndPrint) {
     this->logTime = TimeConverter::getCurrentTimeAsStr();
@@ -53,11 +61,11 @@ public:
   };
   ~LoggerMessage() {};
 
-  std::string toString() {
+  std::string toString(bool crlf = true) {
     if (logLevel == WARN || logLevel == ERROR || logLevel == FATAL) {
-      return "!! " + logTime + " " + strLevel + "    " + logMessage + "\n";
+      return "!! " + logTime + " " + strLevel + "    " + logMessage + (crlf ? "\n" : "");
     } else {
-      return logTime + "    " + strLevel + "    " + logMessage + "\n";
+      return logTime + "    " + strLevel + "    " + logMessage + (crlf ? "\n" : "");
     }
   }
 
@@ -74,36 +82,42 @@ public:
   }
 };
 
+class ick_api LoggerSubscriber {
+ public:
+  virtual void update(const std::list<LoggerMessage>& logger_message_list) = 0;
+};
+
 class ick_api Logger : public IThread {
-public:
+ public:
   Logger();
   ~Logger();
 
-private:
-
+ private:
   static Logger* m_instance;
-
   IMutex m_mutex;
-
+  IMutex mutex_logger_request_;
   std::string m_filePath;
+  std::list<LoggerMessage> m_messages;
+  long m_fileSize;
+  int m_fileIndex;
+  friend class IApplication;
+  std::string m_logFileName;
+  LoggerLevel m_logLevel;
+  std::string file_name_;
+  int file_index_;
+  std::list<HistoryLoggerInfo> logger_history_list_;
+  std::list<LoggerSubscriber*> logger_subscriber_list_;
 
+ private:
   virtual void execute();
 
-  std::list<LoggerMessage> m_messages;
-
-  long m_fileSize;
-
-  int m_fileIndex;
-
-  friend class IApplication;
-
-  std::string m_logFileName;
-
-  LoggerLevel m_logLevel;
-
-public:
-
+ public:
   void startup();
+  static Logger* getInstance();
+  void setFilePath(std::string path);
+  void getHistoryLog(std::list<std::string>* data, int count = 0, LoggerSubscriber* subscriber = nullptr);
+  void setLoggerSubscriber(LoggerSubscriber* subscriber);
+  void cancelLoggerSubscriber(LoggerSubscriber* subscriber);
 
   void Log(const std::string& message,
       const std::string& log_pos = "",
@@ -124,10 +138,6 @@ public:
   void Fatal(const std::string& message,
       const std::string& log_pos = "",
       LoggerType print = RecordAndPrint);
-
-  static Logger* getInstance();
-
-  void setFilePath(std::string path);
 };
 
 #define LOG(type) \

@@ -1,3 +1,4 @@
+#include "src/grpc_remote_service.h"
 #include "src/thread.h"
 #include "src/ick_storm_subscriber_socket.h"
 #include "src/ick_storm_service_socket.h"
@@ -5,7 +6,6 @@
 
 #ifndef _IAPPLICATION_H_
 #define _IAPPLICATION_H_
-
 
 class ick_api IApplication : /*virtual public Ice::Application, */public IThread
 {
@@ -62,6 +62,8 @@ private:
   bool m_isServiceEnable;
 
   bool m_isDebuggerEnable;
+
+  std::unique_ptr<GrpcRemoteServiceThread> grpc_remote_service_thread_;
 
 public:
 
