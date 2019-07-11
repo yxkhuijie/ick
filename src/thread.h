@@ -3,8 +3,10 @@
 
 #include "src/object.h"
 
-#ifdef _WINDOWS
+#ifdef __windows__
 #include <Windows.h>
+#elif __linux__
+#include <pthread.h>
 #endif
 
 typedef enum
@@ -28,7 +30,12 @@ class ick_api IThread : public IObject
 {
 
 private:
+#ifdef __windows__
   HANDLE m_thread;
+#elif __linux__
+  pthread_t thread_;
+#endif
+
 
 private:
   ThreadState m_state;
@@ -40,12 +47,13 @@ public:
   void start();
   void stop();
   void resume();
+  void join();
 
-    #ifdef __windows__
+#ifdef __windows__
   static DWORD WINAPI ThreadHandler(LPVOID lpParamter);
-    #else
-  
-    #endif
+#elif __linux__
+  static void* ThreadHandler(void* arg);
+#endif
 
   virtual void execute() = 0;
 };

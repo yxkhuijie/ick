@@ -22,7 +22,7 @@ std::string TimeConverter::getCurrentTimeAsStr()
   time_t tick = (time_t)(tv.tv_sec);
   struct tm* p = gmtime(&tick);
   char tmp[64] = { '\0' };
-  sprintf(tmp, "%4d/%02d/%02d %02d:%02d:%02d.%03d",
+  sprintf(tmp, "%4d-%02d-%02d %02d:%02d:%02d.%03d",
       p->tm_year + 1900, p->tm_mon, p->tm_mday,
       p->tm_hour, p->tm_min, p->tm_sec, tv.tv_usec / 1000);
   return std::string(tmp);

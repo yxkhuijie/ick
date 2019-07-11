@@ -7,14 +7,20 @@
 #include <unistd.h>
 #endif
 
-bool File::readFile(const std::string& path, std::list<std::string>* lst) {
+bool File::readFile(const std::string& path, std::list<std::string>* lst, int start_line /* = 0 */) {
   if (path.empty() || lst == nullptr || !exist(path)) return false;
   std::ifstream infile; 
   infile.open(path.data());
   assert(infile.is_open());
   std::string s;
+  int line = 0;
   while(getline(infile, s)) {
+    if (line < start_line) {
+      line++;
+      continue;
+    }
     lst->push_back(s);
+    line++;
   }
   infile.close();
   return true;

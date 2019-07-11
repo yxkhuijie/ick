@@ -13,11 +13,13 @@
 
 #include "gflags/gflags.h"
 
-DEFINE_string(config_path, "", "config file path: io_config.xml and control_object.xml");
+DEFINE_string(config, "", "config file path: io_config.xml and control_object.xml");
 DEFINE_bool(enable_grpc, true, "enable grpc or not");
 DEFINE_bool(enable_http, true, "enable http or not");
 DEFINE_bool(enable_socket, true, "enable socket or not");
 DEFINE_bool(server_flag, true, "this program is server or client");
+DEFINE_bool(enable_grpc_remote_service, true, "enable grpc remote service or not");
+DEFINE_string(grpc_remote_service_port, "0.0.0.0:8081", "grpc remote service port");
 
 IApplication::IApplication(bool isServer, bool isLoadIniConfig, bool isLoadXmlConfig)
 {
@@ -96,7 +98,7 @@ int IApplication::run(int argc, char* argv[])
       MultiByteToWideChar(CP_ACP, 0, strFilePath.c_str(), -1, szFilePath, len);
 #endif
 #elif __linux__
-      if (FLAGS_config_path.empty() || FLAGS_config_path[0] != '/') {
+      if (FLAGS_config.empty() || FLAGS_config[0] != '/') {
         char current_absolute_path[MAX_PATH];
         //获取当前程序绝对路径
         int cnt = readlink("/proc/self/exe", current_absolute_path, MAX_PATH);
@@ -117,9 +119,9 @@ int IApplication::run(int argc, char* argv[])
         Logger::getInstance()->Info("current absolute path: " + std::string(current_absolute_path));
         strFilePath = current_absolute_path;
       } else {
-        if (FLAGS_config_path[0] == '/') {
-          strFilePath = FLAGS_config_path;
-          if (FLAGS_config_path.back() != '/') {
+        if (FLAGS_config[0] == '/') {
+          strFilePath = FLAGS_config;
+          if (FLAGS_config.back() != '/') {
             strFilePath += "/";
           }
         }
@@ -301,6 +303,13 @@ int IApplication::run(int argc, char* argv[])
       xmlParser.loadConfigFile();
 
       ObjectManager::getInstance()->startNamespace();
+    }
+
+    // start grpc remote service
+    if (FLAGS_enable_grpc_remote_service && !FLAGS_grpc_remote_service_port.empty()) {
+      this->grpc_remote_service_thread_.reset(new GrpcRemoteServiceThread());
+      this->grpc_remote_service_thread_->setListeningPort(FLAGS_grpc_remote_service_port);
+      this->grpc_remote_service_thread_->start();
     }
 
     // this->start();
