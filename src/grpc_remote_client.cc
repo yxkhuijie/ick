@@ -23,12 +23,12 @@ void GrpcRemoteClient::RequestLogger(int count /* = 0 */) {
       client_reader(stub_->RequestLogger(&client_context, logger_request));
   LoggerResponse logger_response;
   while(client_reader->Read(&logger_response)) {
-  	if (logger_response.has_error()) {
-  	  Logger::getInstance()->Error("request logger error: " + std::to_string(logger_response.error().code()) + ", " + logger_response.error().message());
-  	  break;
-  	}
-  	std::string logger_message = logger_response.message();
-  	Logger::getInstance()->Info(logger_message);
+    if (logger_response.has_error()) {
+      Logger::getInstance()->Error("request logger error: " + std::to_string(logger_response.error().code()) + ", " + logger_response.error().message());
+      break;
+    }
+    std::string logger_message = logger_response.message();
+    Logger::getInstance()->Info(logger_message);
   }
 }
 
