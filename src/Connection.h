@@ -30,13 +30,14 @@ typedef list<map<string, string> > RecordSet;
 class ick_api Connection : public IObject
 {
 public:
-  Connection(void){};
-  virtual ~Connection(void){};
+  Connection(void) : debug_(false) {};
+  virtual ~Connection(void) {};
   
 private: 
   int res;
 
-public:
+protected:
+  bool debug_;
   RecordSet rs;
   std::unique_ptr<sql::ResultSet> result_set_;
 
@@ -47,10 +48,11 @@ public:
   virtual bool isValid() { return true; }
   virtual void getConnection() = 0;
   virtual void releaseConnection(Connection* conn) = 0;
-  virtual int executeQuery(string& sql, bool print=false) = 0;
-  virtual bool executeCommand(string& sql, bool print=false) = 0;
+  virtual int executeQuery(const std::string& sql) = 0;
+  virtual bool executeCommand(const std::string& sql) = 0;
   virtual RecordSet* getRecordSet() = 0;
-  virtual bool setCharset(std::string charset) { return true;  };
+  virtual bool setCharset(const std::string& charset) { return true;  };
+  virtual void setDebug(bool debug = false) { debug_ = debug; }
 };
 
 #endif

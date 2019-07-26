@@ -24,9 +24,8 @@ using namespace std;
 
 // typedef list<map<string,string>> RecordSet;
 
-class ick_api IDataBase : public ControlObject
-{
-  DECLARE_CLASS_DYNAMIC(IDataBase)  
+class ick_api IDataBase : public ControlObject {
+  DECLARE_CLASS_DYNAMIC(IDataBase)
   DECLARE_MESSAGE_LIST
   DECLARE_SERVICEINFO_LIST
   
@@ -41,20 +40,20 @@ private:
   void startup();
   
 public:
-  // ServicePtr<ExecuteCommand> m_ExecuteCommand;
-
   string sql;
   RecordSet rs;
-  // sql::ResultSet result_set_;
   int ErrCode;
-  
-  ConnectionPool* m_ConnectionPool;
-  
-  int executeQuery(std::string sql = "", bool print=false);
-  int executeCommand(std::string sql = "");
+
+  void setConnectionPoolName(const std::string& pool_name);
+  int executeQuery(std::string sql = "");
+  bool executeCommand(std::string sql = "");
   void clear(RecordSet& rs, bool freeMemory = true);
 
   SET_DEFINE(setConnectionPool)
+
+ private:
+  ConnectionPool* connection_pool_;
+  std::string connection_pool_name_;
 };
 
 #endif

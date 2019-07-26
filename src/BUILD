@@ -153,6 +153,16 @@ cc_binary(
 )
 
 cc_binary(
+  name = "xml_parser_test",
+  srcs = [
+    "xml_parser_test.cc",
+  ],
+  deps = [
+    ":ick",
+  ]
+)
+
+cc_binary(
   name = "grpc_remote_client_main",
   srcs = [
     "grpc_remote_client_main.cc",

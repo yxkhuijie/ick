@@ -25,6 +25,8 @@
 #include <xercesc/parsers/XercesDOMParser.hpp> 
 #include <xercesc/util/OutOfMemoryException.hpp>
 
+#include "src/converter.h"
+#include "src/logger.h"
 #include "src/object.h"
 #include "src/xml_parse_handler.h"
 //
@@ -43,86 +45,103 @@ typedef XERCES_CPP_NAMESPACE::DOMDocument DOMDOC;
 #define __MSXML_LIBRARY_DEFINED__
 #endif
 
-class ick_api XmlParser : public IObject
-{
-private:
+class ick_api XmlParser : public IObject {
+ private:
   std::string m_strConfigPath;
 
-public:
+ public:
   XmlParser();
   ~XmlParser();
 
-private:
-  XercesDOMParser* m_parser;
+ private:
+  XercesDOMParser* xerces_dom_parser_;
   DOMElement* LoadIO(DOMElement* ele);
   DOMElement* LoadControlObject(DOMElement* ele);
   DOMElement* loadXmlFile(std::string filePath);
-public:
+
+ public:
   int loadConfigFile();
+  // bool loadXmlFromString(const std::string& xml_data);
   void setConfigPath(const std::string& configPath);
 };
 
-
-
-// ---------------------------------------------------------------------------
-//  This is a simple class that lets us do easy (though not terribly efficient)
-//  trancoding of XMLCh data to local code page for display.
-// ---------------------------------------------------------------------------
-class StrX
-{
-public:
-  // -----------------------------------------------------------------------
-  //  Constructors and Destructor
-  // -----------------------------------------------------------------------
-  StrX(const XMLCh* const toTranscode)
-  {
-    // Call the private transcoding method
-    fLocalForm = XMLString::transcode(toTranscode);
-    fXerceForm = NULL;
+class StrX {
+ public:
+  StrX() : xerce_form_(nullptr) {};
+  StrX(const XMLCh* const toTranscode) {
+    // local_form_ = Converter::convertUtf16ToUtf8(toTranscode);
+    local_form_ = XMLString::transcode(toTranscode);
+    xerce_form_ = nullptr;
   }
 
-  StrX(const char* const toTranscode)
-  {
-    fLocalForm = NULL;
-    fXerceForm = XMLString::transcode(toTranscode);
+  StrX(const char* const toTranscode) {
+    xerce_form_ = XMLString::transcode(toTranscode);
+    local_form_ = "";
+    /*
+    std::vector<uint16_t> xerce_form_vec;
+    Converter::convertUtf8ToUtf16(toTranscode, &xerce_form_vec);
+    xerce_form_ = new XMLCh[xerce_form_vec.size() + 1];
+    XMLCh* psz_out = xerce_form_;
+    for (const auto& it : xerce_form_vec) {
+      *psz_out++ = it;
+    }
+    *psz_out = 0;
+    */
   }
 
-  ~StrX()
-  {
-    if(fLocalForm != NULL) XMLString::release(&fLocalForm);
-    if (fXerceForm != NULL) XMLString::release(&fXerceForm);
+  ~StrX() {
+    if (xerce_form_ != nullptr) delete[] xerce_form_;
   }
 
-
-  // -----------------------------------------------------------------------
-  //  Getter methods
-  // -----------------------------------------------------------------------
-  const char* localForm() const
-  {
-    return fLocalForm;
+  const char* toChar(const XMLCh* const src) {
+    local_form_ = Converter::convertUtf16ToUtf8(src);
+    return local_form_.c_str();
   }
 
-  const XMLCh* xerceForm() const
-  {
-    return fXerceForm;
+  const XMLCh* toXMLCh(const char* const src) {
+    std::vector<uint16_t> dst_vec;
+    Converter::convertUtf8ToUtf16(src, &dst_vec);
+    if (xerce_form_ != nullptr) {
+      delete[] xerce_form_;
+      xerce_form_ = nullptr;
+    }
+    xerce_form_ = new XMLCh[dst_vec.size() + 1];
+    XMLCh* psz_out = xerce_form_;
+    for (const auto& it : dst_vec) {
+      *psz_out++ = it;
+    }
+    *psz_out = 0;
+    return xerce_form_;
   }
 
-private:
-  // -----------------------------------------------------------------------
-  //  Private data members
-  //
-  //  fLocalForm
-  //      This is the local code page form of the string.
-  // -----------------------------------------------------------------------
-  char*   fLocalForm;
-  XMLCh*  fXerceForm;
+  static void convert(const char* const src, XMLCh* dst) {
+    std::vector<uint16_t> xerce_form_vec;
+    Converter::convertUtf8ToUtf16(src, &xerce_form_vec);
+    for (const auto& it : xerce_form_vec) {
+      Logger::getInstance()->Info("it: " + std::to_string(it));
+      *dst++ = it;
+    }
+    *dst = 0;
+  }
+
+  const char* localForm() const {
+    // return fLocalForm;
+    return local_form_.c_str();
+  }
+
+  const XMLCh* xerceForm() const {
+    // return fXerceForm;
+    return xerce_form_;
+  }
+
+ private:
+  std::string local_form_;
+  XMLCh* xerce_form_;
+  char* char_form_;
 };
 
-inline XERCES_STD_QUALIFIER ostream& operator<<(XERCES_STD_QUALIFIER ostream& target, const StrX& toDump)
-{
+inline XERCES_STD_QUALIFIER ostream& operator<<(XERCES_STD_QUALIFIER ostream& target, const StrX& toDump) {
   target << toDump.localForm();
   return target;
 }
-
 #endif
-

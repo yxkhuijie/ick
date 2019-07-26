@@ -56,19 +56,15 @@ bool MySqlConnection::isValid() {
   return connection_->isValid();
 }
 
-void MySqlConnection::getConnection() {
+void MySqlConnection::getConnection() {}
 
-}
+void MySqlConnection::releaseConnection(Connection* conn) {}
 
-
-void MySqlConnection::releaseConnection(Connection* conn) {
-
-}
-
-
-int MySqlConnection::executeQuery(string& sql, bool print) {
+int MySqlConnection::executeQuery(const std::string& sql) {
   this->rs.clear();
-  if(print) cout<<"start execute query: sql: " + sql << endl;
+  if(debug_) {
+    Logger::getInstance()->Info("start execute query: sql: " + sql);
+  }
   try {
     sql::Statement* stmt = connection_->createStatement();
     if (stmt == nullptr) {
@@ -91,6 +87,9 @@ int MySqlConnection::executeQuery(string& sql, bool print) {
       return result_set_->rowsCount();
     }
   } catch (const sql::SQLException& exception) {
+    if (!debug_) {
+      Logger::getInstance()->Info("executeQuery: sql: " + sql);
+    }
     std::string msg = "executeQuery error: code: "
         + std::to_string(exception.getErrorCode())
         + ", what(): " + exception.what();
@@ -100,8 +99,10 @@ int MySqlConnection::executeQuery(string& sql, bool print) {
   return 0;
 }
 
-bool MySqlConnection::executeCommand(string& sql, bool print) {
-  if(print) cout<<"start execute query: sql: " + sql << endl;
+bool MySqlConnection::executeCommand(const std::string& sql) {
+  if(debug_) {
+    Logger::getInstance()->Info("start execute command: sql: " + sql);
+  }
   try {
     sql::Statement* stmt = connection_->createStatement();
     if (stmt == nullptr) {
@@ -111,7 +112,10 @@ bool MySqlConnection::executeCommand(string& sql, bool print) {
       stmt->execute(sql);
     }
   } catch (const sql::SQLException& exception) {
-    std::string msg = "executeQuery error: code: "
+    if (!debug_) {
+      Logger::getInstance()->Info("executeCommand: sql: " + sql);
+    }
+    std::string msg = "executeCommand error: code: "
         + std::to_string(exception.getErrorCode())
         + ", what(): " + exception.what();
     Logger::getInstance()->Error(msg);
@@ -127,5 +131,3 @@ RecordSet* MySqlConnection::getRecordSet() {
 sql::ResultSet* MySqlConnection::getResultSet() {
   return result_set_.get();
 }
-
-

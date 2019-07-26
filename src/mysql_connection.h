@@ -46,8 +46,8 @@ class ick_api MySqlConnection : public Connection {
   virtual bool isValid();
   virtual void getConnection();
   virtual void releaseConnection(Connection* conn);
-  virtual int executeQuery(string& sql, bool print=false);
-  virtual bool executeCommand(string& sql, bool print=false);
+  virtual int executeQuery(const std::string& sql);
+  virtual bool executeCommand(const std::string& sql);
   virtual RecordSet* getRecordSet();
   virtual sql::ResultSet* getResultSet();
   virtual bool setCharset(std::string chartset);

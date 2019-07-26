@@ -26,28 +26,26 @@ typedef enum
   PRIORITY_HIGHEST
 }ThreadPriority;
 
-class ick_api IThread : public IObject
-{
-
-private:
+class ick_api IThread : public IObject {
+ private:
 #ifdef __windows__
   HANDLE m_thread;
 #elif __linux__
   pthread_t thread_;
 #endif
-
-
-private:
   ThreadState m_state;
 
-public:
+ protected:
+  bool exit_flag_;
+
+ public:
   IThread();
   virtual ~IThread();
 
-  void start();
-  void stop();
-  void resume();
-  void join();
+  virtual void start();
+  virtual void stop();
+  virtual void resume();
+  virtual void join();
 
 #ifdef __windows__
   static DWORD WINAPI ThreadHandler(LPVOID lpParamter);

@@ -18,26 +18,24 @@
 
 using namespace std;
 
-class ick_api ConnectionPoolManager
-{
-public:
+class ick_api ConnectionPoolManager {
+ public:
   ConnectionPoolManager(void);
   ~ConnectionPoolManager(void);
-  // Á¬½Ó³Ø´æ·Å  
 
-private:
-    static ConnectionPoolManager* instance;  
-  
-public:
-  map<string,ConnectionPool*> pools;
+ private:
+  static ConnectionPoolManager* instance;  
+  ConnectionPool* default_pool_;
+
+ public:
+  map<string, ConnectionPool*> pools;
   static ConnectionPoolManager* getInstance();
   void startup();
-  Connection* getConnection(string poolName);
+  Connection* getConnection(const string& poolName);
   void close(string poolName,Connection* conn);
   void destroy(string poolName);
-  ConnectionPool* getPool(string poolName);
+  ConnectionPool* getPool(const string& poolName);
   void addPool(string poolName, ConnectionPool* pool);
-  
 };
 
 #endif

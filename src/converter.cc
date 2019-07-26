@@ -6,16 +6,14 @@
 #include <stdlib.h>
 #endif
 
+#include <sstream>
+
+#include "src/logger.h"
+
+Converter::Converter() {}
 
 
-Converter::Converter()
-{
-}
-
-
-Converter::~Converter()
-{
-}
+Converter::~Converter() {}
 
 std::string Converter::convertToString(int value)
 {
@@ -225,6 +223,23 @@ std::string Converter::trim(std::string s)
   return str;
 }
 
+std::string Converter::replace(
+    const std::string& str,
+    const std::string& str_src,
+    const std::string& str_dst) {
+  std::string::size_type pos = 0;
+  std::string::size_type len_src = str_src.size();
+  std::string::size_type len_dst = str_dst.size();
+
+  std::string result = str;
+  pos = result.find(str_src, pos);
+  while (pos != std::string::npos) {
+    result.replace(pos, len_src, str_dst);
+    pos = result.find(str_src, pos + len_dst);
+  }
+  return result;
+}
+
 std::string Converter::encodeUrl(const std::string& str) {
   std::string res = "";
   for (int i = 0; i < str.length(); ++i) {
@@ -250,4 +265,93 @@ std::string Converter::encodeUrl(const std::string& str) {
 
 std::string Converter::decodeUrl(const std::string& str) {
 
+}
+
+std::string Converter::convertUtf16ToUtf8(const uint16_t* data) {
+  if (data == nullptr) return "";
+  std::stringstream result;
+  int i = 0;
+  while (true) {
+    uint16_t d = data[i];
+    if (d == 0) break;
+    if (d <= 0x0000007F) {
+      std::string s(1, 0);
+      s[0] = (char)(d & 0x7F);
+      result << s;
+    } else if (d <= 0x000007FF) {
+      std::string s(2, 0);
+      s[0] = (char)(0xC0 | ((d >> 6) & 0x1F));
+      s[1] = (char)(0x80 | (d & 0x3F));
+      result << s;
+    } else if (d <= 0x000FFFF) {
+      std::string s(3, 0);
+      s[0] = (char)(0xE0 | ((d >> 12) & 0x0F));
+      s[1] = (char)(0x80 | ((d >> 6) & 0x3F));
+      s[2] = (char)(0x80 | (d & 0x3F));
+      result << s;
+    } else if (d <= 0x001FFFFF) {
+      std::string s(4, 0);
+      s[0] = (char)(0xF0 | ((d >> 18) & 0x07));
+      s[1] = (char)(0x80 | ((d >> 12) & 0x3F));
+      s[2] = (char)(0x80 | ((d >> 6) & 0x3F));
+      s[3] = (char)(0x80 | (d & 0x3F));
+      result << s;
+    } else if (d <= 0x03FFFFFF) {
+      std::string s(5, 0);
+      s[0] = (char)(0xF8 | ((d >> 24) & 0x03));
+      s[1] = (char)(0x80 | ((d >> 18) & 0x3F));
+      s[2] = (char)(0x80 | ((d >> 12) & 0x3F));
+      s[3] = (char)(0x80 | ((d >> 6) & 0x3F));
+      s[4] = (char)(0x80 | (d & 0x3F));
+      result << s;
+    } else {
+      std::string s(6, 0);
+      s[0] = (char)(0xFC | ((d >> 30) & 0x01));
+      s[1] = (char)(0x80 | ((d >> 24) & 0x3F));
+      s[2] = (char)(0x80 | ((d >> 18) & 0x3F));
+      s[3] = (char)(0x80 | ((d >> 12) & 0x3F));
+      s[4] = (char)(0x80 | ((d >> 6) & 0x3F));
+      s[5] = (char)(0x80 | (d & 0x3F));
+      result << s;
+    }
+    i++;
+  }
+  return result.str();
+}
+
+void Converter::convertUtf8ToUtf16(const std::string& str, std::vector<uint16_t>* res) {
+  if (str.empty() || res == nullptr) return;
+  const char* data = str.c_str();
+  for (int i = 0; i < str.length();) {
+    unsigned char ch0 = data[i + 0];
+    unsigned char ch1 = data[i + 1];
+    unsigned char ch2 = data[i + 2];
+    unsigned char ch3 = data[i + 3];
+    unsigned char ch4 = data[i + 4];
+    unsigned char ch5 = data[i + 5];
+    uint16_t s = 0;
+    if (ch0 >> 7 == 0) {
+      s = ch0 & 0x7F;
+      i += 1;
+    } else if (ch0 >> 5 == 6 && ch1 >> 6 == 2) {
+      s = (((uint16_t)ch0 & 0x1F) << 6) + (ch1 & 0x3F);
+      i += 2;
+    } else if (ch0 >> 4 == 14 && ch1 >> 6 == 2 && ch2 >> 6 == 2) {
+      s = (((uint16_t)ch0 & 0x0F) << 12) + ((ch1 & 0x3F) << 6) + (ch2 & 0x3F);
+      i += 3;
+    } else if (ch0 >> 3 == 0x1E && ch1 >> 6 == 2 && ch2 >> 6 == 2 && ch3 >> 6 == 2) {
+      s = (((uint16_t)ch0 & 0x07) << 18) + ((ch1 & 0x3F) << 12) + ((ch2 & 0x3F) << 6) + (ch3 & 0x3F);
+      i += 4;
+    } else if (ch0 >> 2 == 0x3E && ch1 >> 6 == 2 && ch2 >> 6 == 2 && ch3 >> 6 == 2 && ch4 >> 6 == 2) {
+      s = (((uint16_t)ch0 & 0x03) << 24) + ((ch1 & 0x3F) << 18) + ((ch2 & 0x3F) << 12) + ((ch3 & 0x3F) << 6) + (ch4 & 0x3F);
+      i += 5;
+    } else if (ch0 >> 2 == 0x7E && ch1 >> 6 == 2 && ch2 >> 6 == 2 && ch3 >> 6 == 2 && ch4 >> 6 == 2 && ch5 >> 6 == 2) {
+      s = (((uint16_t)ch0 & 0x01) << 30) + ((ch1 & 0x3F) << 24) + ((ch2 & 0x3F) << 18) + ((ch3 & 0x3F) << 12) + ((ch4 & 0x3F) << 6) + (ch5 & 0x3F);
+      i += 6;
+    } else {
+      Logger::getInstance()->Error("utf8 format error!!");
+      return;
+    }
+    res->push_back(s);
+  }
 }

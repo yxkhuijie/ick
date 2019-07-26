@@ -22,21 +22,19 @@
 
 using namespace std;
 
-typedef enum tagEDataBaseType
-{
-    MySql     = 0,
+typedef enum tagEDataBaseType {
+  MySql     = 0,
   Oracle    = 1,
   SqlServer = 2,
 }EDataBaseType;
 
 class ConnectionPoolManager;
 
-class ick_api ConnectionPool : public ControlObject
-{
-    DECLARE_CLASS_DYNAMIC( ConnectionPool )
+class ick_api ConnectionPool : public ControlObject {
+  DECLARE_CLASS_DYNAMIC( ConnectionPool )
   DECLARE_MESSAGE_LIST
 
-public:
+ public:
   ConnectionPool(void);
   ~ConnectionPool(void);
   
@@ -46,8 +44,7 @@ public:
   void startup();
   void defaultAbort();
 
-private:
-  // 连接池属性  
+ private:
   string driverName;  
   string url; 
   
@@ -60,28 +57,29 @@ private:
   string charset;
   string unixSocket;
 
-    EDataBaseType dbType;  
+  EDataBaseType dbType;  
   
   list<Connection*> freeConnections;
   list<Connection*> activeConnections;
   bool isActive;
 
-    // 连接池名字  
-    string poolName;  
-    int minConnections;            // 空闲池，最小连接数  
-    int maxConnections;            // 空闲池，最大连接数  
-    int initConnections;           // 初始化连接数  
-    int connTimeOut;               // 重复获得连接的频率    
-    int maxActiveConnections;      // 最大允许的连接数，和数据库对应（数据库允许的最大连接数） 
-    int connectionTimeOut;         // 连接超时时间，默认20分钟   
-    bool m_isCurrentConnection;    // 是否获得当前连接，默认true   
-    bool m_isCheckPool;            // 是否定时检查连接池  
-    int lazyCheck;                 // 延迟多少时间后开始 检查  
-    int periodCheck;               // 检查频率
+  string poolName;  
+  int minConnections;
+  int maxConnections; 
+  int initConnections;
+  int connTimeOut;
+  int maxActiveConnections;
+  int connectionTimeOut; 
+  bool m_isCurrentConnection;
+  bool m_isCheckPool;
+  int lazyCheck;
+  int periodCheck;
+  bool debug_;
   
-  int countActive;               // 记录创建的总的连接数
-    IMutex m_mutex;
-public:
+  int countActive;
+  IMutex m_mutex;
+
+ public:
   void setDriverName(const string& driverName);
   void setUrl(const string& url);
   void setDataBaseType(const string& dbType);
@@ -104,6 +102,7 @@ public:
   void setLazyCheckTime(int lazyCheck);
   void setPeriodCheckTime(int periodCheck) ;
   void setPoolCheck(bool isCheckPool);
+  void setDebug(bool debug);
   
   string getDriverName();
   string getUrl();
@@ -111,7 +110,7 @@ public:
   string getDbName();
   int getPort();
   string getHost();
-    string getUserName();
+  string getUserName();
   string getPassword();
   string getCharset();
   string getPoolName();
@@ -128,8 +127,9 @@ public:
   bool isCheckPool();
   
   bool checkTableExist(string tableName);
+
 public:
-    Connection* getConnection(void);
+  Connection* getConnection(void);
   void releaseConnection(Connection* conn);
   Connection* newConnection(void);
   bool isValid(Connection* conn);

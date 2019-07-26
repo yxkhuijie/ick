@@ -181,11 +181,28 @@ void Logger::Fatal(const std::string& message, const std::string& log_pos, Logge
     this->m_messages.push_back(loggerMessage);
     m_mutex.unlock();
   }
+
+  // wait messages empty
+  m_mutex.lock();
+  bool write_done = this->m_messages.empty();
+  m_mutex.unlock();
+  while (!write_done) {
+    m_mutex.lock();
+    write_done = this->m_messages.empty();
+    m_mutex.unlock();
+#ifdef __windows__    
+      Sleep(100);
+#elif __linux__
+      usleep(100000);
+#endif
+  }
+  this->stop();
+  ::exit(-1);
 }
 
 void Logger::execute() {
   std::ofstream myfile;
-  while (true) {
+  while (!this->exit_flag_) {
     m_mutex.lock();
     std::list<LoggerMessage> logger_message_list;
     logger_message_list.assign(m_messages.begin(), m_messages.end());

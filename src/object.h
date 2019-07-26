@@ -111,14 +111,10 @@ typedef unsigned int HANDLE;
 
 //ICK_NAMESPACE_BEGIN
 
-class ick_api IObject
-{
+class ick_api IObject {
 public:
-
   IObject(void);
-
   virtual ~IObject(void);
-
   virtual std::string toString();
 };
 
