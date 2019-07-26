@@ -67,17 +67,13 @@ class ick_api XmlParser : public IObject {
 
 class StrX {
  public:
-  StrX() : xerce_form_(nullptr) {};
+  StrX() : xerce_form_(nullptr) {}
   StrX(const XMLCh* const toTranscode) {
-    // local_form_ = Converter::convertUtf16ToUtf8(toTranscode);
-    local_form_ = XMLString::transcode(toTranscode);
+    local_form_ = Converter::convertUtf16ToUtf8(toTranscode);
     xerce_form_ = nullptr;
   }
 
   StrX(const char* const toTranscode) {
-    xerce_form_ = XMLString::transcode(toTranscode);
-    local_form_ = "";
-    /*
     std::vector<uint16_t> xerce_form_vec;
     Converter::convertUtf8ToUtf16(toTranscode, &xerce_form_vec);
     xerce_form_ = new XMLCh[xerce_form_vec.size() + 1];
@@ -86,7 +82,6 @@ class StrX {
       *psz_out++ = it;
     }
     *psz_out = 0;
-    */
   }
 
   ~StrX() {
@@ -114,23 +109,11 @@ class StrX {
     return xerce_form_;
   }
 
-  static void convert(const char* const src, XMLCh* dst) {
-    std::vector<uint16_t> xerce_form_vec;
-    Converter::convertUtf8ToUtf16(src, &xerce_form_vec);
-    for (const auto& it : xerce_form_vec) {
-      Logger::getInstance()->Info("it: " + std::to_string(it));
-      *dst++ = it;
-    }
-    *dst = 0;
-  }
-
   const char* localForm() const {
-    // return fLocalForm;
     return local_form_.c_str();
   }
 
   const XMLCh* xerceForm() const {
-    // return fXerceForm;
     return xerce_form_;
   }
 
