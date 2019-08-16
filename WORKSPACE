@@ -42,8 +42,8 @@ http_archive(
 )
 
 # Needed by absl
-http_archive(
+git_repository(
     name = "com_googlesource_code_cctz",
-    urls = ["https://github.com/google/cctz/archive/master.zip"],
-    strip_prefix = "cctz-master",
+    remote = "https://github.com/google/cctz",
+    tag = "v2.3",
 )
