@@ -5,11 +5,11 @@ new_git_repository(
     tag = "release-1.8.0",
 )
 
-git_repository(
+local_repository(
     name = "org_pubref_rules_protobuf",
-    remote = "https://github.com/pubref/rules_protobuf",
-    tag = "v0.8.2",
-    #commit = "..." # alternatively, use latest commit on master
+    #remote = "https://github.com/pubref/rules_protobuf",
+    #tag = "v0.8.2",
+    path = "third_party/rules_protobuf",
 )
 load("@org_pubref_rules_protobuf//cpp:rules.bzl", "cpp_proto_repositories")
 cpp_proto_repositories()
