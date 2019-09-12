@@ -1,4 +1,9 @@
 #include "src/application.h"
+
+#ifdef __linux__
+#include <unistd.h>
+#endif
+
 #include "src/ick_service_impl.h"
 //#include <IceStorm/IceStorm.h>
 #include "src/ick_storm_publisher.h"
@@ -13,7 +18,7 @@
 
 #include "gflags/gflags.h"
 
-DEFINE_string(config, "", "config file path: io_config.xml and control_object.xml");
+DEFINE_string(config, "config", "config file path: io_config.xml and control_object.xml");
 DEFINE_bool(enable_grpc, true, "enable grpc or not");
 DEFINE_bool(enable_http, true, "enable http or not");
 DEFINE_bool(enable_socket, true, "enable socket or not");
@@ -69,14 +74,12 @@ int IApplication::main(int argc, wchar_t* argv[])
   return this->run(argc, NULL);
 }
 
-int IApplication::run(int argc, char* argv[])
-{
+int IApplication::run(int argc, char* argv[]) {
   int status = 0;
   /*Ice::CommunicatorPtr ic = NULL;*/
   google::ParseCommandLineFlags(&argc, &argv, false);
 
-  try 
-  {
+  try {
     Logger::getInstance()->startup();
     ConnectionPoolManager::getInstance()->startup();
 
@@ -99,25 +102,29 @@ int IApplication::run(int argc, char* argv[])
 #endif
 #elif __linux__
       if (FLAGS_config.empty() || FLAGS_config[0] != '/') {
+        /*
         char current_absolute_path[MAX_PATH];
         //获取当前程序绝对路径
         int cnt = readlink("/proc/self/exe", current_absolute_path, MAX_PATH);
-        if (cnt < 0 || cnt >= MAX_PATH)
-        {
+        if (cnt < 0 || cnt >= MAX_PATH) {
           printf("***Error***\n");
           exit(-1);
         }
         //获取当前目录绝对路径，即去掉程序名
-        for (int i = cnt; i >=0; --i)
-        {
-          if (current_absolute_path[i] == '/')
-          {
+        for (int i = cnt; i >=0; --i) {
+          if (current_absolute_path[i] == '/') {
             current_absolute_path[i+1] = '\0';
             break;
           }
         }
         Logger::getInstance()->Info("current absolute path: " + std::string(current_absolute_path));
         strFilePath = current_absolute_path;
+        */
+        char buffer[MAX_PATH];
+        getcwd(buffer, MAX_PATH);
+        Logger::getInstance()->Info("current work dir: " + std::string(buffer));
+        strFilePath = std::string(buffer) + "/" + FLAGS_config;
+        strFilePath = Converter::replace(strFilePath, "\\", "/");
       } else {
         if (FLAGS_config[0] == '/') {
           strFilePath = FLAGS_config;
@@ -129,21 +136,17 @@ int IApplication::run(int argc, char* argv[])
 #endif
 
     Configure conf;
-    if (m_isLoadIniConfig)
-    {
+    if (m_isLoadIniConfig) {
       this->m_strConfigFilePath = strFilePath;
       conf.loadConfigFile(this->m_strConfigFilePath + "icklib.conf");
     }
 #ifdef __windows__
     std::string strConsoleChartset = conf.getValueByKey("ICK_SERVER", "IckConsoleCharset");
-    if (strConsoleChartset.compare("") != 0)
-    {
+    if (strConsoleChartset.compare("") != 0) {
       this->m_strConsoleChartset = strConsoleChartset;
       std::string charset = std::string("chcp ") + strConsoleChartset;
       system(charset.c_str());
-    }
-    else
-    {
+    } else {
       this->m_strConsoleChartset = "65001";
       std::string charset = std::string("chcp 65001");
       system(charset.c_str());
@@ -156,8 +159,7 @@ int IApplication::run(int argc, char* argv[])
     SMALL_RECT rc = {0, 0, 120-1, 30};
     SetConsoleWindowInfo(handle_out, 1, &rc);
 #endif
-    if (this->m_isServer)
-    {
+    if (this->m_isServer) {
       std::string strTopicManagerEndpoint = conf.getValueByKey("ICK_SERVER", "IckTopicManagerEndPoint");
       std::string strPublisherEndpoint = conf.getValueByKey("ICK_SERVER", "IckPublisherEndPoint");
       std::string strSubscriberEndpoint = conf.getValueByKey("ICK_SERVER", "IckSubscriberEndPoint");
@@ -177,10 +179,8 @@ int IApplication::run(int argc, char* argv[])
         ObjectManager::getInstance()->setInterval(atoi(strSubscriberUpdateInterval.c_str()));
       this->m_isNetworkLan = (strNetworkType.compare("LAN") == 0);
 
-      if (strNetworkType.compare("WAN") == 0)
-      {
-        if(strSubscriberEnable.compare("1") == 0 || strSubscriberEnable.compare("true") == 0 )
-        {
+      if (strNetworkType.compare("WAN") == 0) {
+        if(strSubscriberEnable.compare("1") == 0 || strSubscriberEnable.compare("true") == 0 ) {
           int subscriberListenPort = atoi(strSubscriberListenPort.c_str());
           this->m_subscriberSocket.setHost(strSubscriberListenHost);
           this->m_subscriberSocket.setPort(subscriberListenPort);
@@ -188,16 +188,14 @@ int IApplication::run(int argc, char* argv[])
           IckStormSubscriberManager::getInstance()->setIckStormSubscriberSocket(&m_subscriberSocket);
           this->m_subscriberSocket.connect();
         }
-        if(strServiceEnable.compare("1") == 0 || strServiceEnable.compare("true") == 0 )
-        {
+        if(strServiceEnable.compare("1") == 0 || strServiceEnable.compare("true") == 0 ) {
           int serviceListenPort = atoi(strServiceListenPort.c_str());
           this->m_serviceSocket.setHost(strServiceListenHost);
           this->m_serviceSocket.setPort(serviceListenPort);
           this->m_serviceSocket.setServer(true);
           this->m_serviceSocket.connect();
         }
-        if(strDebuggerEnable.compare("1") == 0 || strDebuggerEnable.compare("true") == 0 )
-        {
+        if(strDebuggerEnable.compare("1") == 0 || strDebuggerEnable.compare("true") == 0 ) {
           int debuggerListenPort = atoi(strDebuggerListenPort.c_str());
           this->m_debuggerSocket.setHost(strDebuggerListenHost);
           this->m_debuggerSocket.setPort(debuggerListenPort);
@@ -250,9 +248,7 @@ int IApplication::run(int argc, char* argv[])
       /**************************************************************************************************************/
     
       
-    }
-    else
-    {
+    } else {
       std::string strNetworkType = m_isLoadIniConfig ? conf.getValueByKey("ICK_CLIENT", "IckNetworkType") : (m_isNetworkLan ? "LAN" : "WAN");
       std::string strSubscriberListenHost = m_isLoadIniConfig ? conf.getValueByKey("ICK_CLIENT", "IckSubscriberListenHost") : m_subscriberListenHost;
       std::string strSubscriberListenPort = m_isLoadIniConfig ? conf.getValueByKey("ICK_CLIENT", "IckSubscriberListenPort") : Converter::convertToString(this->m_subscriberListenPort);
@@ -265,10 +261,8 @@ int IApplication::run(int argc, char* argv[])
       std::string strDebuggerEnable = m_isLoadIniConfig ? conf.getValueByKey("ICK_SERVER", "IckDebuggerEnable") : (this->m_isDebuggerEnable?"true":"false");
 
       this->m_isNetworkLan = (strNetworkType.compare("LAN") == 0);
-      if (strNetworkType.compare("WAN") == 0)
-      {
-        if(strSubscriberEnable.compare("1") == 0 || strSubscriberEnable.compare("true") == 0 )
-        {
+      if (strNetworkType.compare("WAN") == 0) {
+        if(strSubscriberEnable.compare("1") == 0 || strSubscriberEnable.compare("true") == 0 ) {
           int subscriberListenPort = m_isLoadIniConfig ? atoi(strSubscriberListenPort.c_str()) : this->m_subscriberListenPort;
           this->m_subscriberSocket.setHost(strSubscriberListenHost);
           this->m_subscriberSocket.setPort(subscriberListenPort);
@@ -277,8 +271,7 @@ int IApplication::run(int argc, char* argv[])
           IckStormManager::getInstance()->setIckStormSubscriberSocket(&m_subscriberSocket);
           this->m_subscriberSocket.connect();
         }
-        if(strServiceEnable.compare("1") == 0 || strServiceEnable.compare("true") == 0 )
-        {
+        if(strServiceEnable.compare("1") == 0 || strServiceEnable.compare("true") == 0 ) {
           int serviceListenPort = m_isLoadIniConfig ? atoi(strServiceListenPort.c_str()) : this->m_serviceListenPort;
           this->m_serviceSocket.setHost(strServiceListenHost);
           this->m_serviceSocket.setPort(serviceListenPort);
@@ -296,8 +289,7 @@ int IApplication::run(int argc, char* argv[])
       }
     }
 
-    if (this->m_isLoadXmlConfig)
-    {
+    if (this->m_isLoadXmlConfig) {
       XmlParser xmlParser;
       xmlParser.setConfigPath(strFilePath);
       xmlParser.loadConfigFile();
@@ -320,8 +312,7 @@ int IApplication::run(int argc, char* argv[])
     std::cerr << e << std::endl;
     status = 1;
   }*/
-  catch (const std::string& msg)
-  {
+  catch (const std::string& msg) {
     std::cout << "Exception occured in IApplication::run(): Error msg: " + msg;
     status = 1;
   }
@@ -335,8 +326,7 @@ int IApplication::run(int argc, char* argv[])
 }
 
 
-void IApplication::execute()
-{
+void IApplication::execute() {
   int status = 0;
   /*Ice::CommunicatorPtr ic = NULL;*/
 

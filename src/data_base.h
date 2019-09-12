@@ -36,7 +36,7 @@ public:
 private:
   void make();
   void initialize();
-  void verifyInit();
+  void verify();
   void startup();
   
 public:

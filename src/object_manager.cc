@@ -349,29 +349,24 @@ std::map<std::string, UntypedData*> ObjectManager::getDatas(int nodeNumber)
   return res;
 }
 
-void ObjectManager::startNamespace()
-{
+void ObjectManager::startNamespace() {
   std::map<std::string, ControlObject*>::iterator it;
-  for (it = m_entites.begin(); it != m_entites.end(); ++it)
-  {
+  for (it = m_entites.begin(); it != m_entites.end(); ++it) {
     IDriver* object = dynamic_cast<IDriver*>(it->second);
-    if (object != NULL)
-    {
+    if (object != NULL) {
       Logger::getInstance()->Debug(object->getFullName() + ": register Channel start");
       object->registChannels();
       Logger::getInstance()->Debug(object->getFullName() + ": register Channel finish");
     }
   }
+
   int index = 0;
-  for (it = m_entites.begin(); it != m_entites.end(); ++it)
-  {
+  for (it = m_entites.begin(); it != m_entites.end(); ++it) {
     ControlObject* object = dynamic_cast<ControlObject*>(it->second);
-    if (object != NULL)
-    {
+    if (object != NULL) {
       std::list<ObjectBeginMakeCallBack>::iterator it1;
       for(it1 = this->m_objectBeginMakeCallBacks.begin();
-        it1 != this->m_objectBeginMakeCallBacks.end(); ++it1)
-      {
+          it1 != this->m_objectBeginMakeCallBacks.end(); ++it1) {
         if((*it1)!=NULL) (*it1)(index, m_entites.size(), object->getFullName());
       }
 
@@ -379,8 +374,7 @@ void ObjectManager::startNamespace()
       
       std::list<ObjectAfterMakeCallBack>::iterator it2;
       for(it2 = this->m_objectAfterMakeCallBacks.begin();
-        it2 != this->m_objectAfterMakeCallBacks.end(); ++it2)
-      {
+          it2 != this->m_objectAfterMakeCallBacks.end(); ++it2) {
         if((*it2)!=NULL) (*it2)(index, m_entites.size(), object->getFullName());
       }
       index++;
@@ -388,15 +382,12 @@ void ObjectManager::startNamespace()
   }
 
   index = 0;
-  for (it = m_entites.begin(); it != m_entites.end(); ++it)
-  {
+  for (it = m_entites.begin(); it != m_entites.end(); ++it) {
     ControlObject* object = dynamic_cast<ControlObject*>(it->second);
-    if (object != NULL)
-    {
+    if (object != NULL) {
       std::list<ObjectBeginVerifyCallBack>::iterator it1;
       for(it1 = this->m_objectBeginVerifyCallBacks.begin();
-        it1 != this->m_objectBeginVerifyCallBacks.end(); ++it1)
-      {
+          it1 != this->m_objectBeginVerifyCallBacks.end(); ++it1) {
         if((*it1)!=NULL) (*it1)(index, m_entites.size(), object->getFullName());
       }
 
@@ -404,8 +395,7 @@ void ObjectManager::startNamespace()
 
       std::list<ObjectAfterVerifyCallBack>::iterator it2;
       for(it2 = this->m_objectAfterVerifyCallBacks.begin();
-        it2 != this->m_objectAfterVerifyCallBacks.end(); ++it2)
-      {
+          it2 != this->m_objectAfterVerifyCallBacks.end(); ++it2) {
         if((*it2)!=NULL) (*it2)(index, m_entites.size(), object->getFullName());
       }
       index++;
@@ -413,15 +403,12 @@ void ObjectManager::startNamespace()
   }
 
   index = 0;
-  for (it = m_entites.begin(); it != m_entites.end(); ++it)
-  {
+  for (it = m_entites.begin(); it != m_entites.end(); ++it) {
     ControlObject* object = dynamic_cast<ControlObject*>(it->second);
-    if (object != NULL)
-    {
+    if (object != NULL) {
       std::list<ObjectBeginInitCallBack>::iterator it1;
       for(it1 = this->m_objectBeginInitCallBacks.begin();
-        it1 != this->m_objectBeginInitCallBacks.end(); ++it1)
-      {
+          it1 != this->m_objectBeginInitCallBacks.end(); ++it1) {
         if((*it1)!=NULL) (*it1)(index, m_entites.size(), object->getFullName());
       }
 
@@ -429,8 +416,7 @@ void ObjectManager::startNamespace()
       
       std::list<ObjectAfterInitCallBack>::iterator it2;
       for(it2 = this->m_objectAfterInitCallBacks.begin();
-        it2 != this->m_objectAfterInitCallBacks.end(); ++it2)
-      {
+          it2 != this->m_objectAfterInitCallBacks.end(); ++it2) {
         if((*it2)!=NULL) (*it2)(index, m_entites.size(), object->getFullName());
       }
       index++;
@@ -438,15 +424,12 @@ void ObjectManager::startNamespace()
   }
 
   index = 0;
-  for (it = m_entites.begin(); it != m_entites.end(); ++it)
-  {
+  for (it = m_entites.begin(); it != m_entites.end(); ++it) {
     ControlObject* object = dynamic_cast<ControlObject*>(it->second);
-    if (object != NULL)
-    {
+    if (object != NULL) {
       std::list<ObjectBeginStartupCallBack>::iterator it1;
       for(it1 = this->m_objectBeginStartupCallBacks.begin();
-        it1 != this->m_objectBeginStartupCallBacks.end(); ++it1)
-      {
+          it1 != this->m_objectBeginStartupCallBacks.end(); ++it1) {
         if((*it1)!=NULL) (*it1)(index, m_entites.size(), object->getFullName());
       }
 
@@ -454,8 +437,7 @@ void ObjectManager::startNamespace()
       
       std::list<ObjectAfterStartupCallBack>::iterator it2;
       for(it2 = this->m_objectAfterStartupCallBacks.begin();
-        it2 != this->m_objectAfterStartupCallBacks.end(); ++it2)
-      {
+          it2 != this->m_objectAfterStartupCallBacks.end(); ++it2) {
         if((*it2)!=NULL) (*it2)(index, m_entites.size(), object->getFullName());
       }
       index++;

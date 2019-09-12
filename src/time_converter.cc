@@ -20,10 +20,10 @@ std::string TimeConverter::getCurrentTimeAsStr()
   struct timeval tv;
   gettimeofday(&tv, NULL);
   time_t tick = (time_t)(tv.tv_sec);
-  struct tm* p = gmtime(&tick);
+  struct tm* p = localtime(&tick);
   char tmp[64] = { '\0' };
   sprintf(tmp, "%4d-%02d-%02d %02d:%02d:%02d.%03d",
-      p->tm_year + 1900, p->tm_mon, p->tm_mday,
+      p->tm_year + 1900, 1 + p->tm_mon, p->tm_mday,
       p->tm_hour, p->tm_min, p->tm_sec, tv.tv_usec / 1000);
   return std::string(tmp);
 #endif
@@ -65,8 +65,7 @@ std::string TimeConverter::getCurrentTimeAsStr(const std::string& format, int da
 #endif
 }
 
-long TimeConverter::getCurrentTimeAsSeconds()
-{
+long TimeConverter::getCurrentTimeAsSeconds() {
 #ifdef __windows__
   time_t tt = time(NULL);//Õâ¾ä·µ»ØµÄÖ»ÊÇÒ»¸öÊ±¼äcuo
   

@@ -50,8 +50,12 @@ DOMElement* XmlParser::loadXmlFile(std::string fileName) {
       filePath = this->m_strConfigPath + fileName;
       xerces_dom_parser_->parse((this->m_strConfigPath + fileName).c_str());
     } else {
+#ifdef __linux__
+      filePath = this->m_strConfigPath + std::string("/") + fileName;
+#elif __windows_
       filePath = this->m_strConfigPath + std::string("\\") + fileName;
-      xerces_dom_parser_->parse((this->m_strConfigPath + std::string("\\") + fileName).c_str());
+#endif
+      xerces_dom_parser_->parse(filePath.c_str());
     }
   } catch (SAXException& e) {
     printf("msg:%s\n", XMLString::transcode(e.getMessage()));

@@ -9,6 +9,8 @@ HttpRequest::HttpRequest() {}
 
 HttpRequest::HttpRequest(struct evhttp_request* req) {
   this->req_ = req;
+  response_header_.insert(std::pair<std::string, std::string>(
+      "Content-Type", "application/json;charset=utf-8"));
 }
 
 HttpRequest::~HttpRequest() {}
@@ -22,14 +24,22 @@ void HttpRequest::SendReply(int code /* = HTTP_OK */) {
 }
 
 void HttpRequest::SendReply(const std::string& data, int code /* = HTTP_OK */) {
-  evhttp_add_header(evhttp_request_get_output_headers(this->req_),
-      "Content-Type", "application/json;charset=utf-8");
+  for (const auto& it : response_header_) {
+    evhttp_add_header(evhttp_request_get_output_headers(
+        this->req_), it.first.c_str(), it.second.c_str());
+  }
   evbuffer_add(evhttp_request_get_output_buffer(this->req_), data.c_str(), data.length());
   evhttp_send_reply(this->req_, code, NULL, NULL);
 }
 
 void HttpRequest::AddHeader(const char* key, const char* value) {
-    evhttp_add_header(evhttp_request_get_output_headers(this->req_), key, value);
+  auto it = response_header_.find(std::string(key));
+  if (it == response_header_.end()) {
+    response_header_.insert(std::pair<std::string, std::string>(key, value));
+  } else {
+    it->second = value;
+  }
+  // evhttp_add_header(evhttp_request_get_output_headers(this->req_), key, value);
 }
 
 std::string HttpRequest::CreateResponse(

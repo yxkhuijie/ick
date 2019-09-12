@@ -2,6 +2,7 @@
 #define SRC_HTTP_REQUEST_H_
 
 #include <evhttp.h>
+#include <map>
 #include <string>
 
 class HttpServer;
@@ -38,6 +39,7 @@ class HttpRequest {
 
  private:
   struct evhttp_request* req_;
+  std::map<std::string, std::string> response_header_;
 };
 
 #endif

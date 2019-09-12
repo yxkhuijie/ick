@@ -3,32 +3,30 @@
 #include "src/connection_pool_manager.h"
 #include "src/object_manager.h"
 
-IDataBase::IDataBase(void) {
-  this->connection_pool_ = NULL;
-}
+IDataBase::IDataBase(void)
+    : connection_pool_(nullptr) {}
 
 IDataBase::~IDataBase(void) {
   this->clear(rs);
 }
 
 void IDataBase::make() {
-  if(this->connection_pool_ == NULL) {
-    throw getFullName()+string(" : Connection pool not set!");
-  }
+  ControlObject::make();
 }
 
 void IDataBase::initialize() {
   ControlObject::initialize();
 }
 
-void IDataBase::verifyInit() {}
+void IDataBase::verify() {
+  ControlObject::verify();
+}
 
 void IDataBase::startup() {
   if(this->connection_pool_ == NULL) {
-    Logger::getInstance()->Error("connection pool not set!!");
-    std::string msg = "connection pool not set!!";
-    throw msg;
+    Logger::getInstance()->Warn(getFullName() + ": connection pool not set");
   }
+  ControlObject::startup();
 }
 
 int IDataBase::executeQuery(std::string sql) {
