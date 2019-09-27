@@ -23,8 +23,7 @@ MySqlConnection::MySqlConnection(
 MySqlConnection::~MySqlConnection() {}
 
 void MySqlConnection::open() {
-  sql::mysql::MySQL_Driver *driver;
-  driver = sql::mysql::get_mysql_driver_instance();
+  sql::mysql::MySQL_Driver *driver = sql::mysql::get_mysql_driver_instance();
   std::string server = "tcp://" + host + ":" + std::to_string(port);
   sql::ConnectOptionsMap option_map;
   option_map.insert(std::pair<sql::SQLString, sql::ConnectPropertyVal>("hostName", sql::Variant(sql::SQLString(server.c_str()))));
@@ -32,12 +31,14 @@ void MySqlConnection::open() {
   option_map.insert(std::pair<sql::SQLString, sql::ConnectPropertyVal>("password", sql::Variant(sql::SQLString(this->pwd.c_str()))));
   option_map.insert(std::pair<sql::SQLString, sql::ConnectPropertyVal>("OPT_RECONNECT", sql::Variant(true)));
   option_map.insert(std::pair<sql::SQLString, sql::ConnectPropertyVal>("OPT_CHARSET_NAME", sql::Variant(sql::SQLString(this->chartset.c_str()))));
-  // connection_.reset(driver->connect(
-  //     server, this->user, this->pwd));
-  connection_.reset(driver->connect(option_map));
-  connection_->setSchema(this->db);
-  if (connection_ == nullptr) {
-    Logger::getInstance()->Error("connection is null!!!");
+  try {
+    connection_.reset(driver->connect(option_map));
+    connection_->setSchema(this->db);
+    if (connection_ == nullptr) {
+      Logger::getInstance()->Error("connection is null!!!");
+    }
+  } catch (const sql::SQLException& e) {
+    Logger::getInstance()->Error("sql exception: " + std::string(e.what()));
   }
 }
 

@@ -78,7 +78,7 @@ bool File::IsDir(const std::string& path) {
   struct stat st;
   stat(file_path.c_str(), &st);
   return S_ISDIR(st.st_mode);
-#elif
+#elif __windows__
   return false;
 #endif
 }
@@ -107,7 +107,7 @@ bool File::GetFilesInDir(
   }  
   closedir(dir);
   return true;
-#elif
+#elif __windows__
   return false;
 #endif
 }
@@ -117,7 +117,7 @@ std::string File::GetWorkDir() {
   char buffer[MAX_PATH];
   getcwd(buffer, MAX_PATH);
   return std::string(buffer);
-#elif
+#elif __windows__
   return "";
 #endif
 }

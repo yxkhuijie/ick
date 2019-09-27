@@ -91,7 +91,7 @@ std::string Converter::convertToString(const unsigned char* buff, int length, bo
   return res;
 }
 
-std::string Converter::convertToUtf8(std::string& str)
+std::string Converter::convertToUtf8(const std::string& str)
 {
 #ifdef __windows__
   int nwLen = ::MultiByteToWideChar(CP_ACP, 0, str.c_str(), -1, NULL, 0);
@@ -121,7 +121,7 @@ std::string Converter::convertToUtf8(std::string& str)
   return retStr;
 }
 
-std::string Converter::convertToUtf8(const char* gb2312, std::string code)
+std::string Converter::convertToUtf8(const char* gb2312, const std::string& code)
 {
   if(code.compare("gb2312") == 0)
   {
@@ -148,7 +148,7 @@ std::string Converter::convertToUtf8(const char* gb2312, std::string code)
   }
 }
 
-std::string Converter::utf8ToString(std::string& str)
+std::string Converter::utf8ToString(const std::string& str)
 {
 #ifdef __windows__
   int nwLen = MultiByteToWideChar(CP_UTF8, 0, str.c_str(), -1, NULL, 0);
@@ -179,8 +179,7 @@ std::string Converter::utf8ToString(std::string& str)
 #endif
 }
 
-std::vector<std::string> Converter::split(std::string str, std::string pattern)
-{
+std::vector<std::string> Converter::split(const std::string& str, const std::string& pattern) {
   std::string::size_type pos;
   std::vector<std::string> result;
 
@@ -206,7 +205,32 @@ std::vector<std::string> Converter::split(std::string str, std::string pattern)
   return result;
 }
 
-std::string Converter::trim(std::string s)
+int Converter::split(const std::string& str, const std::string& pattern, std::vector<std::string>* vec) {
+  if (vec == nullptr) return 0;
+  std::string::size_type pos;
+  int count = 0;
+
+  std::string s = trim(str);
+  while ((pos = s.find(pattern)) != std::string::npos) {
+    std::string tmp = s.substr(0, pos);
+    vec->push_back(tmp);
+    count++;
+    s = trim(s.substr(pos + 1, s.size() - pos));
+    if(s.compare(pattern) == 0) {
+      vec->push_back("");
+      count++;
+      break;
+    }
+  }
+
+  if (s != "") {
+    vec->push_back(s);
+    count++;
+  }
+  return count;
+}
+
+std::string Converter::trim(const std::string& s)
 {
   if (s == "") return "";
   std::string str = s;
@@ -317,6 +341,17 @@ std::string Converter::convertUtf16ToUtf8(const uint16_t* data) {
     i++;
   }
   return result.str();
+}
+
+void Converter::SplitUtf8(const std::string& str, std::vector<std::string>* res) {
+  if (res == nullptr) return;
+  std::vector<uint16_t> vec;
+  convertUtf8ToUtf16(str, &vec);
+  uint16_t buf[2] = { 0, 0 };
+  for (const auto& it : vec) {
+    buf[0] = it;
+    res->push_back(convertUtf16ToUtf8(buf));
+  }
 }
 
 void Converter::convertUtf8ToUtf16(const std::string& str, std::vector<uint16_t>* res) {
