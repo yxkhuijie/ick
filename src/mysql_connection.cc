@@ -50,10 +50,12 @@ bool MySqlConnection::setCharset(std::string chartset) {
 }
 
 bool MySqlConnection::isClosed() {
+  if (connection_ == nullptr) return false; 
   return connection_->isClosed();
 }
 
 bool MySqlConnection::isValid() {
+  if (connection_ == nullptr) return false;
   return connection_->isValid();
 }
 
