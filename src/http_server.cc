@@ -2,6 +2,7 @@
 
 #include "src/http_server.h"
 #include "src/http_server_thread.h"
+#include "src/logger.h"
 
 #include <event2/thread.h>
 
@@ -28,36 +29,34 @@ HttpServer::HttpServer(std::string host, uint16_t port, int threadNum) {
   }
 }
 
-HttpServer::HttpServer(const HttpServer& orig) {
-}
+HttpServer::HttpServer(const HttpServer& orig) {}
 
 void HttpServer::Stop() {
-    if (!isRunning) {
-        return;
-    }
-    for (HttpServerThread* it : this->serverThreads) {
-        it->Stop();
-    }
-    evhttp_del_accept_socket(this->http, this->handle);
-    isRunning = false;
+  if (!isRunning) {
+    return;
+  }
+  for (HttpServerThread* it : this->serverThreads) {
+    it->Stop();
+  }
+  evhttp_del_accept_socket(this->http, this->handle);
+  isRunning = false;
 }
 
 HttpServer::~HttpServer() {
-    Stop();
-    for (auto it : this->serverThreads) {
-        delete it;
-    }
-    for (std::map<std::string, HttpCallback*>::iterator it = this->callbacks.begin(); it != this->callbacks.end(); ++it) {
-        delete it->second;
-    }
-    if (this->genericCallback) {
-        delete this->genericCallback;
-    }
+  Stop();
+  for (auto it : this->serverThreads) {
+    delete it;
+  }
+  for (std::map<std::string, HttpCallback*>::iterator it = this->callbacks.begin(); it != this->callbacks.end(); ++it) {
+    delete it->second;
+  }
+  if (this->genericCallback) {
+    delete this->genericCallback;
+  }
 
-    event_base_free(this->base);
-    evhttp_free(this->http);
-    libevent_global_shutdown();
-
+  event_base_free(this->base);
+  evhttp_free(this->http);
+  libevent_global_shutdown();
 }
 
 void HttpServer::callbackHandler(struct evhttp_request *req, void *arg) {
@@ -89,6 +88,10 @@ void HttpServer::SetCallback(std::string path, std::function<void(HttpRequest*, 
     //TODO exception
     return;
   }
+}
+
+void HttpServer::SetListeningPort(uint16_t port) {
+  this->port = port;
 }
 
 void HttpServer::SetGenericCallback(std::function<void(HttpRequest*, void*) > cb, void* arg) {
@@ -126,4 +129,5 @@ void HttpServer::Start() {
     it->Start(this->listeningSocket);
   }
   isRunning = true;
+  Logger::getInstance()->Info("http remote service server listening on: " + this->host + ":" + std::to_string(this->port));
 }
