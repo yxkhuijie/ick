@@ -11,13 +11,15 @@
 #include "src/configure.h"
 #include "src/xml_parser.h"
 #include "src/logger.h"
+#ifdef ENABLE_DATABASE
 #include "src/connection_pool_manager.h"
 #include "src/data_base.h"
+#endif
 #include "src/ick_storm_manager.h"
 #include "src/converter.h"
 
+#ifdef ENABLE_GFLAG
 #include "gflags/gflags.h"
-
 DEFINE_string(config, "config", "config file path: io_config.xml and control_object.xml");
 DEFINE_bool(enable_grpc, true, "enable grpc or not");
 DEFINE_bool(enable_http, true, "enable http or not");
@@ -25,10 +27,13 @@ DEFINE_bool(enable_socket, true, "enable socket or not");
 DEFINE_bool(server_flag, true, "this program is server or client");
 DEFINE_bool(enable_grpc_remote_service, true, "enable grpc remote service or not");
 DEFINE_string(grpc_remote_service_port, "0.0.0.0:8081", "grpc remote service port");
+#endif
 
 IApplication::IApplication(bool isServer, bool isLoadIniConfig, bool isLoadXmlConfig)
 {
+#ifdef ENABLE_DATABASE
   IDataBase database;
+#endif
   this->m_isServer = isServer;
   /*this->m_communicator = NULL;
   this->m_communicator = Ice::initialize();*/
@@ -77,12 +82,15 @@ int IApplication::main(int argc, wchar_t* argv[])
 int IApplication::run(int argc, char* argv[]) {
   int status = 0;
   /*Ice::CommunicatorPtr ic = NULL;*/
+#ifdef ENABLE_GFLAG
   google::ParseCommandLineFlags(&argc, &argv, false);
+#endif
 
   try {
     Logger::getInstance()->startup();
+#ifdef ENABLE_DATABASE
     ConnectionPoolManager::getInstance()->startup();
-
+#endif
     wchar_t szFilePath[MAX_PATH] = { 0 };
     char filePath[MAX_PATH] = { 0 };
     std::string strFilePath = "";
@@ -101,6 +109,7 @@ int IApplication::run(int argc, char* argv[]) {
       MultiByteToWideChar(CP_ACP, 0, strFilePath.c_str(), -1, szFilePath, len);
 #endif
 #elif __linux__
+#ifdef ENABLE_GFLAG
       if (FLAGS_config.empty() || FLAGS_config[0] != '/') {
         /*
         char current_absolute_path[MAX_PATH];
@@ -133,6 +142,7 @@ int IApplication::run(int argc, char* argv[]) {
           }
         }
       }
+#endif
 #endif
 
     Configure conf;
@@ -297,12 +307,14 @@ int IApplication::run(int argc, char* argv[]) {
       ObjectManager::getInstance()->startNamespace();
     }
 
+#ifdef ENABLE_GRPC
     // start grpc remote service
     if (FLAGS_enable_grpc_remote_service && !FLAGS_grpc_remote_service_port.empty()) {
       this->grpc_remote_service_thread_.reset(new GrpcRemoteServiceThread());
       this->grpc_remote_service_thread_->setListeningPort(FLAGS_grpc_remote_service_port);
       this->grpc_remote_service_thread_->start();
     }
+#endif
 
     // this->start();
   }

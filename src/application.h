@@ -1,4 +1,6 @@
+#ifdef ENABLE_GRPC
 #include "src/grpc_remote_service.h"
+#endif
 #include "src/thread.h"
 #include "src/ick_storm_subscriber_socket.h"
 #include "src/ick_storm_service_socket.h"
@@ -62,9 +64,9 @@ private:
   bool m_isServiceEnable;
 
   bool m_isDebuggerEnable;
-
+#ifdef ENABLE_GRPC
   std::unique_ptr<GrpcRemoteServiceThread> grpc_remote_service_thread_;
-
+#endif
 public:
 
   virtual int run(int, char*[]);

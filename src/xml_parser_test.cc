@@ -8,6 +8,7 @@ int main(int argc, char** argv) {
   // 	Logger::getInstance()->Error("tmp1 nullptr");
   // 	return 0;
   // }
+  /*
   XMLPlatformUtils::Initialize();
   XMLCh buff[9];
   StrX::convert("dataType", buff);
@@ -22,6 +23,7 @@ int main(int argc, char** argv) {
   const XMLCh* tmp1 = StrX("dataType").xerceForm();
   tmp2 = XMLString::transcode(tmp1);
   Logger::getInstance()->Info("tmp2: " + std::string(tmp2));
+  */  
   /*
   const std::string& xml_data =
       "<?xml version='1.0'?>"
