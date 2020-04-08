@@ -1,5 +1,31 @@
 licenses(["notice"])
 
+cc_binary(
+    name = "fft_test",
+    srcs = [
+        "src/fft_test.cc",
+    ],
+    deps = [
+        ":fft",
+    ]
+)
+
+cc_library(
+    name = "fft",
+    srcs = [
+        "src/fft.cc",
+    ],
+    hdrs = [
+        "src/fft.h",
+    ],
+    deps = [
+        ":fftw",
+    ],
+    includes = [
+        "src",
+    ]
+)
+
 cc_library(
     name = "fftw",
     srcs = glob([
